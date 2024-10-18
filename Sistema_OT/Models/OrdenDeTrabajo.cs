@@ -1,5 +1,6 @@
 ﻿using Sistema_OT.Services;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 
 namespace Sistema_OT.Models
 {
@@ -12,15 +13,17 @@ namespace Sistema_OT.Models
         public DateTime FechaSolicitud { set; get; }
         public string UserIDSolicitante { get; set; }
 
-        public static List<OrdenDeTrabajo> ObtenerLista(string consulta)
+        public static List<OrdenDeTrabajo> ObtenerLista(int num)
         {
-
+            string consulta = "Select * from Ordenes_Trabajo Where NroOrdenTrabajo = @numero";
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
+                command.Parameters.AddWithValue("@numero", num);
+                
                 try
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
