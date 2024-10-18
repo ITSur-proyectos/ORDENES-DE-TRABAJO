@@ -7,7 +7,13 @@ namespace Sistema_OT.Models
     public class OrdenDeTrabajo
     {
 
-        
+        //Asigno get set a todas las variables, estos datos los voy a conseguir en la consulta sql
+        //Estos datos estan a cambiar, falta esperar confirmacion para ver que datos son innecesarios para el sistema y se eliminaran
+
+        /*
+         Es posible hacerlo de una manera no tan tipada, y sin definir todas estas variables al simplemente almacenar el resultado de la consulta en un diccionario
+         pero siento que será mas comodo para insertar todos los valores en los formularios en el futuro, se cambiará de ser necesario  
+        */
         public decimal NroOrdenTrabajo { get; set; }
         public int Cliente { get; set; }
         public int Sistema { get; set; }
@@ -48,7 +54,7 @@ namespace Sistema_OT.Models
                             OrdenDeTrabajo Orden = new OrdenDeTrabajo
                             {
 
-                                
+                                //Le asigno a cada variable de la clase orden de trabajo su valor respectivo desde la base de datos, segun la consulta de arriba
                                 NroOrdenTrabajo = reader.GetDecimal(reader.GetOrdinal("NroOrdenTrabajo")),
                                 Cliente = reader.GetInt32(reader.GetOrdinal("Cliente")),
                                 Sistema = reader.GetInt32(reader.GetOrdinal("Sistema")),
