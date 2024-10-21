@@ -1,0 +1,11 @@
+﻿
+/* Estilo para los tabs */
+.nav-tabs .nav-link {
+    border-radius: 8px; /* bordes redondeados */
+}
+
+/* Estilo para la cabecera del formulario */
+.card-header {
+    background-color: #17a2b8; /* Color de fondo azul claro */
+    color: white; /* Texto blanco */
+}
