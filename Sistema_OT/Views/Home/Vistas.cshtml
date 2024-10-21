@@ -1,10 +1,8 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Gestión de Órdenes";
 }
 
 <div class="container mt-4">
-   
     <div class="border rounded p-3 mb-4">
         <div class="d-flex align-items-center">
             <div class="w-50 text-center">
@@ -12,7 +10,7 @@
                     Individual
                 </button>
             </div>
-            <div class="border-end" style="height: 40px;"></div> 
+            <div class="border-end" style="height: 40px;"></div>
             <div class="w-50 text-center">
                 <button class="btn btn-outline-secondary w-75 shadow-sm" style="transform: translateY(-5px); pointer-events: none; color: inherit;">
                     Órdenes de Trabajo
@@ -21,32 +19,39 @@
         </div>
     </div>
 
-   
-    <div class="border rounded p-3 mb-3">
-        <div class="d-flex">
-            <div class="p-2" style="width: 15%;">
-                <small class="d-block mb-1">Cliente/Sistema</small>
-                
-            </div>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
+       
+        <div class="border rounded p-2" style="width: 70%;">
+            <div class="d-flex">
+                <div class="p-2" style="width: 25%;">
+                    <small class="d-block mb-1">Cliente/Sistema</small>
+                </div>
 
-            <div class="p-2" style="width: 15%;">
-                <small class="d-block mb-1">Fecha Solicitud y Vencimiento</small>
-                
-            </div>
-            
-            <div class="p-2" style="width: 15%;">
-                <small class="d-block mb-1">Orden</small>
-                
-            </div>
+                <div class="p-2" style="width: 25%;">
+                    <small class="d-block mb-1">Fecha Solicitud y Vencimiento</small>
+                </div>
 
-            <div class="p-2" style="width: 15%;">
-                <small class="d-block mb-1">Cambio de Estado</small>            
+                <div class="p-2" style="width: 25%;">
+                    <small class="d-block mb-1">Orden</small>
+                </div>
+
+                <div class="p-2" style="width: 25%;">
+                    <small class="d-block mb-1">Cambio de Estado</small>
+                </div>
             </div>
+        </div>
+
+        <!--Búsqueda-->
+        <div class="border rounded mt-0.3" style="width: 28%;">
+
+            <h5 class="mb-3">Búsqueda</h5>
+            <button class="btn btn-light w-100 mb-2">Búsqueda</button>
+            <button class="btn btn-light w-100">Limpiar</button>
         </div>
     </div>
 
+    <div class="border rounded p-3" style="width: 70%;">
 
-    <div class="border rounded p-3">
         <div class="d-flex flex-wrap justify-content-between">
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Cliente:</small>
@@ -93,7 +98,6 @@
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
 
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Solicitante:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
@@ -104,7 +108,9 @@
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
         </div>
-
-
     </div>
+    
+
+    
+
 </div>
