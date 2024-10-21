@@ -20,123 +20,118 @@
     </div>
 
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;">
-       
-        <div class="border rounded p-2" style="width: 70%;">
+        <!-- Caja Original con campos -->
+        <div class="border rounded p-3" style="width: 70%;">
             <div class="d-flex">
                 <div class="p-2" style="width: 25%;">
                     <small class="d-block mb-1">Cliente/Sistema</small>
                 </div>
-
                 <div class="p-2" style="width: 25%;">
                     <small class="d-block mb-1">Fecha Solicitud y Vencimiento</small>
                 </div>
-
                 <div class="p-2" style="width: 25%;">
                     <small class="d-block mb-1">Orden</small>
                 </div>
-
                 <div class="p-2" style="width: 25%;">
                     <small class="d-block mb-1">Cambio de Estado</small>
                 </div>
             </div>
         </div>
-
-        <!-- Caja de Búsqueda en su propia sección -->
-        <div class="border rounded mt-0.3" style="width: 28%;">
-
-            <h5 class="mb-3">Búsqueda</h5>
-            <button class="btn btn-light w-100 mb-2">Búsqueda</button>
-            <button class="btn btn-light w-100">Limpiar</button>
-        </div>
     </div>
 
-    <div class="border rounded p-3" style="width: 70%;">
-
+    <div class="border rounded p-3 mt-1" style="width: 70%; height: 100%;">
         <div class="d-flex flex-wrap justify-content-between">
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Cliente:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Sistema:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 7%;">
                 <small class="d-block mb-1">Proyecto:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 20%;">
                 <small class="d-block mb-1"> .</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 5%;">
                 <small class="d-block mb-1">. </small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Responsable:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Estado:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Módulo/Pantalla:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Asunto:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Solicitante:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
-
             <div class="p-2" style="width: 30%;">
                 <small class="d-block mb-1">Solicitado Por:</small>
                 <input type="text" class="form-control border-dark" style="height: 25px;" />
             </div>
         </div>
     </div>
-    
 
-    <div class="border rounded p-3 mt-1" style="width: 100%; height: 150px; overflow-y: auto;">
-        <div class="d-flex align-items-center">
-            <button class="btn btn-light me-2">OT N</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
 
-            <button class="btn btn-light me-2">Depende De</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
 
-            <button class="btn btn-light me-2">Ot. Impl</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
+   @*  <div class="border rounded mt-0.3" style="width: 28%; float: right">
 
-            <button class="btn btn-light me-2">Fecha Solicitud</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
+        <h5 class="mb-3">Búsqueda</h5>
+        <button class="btn btn-light w-100 mb-2">Búsqueda</button>
+        <button class="btn btn-light w-100">Limpiar</button>
+    </div> *@
 
-            <button class="btn btn-light me-2">Fecha Vencimiento</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
 
-            <button class="btn btn-light me-2">Clientes</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
 
-            <button class="btn btn-light me-2">Sistemas</button>
-            <div style="border-left: 1px solid black; height: 30px; margin: 0 5px;"></div>
-
-            <button class="btn btn-light">Proyectos</button>
-
+    <div class="border rounded p-3 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            
+            <div style="overflow-x: auto; white-space: nowrap;">
+                <button class="btn btn-light me-2">OT N</button>
+                <button class="btn btn-light me-2">Depende De</button>
+                <button class="btn btn-light me-2">OT. Impl</button>
+                <button class="btn btn-light me-2">Fecha Solicitud</button>
+                <button class="btn btn-light me-2">Fecha Vencimiento</button>
+                <button class="btn btn-light me-2">Clientes</button>
+                <button class="btn btn-light me-2">Sistemas</button>
+                <button class="btn btn-light me-2">Proyectos</button>
+            </div>
         </div>
     </div>
+
+    <div class="border rounded p-3 mt-3">
+        <small class="d-block mb-1">Resultados</small>
+        <div class="d-flex flex-wrap justify-content-between">
+            <div class="p-2" style="width: 30%; display: flex; align-items: center;">
+                <small class="me-2">Cantidad de OT:</small>
+                <input type="text" class="form-control border-dark" style="height: 25px; width: auto;" />
+            </div>
+            <div class="p-2" style="width: 30%; display: flex; align-items: center;">
+                <small class="me-2">Total de Horas Estimadas:</small>
+                <input type="text" class="form-control border-dark" style="height: 25px; width: auto;" />
+            </div>
+            <div class="p-2" style="width: 30%; display: flex; align-items: center;">
+                <small class="me-2">Total de Horas Avances:</small>
+                <input type="text" class="form-control border-dark" style="height: 25px; width: auto;" />
+            </div>
+        </div>
+    </div>
+
 
 </div>
