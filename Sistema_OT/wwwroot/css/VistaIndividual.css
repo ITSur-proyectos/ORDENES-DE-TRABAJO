@@ -1,11 +1,29 @@
 ﻿
 /* Estilo para los tabs */
 .nav-tabs .nav-link {
-    border-radius: 8px; /* bordes redondeados */
+    border-radius: 0; /* sin bordes redondeados */
 }
 
 /* Estilo para la cabecera del formulario */
 .card-header {
     background-color: #17a2b8; /* Color de fondo azul claro */
     color: white; /* Texto blanco */
+}
+
+/* Estilo para los botones */
+.btn {
+    padding: 10px 20px; /* Ajustar el padding de los botones */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.btn-warning {
+    background-color: #FF9800; /* Botón de imprimir en color naranja */
+}
+
+.btn-info {
+    background-color: #007BFF; /* Botón de documentación en color azul */
+}
+
+.btn-primary {
+    background-color: #28a745; /* Botón de agregar en color verde */
 }
