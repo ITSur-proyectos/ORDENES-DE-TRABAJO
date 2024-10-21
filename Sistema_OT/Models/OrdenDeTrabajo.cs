@@ -17,33 +17,32 @@ namespace Sistema_OT.Models
         public decimal NroOrdenTrabajo { get; set; }
         public int Cliente { get; set; }
         public int Sistema { get; set; }
-        public string Modulo {  get; set; }
+        public string Modulo { get; set; }
         public string Asunto { get; set; }
         public DateTime FechaSolicitud { get; set; }
         public DateTime FechaFinalizacion { get; set; }
-        public int CantidadHorasEstimadas {  get; set; }
-        public int CantidadHorasConsumidas {  get; set; }
-        public int Estado {  get; set; }
-        public int PorcentajeAvance {  get; set; }
-        public int UsuarioSolicitante {  get; set; }
-        public int UsuarioResponsable {  get; set; }
-        public string Descripcion {  get; set; }
+        public int CantidadHorasEstimadas { get; set; }
+        public int CantidadHorasConsumidas { get; set; }
+        public int Estado { get; set; }
+        public int PorcentajeAvance { get; set; }
+        public int UsuarioSolicitante { get; set; }
+        public int UsuarioResponsable { get; set; }
+        public string Descripcion { get; set; }
         public string Observaciones { get; set; }
         public int Prioridad { get; set; }
         public string FormulariosModificados { get; set; }
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
-        public static List<OrdenDeTrabajo> ObtenerLista(int num)
+        public static List<OrdenDeTrabajo> ObtenerLista(string consulta)
         {
-            string consulta = "Select * from Ordenes_Trabajo Where NroOrdenTrabajo = @numero";
+           
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
-                command.Parameters.AddWithValue("@numero", num);
                 
                 try
                 {
@@ -76,6 +75,7 @@ namespace Sistema_OT.Models
                                 UserIDSolicitante = reader.GetString(reader.GetOrdinal("UserIDSolicitante")),
                                 UserIDResponsable = reader.GetString(reader.GetOrdinal("UserIDResponsable"))
                             };
+                            //Se agrega a la lista de OTs en caso de que hay mas de una (Para la pestaña de busqueda de multiples OTs)
                             OrdenesTrabajo.Add(Orden);
                         }
                     }
