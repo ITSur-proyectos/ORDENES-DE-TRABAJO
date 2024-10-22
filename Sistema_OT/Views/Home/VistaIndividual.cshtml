@@ -149,18 +149,48 @@
                             </div>
                         </div>
 
-                        <!-- Cuarta fila con Asunto y Solicitado Por -->
+                        <!-- Quinta fila con Horas Facturables, % de Avance, Horas Consumidas, Horas Avances, Nro Implementación y Checkboxes -->
                         <div class="row mt-3">
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" id="asunto" placeholder="Ingrese el asunto" />
+                                    <label for="horasFacturables">Horas Facturables</label>
+                                    <input type="number" class="form-control" id="horasFacturables" placeholder="0" />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="solicitadoPor">Solicitado Por</label>
-                                    <input type="text" class="form-control" id="solicitadoPor" placeholder="Ingrese quien solicita" />
+                                    <label for="porcentajeAvance">% de Avance</label>
+                                    <input type="number" class="form-control" id="porcentajeAvance" placeholder="0" min="0" max="100" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="horasConsumidas">Horas Consumidas</label>
+                                    <input type="number" class="form-control" id="horasConsumidas" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="horasAvances">Horas Avances</label>
+                                    <input type="number" class="form-control" id="horasAvances" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="NroOtImp">Nro Implementación</label>
+                                    <input type="number" class="form-control" id="NroOtImp" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="premioAvance">
+                                        <label class="form-check-label" for="premioAvance">Premio por Avance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
+                                        <label class="form-check-label" for="alcanceIndefinido">Alcance Indefinido</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
