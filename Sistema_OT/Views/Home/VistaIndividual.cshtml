@@ -3,41 +3,56 @@
 }
 
 <!-- Contenedor principal para el formulario Individual-->
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="row">
         <div class="col-md-12">
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm"> 
                 <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Individual</h5>
+                    <h5 class="mb-0">Individual </h5>
                 </div>
                 <div class="card-body">
                    <!-- Inicio del formulario-->
                     <form method="post" action="/Individual/SubmitForm">
                         <div class="row">
-                            <!-- Primera columna con campos de la orden -->
-                            <div class="col-md-4">
+                            <!-- Primera fila con campos de la orden -->
+                            <div class="col-md-3">
                                 <!-- Campo de Orden -->
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="text" class="form-control-sm" id="orden" placeholder="Ingrese el número" />
+                                    <input type="text" class="form-control" id="orden" placeholder="Ingrese el número" />
                                 </div>
+                            </div>
                                 <!-- Campo de Dependencia -->
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="dependencia">Depende de</label>
-                                    <input type="text" class="form-control-sm" id="dependencia" placeholder="Depende de..." />
+                                    <input type="text" class="form-control" id="dependencia" placeholder="Depende de..." />
                                 </div>
+                            </div>
+                                <!-- Botón de búsqueda -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+                                    <button type="button" class="btn btn-primary btn-block">Buscar</button>
+                                </div>
+                            </div>
                                 <!-- Campo de Fecha de Solicitud -->
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control-sm" id="fechaSolicitud" />
+                                    <input type="date" class="form-control" id="fechaSolicitud" />
                                 </div>
+                            </div>
                                 <!-- Campo de Fecha de Vencimiento -->
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control-sm" id="fechaVencimiento" />
+                                    <input type="date" class="form-control" id="fechaVencimiento" />
                                 </div>
+                            </div>
                                 <!-- Campo de Estado del Trabajo -->
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
                                     <select class="form-control" id="estadoTrabajo">
@@ -62,6 +77,7 @@
                                     </select>
                                 </div>
                             </div>
+                            
 
                             <!-- Segunda columna con más campos -->
                             <div class="col-md-4">
