@@ -1,8 +1,34 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var OrdenTrabajo = ViewData["Orden"] as OrdenDeTrabajo;
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form action="@Url.Action("Index", "Home")" method="post">
+        <div class="mb-3">
+            <label for="NumOt" class="form-label">Nro OT:</label>
+            <input type="text" name="nroOt" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Recúerdame</label>
+        </div>
+        <div class="mb-3">
+            <label for="Asunto" class="form-label">Asunto:</label>
+            <!-- El value del input se rellena con el valor de Asunto si existe -->
+            <input type="text" name="Asunto" class="form-control" id="Asunto" value="@OrdenTrabajo?.Asunto">
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </form>
+    @if (OrdenTrabajo != null)
+    {
+        
+          @OrdenTrabajo.Asunto
+      
+    }
+    
+
 </div>
