@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                                 <!-- Campo de Estado del Trabajo -->
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
                                     <select class="form-control" id="estadoTrabajo">
@@ -77,110 +77,36 @@
                                     </select>
                                 </div>
                             </div>
-                            
+                        </div>    
 
-                            <!-- Segunda columna con más campos -->
-                            <div class="col-md-4">
-                                <!-- Campo de Proyecto -->
+                        <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="cliente">Cliente</label>
+                                    <input type="text" class="form-control" id="cliente" placeholder="Ingrese cliente" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sistema">Sistema</label>
+                                    <input type="text" class="form-control" id="sistema" placeholder="Ingrese sistema" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
                                     <input type="text" class="form-control" id="proyecto" placeholder="Ingrese proyecto" />
                                 </div>
-                                <!-- Campo de Módulo / Pantalla -->
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="moduloPantalla">Módulo / Pantalla</label>
-                                    <input type="text" class="form-control" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
-                                </div>
-                                <!-- Campo de Usuario Responsable -->
-                                <div class="form-group">
-                                    <label for="usuarioResponsable">Usuario Responsable</label>
-                                    <select class="form-control" id="usuarioResponsable">
-                                        @* <option>JALMADA</option>
-                                        <option>KRODRIGUEZ</option>
-                                        <option>FJARA</option>
-                                        <option>JGARZA</option>
-                                        <option>JOSE</option>
-                                        <option>DANIEL</option>
-                                        <option>SA</option>
-                                        <option>CARLOS</option>
-                                        <option>PQUIROGA</option>
-                                        <option>ATRONCOSO</option>
-                                        <option>JURIBE</option>
-                                        <option>PRUIZ</option>
-                                        <option>EPEREYRA</option>
-                                        <option>WSPULER</option>
-                                        <option>NLAUGUERO</option>
-                                        <option>LMATTAR</option>
-                                        <option>MLLARIN</option>
-                                        <option>RVALENZUEL</option>
-                                        <option>DPASTRANA</option>
-                                        <option>HFERNAND</option>
-                                        <option></option>
-                                        <option>ERUIZ</option>
-                                        <option>DDELCOLLAD</option>
-                                        <option>CVILLEGAS</option>
-                                        <option>CNAVARRO</option>
-                                        <option>JSAADE</option> *@
-                                    </select>
-                                </div>
-                                <!-- Campo de Usuario Solicitante -->
-                                <div class="form-group">
-                                    <label for="usuarioSolicitante">Usuario Solicitante</label>
-                                     <select class="form-control" id="usuarioSolicitante">
-                                     </select>
-                                </div>
-                                <!-- Campo de Asunto -->
-                                <div class="form-group">
-                                    <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" id="asunto" placeholder="Ingrese el asunto" />
+                                    <label>&nbsp;</label>
+                                    <button type="button" class="btn btn-primary btn-block">Buscar</button>
                                 </div>
                             </div>
                         </div>
-                                <!-- Sección de horas y avances -->
-                                <div class="row mt-3">
-                                    <div class="col-md-8"> 
-                                        <h6>Horas y Avances</h6>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <!-- Campo de Horas Facturables -->
-                                                <div class="form-group">
-                                                    <label for="horasFacturables">Horas Facturables</label>
-                                                    <input type="number" class="form-control" id="horasFacturables" placeholder="0" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <!--Campo de % de Avance/ hacerlo más diámico, acorde al estado de trabajo -->
-
-                                                <div class="form-group">
-                                                    <label for="porcentajeAvance"> % de Avance</label>
-                                                    <input type="number" class="form-control" id="porcentajeAvance" placeholder="0" min="0" max="100" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <!-- Campo de Horas Consumidas -->
-                                                <div class="form-group">
-                                                    <label for="horasConsumidas">Horas Consumidas</label>
-                                                    <input type="number" class="form-control" id="horasConsumidas" placeholder="0" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <!-- Campo de Horas Avances -->
-                                                <div class="form-group">
-                                                    <label for="horasAvances">Horas Avances</label>
-                                                    <input type="number" class="form-control" id="horasAvances" placeholder="0" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <!--Campo de Nro OT Implementación-->
-                                                <div class="form-group">
-                                                    <label for="NroOtImp">Nro OT Implementación</label>
-                                                    <input type="number" class="form-control" id="NroOtImp" placeholder="0" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <!-- Sección de descripción y tabs -->
+                        <!-- Sección de descripción y tabs -->
                                 <div class="row mt-4">
                                     <div class="col-md-8">
                                         <!-- Navegación por tabs -->
