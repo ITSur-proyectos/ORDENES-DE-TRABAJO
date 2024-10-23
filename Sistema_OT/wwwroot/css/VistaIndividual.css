@@ -9,16 +9,10 @@
     color: white; /* Texto blanco */
 }
 
-/* Estilo para los botones */
-.btn {
-    padding: 10px 20px; /* Ajustar el padding de los botones */
-    border-radius: 5px; /* Bordes redondeados */
-}
-s
-.btn-primary {
+.boton {
     
     background-color: #e86000 ;
 }
-.btn-light:hover {
+.boton:hover {
     background-color: #ff6a00; /* Color al pasar el ratón */
 }
