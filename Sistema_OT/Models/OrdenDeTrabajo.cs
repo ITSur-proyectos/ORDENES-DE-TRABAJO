@@ -1,4 +1,5 @@
 ﻿using Sistema_OT.Services;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 
@@ -34,7 +35,7 @@ namespace Sistema_OT.Models
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
-        public static List<OrdenDeTrabajo> ObtenerLista(string consulta)
+        public static List<OrdenDeTrabajo> ObtenerLista(string consulta, int numOTDesde, int numOTHasta)
         {
            
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
@@ -43,11 +44,14 @@ namespace Sistema_OT.Models
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
-                
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@P_NroOrdenTrabajoDesde", numOTDesde);
+                command.Parameters.AddWithValue("@P_NroOrdenTrabajoHasta", numOTHasta);
                 try
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
+                        
                         while (reader.Read())
                         {
                             OrdenDeTrabajo Orden = new OrdenDeTrabajo
@@ -55,25 +59,25 @@ namespace Sistema_OT.Models
 
                                 //Le asigno a cada variable de la clase orden de trabajo su valor respectivo desde la base de datos, segun la consulta de arriba
                                 NroOrdenTrabajo = reader.IsDBNull(reader.GetOrdinal("NroOrdenTrabajo")) ? 0 : reader.GetDecimal(reader.GetOrdinal("NroOrdenTrabajo")),
-                                Cliente = reader.IsDBNull(reader.GetOrdinal("Cliente")) ? 0 : reader.GetInt32(reader.GetOrdinal("Cliente")),
-                                Sistema = reader.IsDBNull(reader.GetOrdinal("Sistema")) ? 0 : reader.GetInt32(reader.GetOrdinal("Sistema")),
-                                Modulo = reader.IsDBNull(reader.GetOrdinal("Modulo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Modulo")),
+                                //Cliente = reader.IsDBNull(reader.GetOrdinal("Cliente")) ? 0 : reader.GetInt32(reader.GetOrdinal("Cliente")),
+                                //Sistema = reader.IsDBNull(reader.GetOrdinal("Sistema")) ? 0 : reader.GetInt32(reader.GetOrdinal("Sistema")),
+                                //Modulo = reader.IsDBNull(reader.GetOrdinal("Modulo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Modulo")),
                                 Asunto = reader.IsDBNull(reader.GetOrdinal("Asunto")) ? string.Empty : reader.GetString(reader.GetOrdinal("Asunto")),
-                                FechaSolicitud = reader.IsDBNull(reader.GetOrdinal("FechaSolicitud")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("FechaSolicitud")),
-                                FechaFinalizacion = reader.IsDBNull(reader.GetOrdinal("FechaFinalizacion")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("FechaFinalizacion")),
-                                CantidadHorasEstimadas = reader.IsDBNull(reader.GetOrdinal("CantidadHorasEstimadas")) ? 0 : reader.GetInt32(reader.GetOrdinal("CantidadHorasEstimadas")),
-                                CantidadHorasConsumidas = reader.IsDBNull(reader.GetOrdinal("CantidadHorasConsumidas")) ? 0 : reader.GetInt32(reader.GetOrdinal("CantidadHorasConsumidas")),
-                                Estado = reader.IsDBNull(reader.GetOrdinal("Estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("Estado")),
-                                PorcentajeAvance = reader.IsDBNull(reader.GetOrdinal("PorcentajeAvance")) ? 0 : reader.GetInt32(reader.GetOrdinal("PorcentajeAvance")),
-                                UsuarioSolicitante = reader.IsDBNull(reader.GetOrdinal("UsuarioSolicitante")) ? 0 : reader.GetInt32(reader.GetOrdinal("UsuarioSolicitante")),
-                                UsuarioResponsable = reader.IsDBNull(reader.GetOrdinal("UsuarioResponsable")) ? 0 : reader.GetInt32(reader.GetOrdinal("UsuarioResponsable")),
-                                Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion")),
-                                Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? string.Empty : reader.GetString(reader.GetOrdinal("Observaciones")),
-                                Prioridad = reader.IsDBNull(reader.GetOrdinal("Prioridad")) ? 0 : reader.GetInt32(reader.GetOrdinal("Prioridad")),
-                                FormulariosModificados = reader.IsDBNull(reader.GetOrdinal("FormulariosModificados")) ? string.Empty : reader.GetString(reader.GetOrdinal("FormulariosModificados")),
-                                ModificacionesBaseDatos = reader.IsDBNull(reader.GetOrdinal("ModificacionesBaseDatos")) ? string.Empty : reader.GetString(reader.GetOrdinal("ModificacionesBaseDatos")),
-                                UserIDSolicitante = reader.IsDBNull(reader.GetOrdinal("UserIDSolicitante")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDSolicitante")),
-                                UserIDResponsable = reader.IsDBNull(reader.GetOrdinal("UserIDResponsable")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDResponsable"))
+                                //FechaSolicitud = reader.IsDBNull(reader.GetOrdinal("FechaSolicitud")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("FechaSolicitud")),
+                                //FechaFinalizacion = reader.IsDBNull(reader.GetOrdinal("FechaFinalizacion")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("FechaFinalizacion")),
+                                //CantidadHorasEstimadas = reader.IsDBNull(reader.GetOrdinal("CantidadHorasEstimadas")) ? 0 : reader.GetInt32(reader.GetOrdinal("CantidadHorasEstimadas")),
+                                //CantidadHorasConsumidas = reader.IsDBNull(reader.GetOrdinal("CantidadHorasConsumidas")) ? 0 : reader.GetInt32(reader.GetOrdinal("CantidadHorasConsumidas")),
+                                //Estado = reader.IsDBNull(reader.GetOrdinal("Estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("Estado")),
+                                //PorcentajeAvance = reader.IsDBNull(reader.GetOrdinal("PorcentajeAvance")) ? 0 : reader.GetInt32(reader.GetOrdinal("PorcentajeAvance")),
+                                //UsuarioSolicitante = reader.IsDBNull(reader.GetOrdinal("UsuarioSolicitante")) ? 0 : reader.GetInt32(reader.GetOrdinal("UsuarioSolicitante")),
+                                //UsuarioResponsable = reader.IsDBNull(reader.GetOrdinal("UsuarioResponsable")) ? 0 : reader.GetInt32(reader.GetOrdinal("UsuarioResponsable")),
+                                //Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion")),
+                                //Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? string.Empty : reader.GetString(reader.GetOrdinal("Observaciones")),
+                                //Prioridad = reader.IsDBNull(reader.GetOrdinal("Prioridad")) ? 0 : reader.GetInt32(reader.GetOrdinal("Prioridad")),
+                                //FormulariosModificados = reader.IsDBNull(reader.GetOrdinal("FormulariosModificados")) ? string.Empty : reader.GetString(reader.GetOrdinal("FormulariosModificados")),
+                                //ModificacionesBaseDatos = reader.IsDBNull(reader.GetOrdinal("ModificacionesBaseDatos")) ? string.Empty : reader.GetString(reader.GetOrdinal("ModificacionesBaseDatos")),
+                                //UserIDSolicitante = reader.IsDBNull(reader.GetOrdinal("UserIDSolicitante")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDSolicitante")),
+                                //UserIDResponsable = reader.IsDBNull(reader.GetOrdinal("UserIDResponsable")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDResponsable"))
                             
                         };
                             //Se agrega a la lista de OTs en caso de que hay mas de una (Para la pestaña de busqueda de multiples OTs)

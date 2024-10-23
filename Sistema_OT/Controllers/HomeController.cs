@@ -18,22 +18,25 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Index(string nroOt)
+        public IActionResult Index(string nroOTD, string nroOTH)
         {
-            if (string.IsNullOrWhiteSpace(nroOt))
+            if ((string.IsNullOrWhiteSpace(nroOTD)) || (string.IsNullOrWhiteSpace(nroOTH)))
             {
                 Console.WriteLine("Debes rellenar el formulario");
             }
             else
             {
-                Console.WriteLine($"{nroOt}");
-                string consulta = "select * from Ordenes_Trabajo where NroOrdenTrabajo = " + nroOt;
-                List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta);
-                if (ordenes.Count > 0)
+                if ((int.TryParse(nroOTD, out int nroOTDesde)) && (int.TryParse(nroOTH, out int nroOTHasta)))
                 {
-                    ViewData["Orden"] = ordenes.First();
+                    string consulta = "sp_Ordenes_Trabajo";
+
+                    List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, nroOTDesde, nroOTHasta);
+                    if (ordenes.Count > 0)
+                    {
+                        ViewData["Orden"] = ordenes;
+                    }
                 }
-                
+
             }
             return View();
         }

@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    var OrdenTrabajo = ViewData["Orden"] as OrdenDeTrabajo;
+    var OrdenesTrabajo = ViewData["Orden"] as List<OrdenDeTrabajo>;
 }
 
 <div class="text-center">
@@ -10,7 +10,8 @@
     <form action="@Url.Action("Index", "Home")" method="post">
         <div class="mb-3">
             <label for="NumOt" class="form-label">Nro OT:</label>
-            <input type="text" name="nroOt" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
+            <input type="number" name="nroOTD" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
+            <input type="number" name="nroOTH" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -19,16 +20,24 @@
         <div class="mb-3">
             <label for="Asunto" class="form-label">Asunto:</label>
             <!-- El value del input se rellena con el valor de Asunto si existe -->
-            <input type="text" name="Asunto" class="form-control" id="Asunto" value="@OrdenTrabajo?.Asunto">
+            <input type="text" name="Asunto" class="form-control" id="Asunto" value="@OrdenesTrabajo?.First().Asunto.Trim()">
         </div>
         <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
     </form>
-    @if (OrdenTrabajo != null)
+    @if (OrdenesTrabajo != null && OrdenesTrabajo.Any())
     {
-        
-          @OrdenTrabajo.Asunto
-      
+        <h2>Lista de Órdenes de Trabajo</h2>
+        <ul>
+            @foreach (var orden in OrdenesTrabajo)
+            {
+                <li>
+                    <strong>Número OT:</strong> @orden.NroOrdenTrabajo <br />
+                    <strong>Asunto:</strong> @orden.Asunto
+                </li>
+            }
+        </ul>
     }
+
     
 
 </div>
