@@ -28,3 +28,12 @@
 .btn-primary {
     background-color: #28a745; /* Botón de agregar en color verde */
 }
+.btn-light {
+    color: #000;
+    background-color: #f8f9fa; /* Color de fondo claro */
+    margin-right: 5px; /* Espaciado entre botones */
+}
+
+    .btn-light:hover {
+        background-color: #e2e6ea; /* Color al pasar el ratón */
+    }
