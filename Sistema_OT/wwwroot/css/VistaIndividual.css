@@ -15,19 +15,17 @@
     border-radius: 5px; /* Bordes redondeados */
 }
 
-/* Botón de imprimir en color naranja */
 .btn-warning {
-    background-color: #ff6a00;
+    background-color: #007BFF;
 }
 
-/* Botón de documentación en color azul */
+
 .btn-info {
     background-color: #007BFF;
 }
 
-/* Botón de agregar en color verde */
 .btn-primary {
-    background-color: #28a745;
+    background-color: #007BFF;
 }
 
 
