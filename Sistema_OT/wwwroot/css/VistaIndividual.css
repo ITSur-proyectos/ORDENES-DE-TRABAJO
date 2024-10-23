@@ -14,16 +14,7 @@
     padding: 10px 20px; /* Ajustar el padding de los botones */
     border-radius: 5px; /* Bordes redondeados */
 }
-
-.btn-warning {
-    background-color: #007BFF !important;
-}
-
-
-.btn-info {
-    background-color: #007BFF !important;
-}
-
+s
 .btn-primary {
     background-color: #007BFF;
 }
