@@ -6,10 +6,10 @@
 }
 
 /* Estilo para la cabecera del formulario */
-.card-header {
-    background-color: #17a2b8; /* Color de fondo azul claro */
-    color: white; /* Texto blanco */
-}
+/*.card-header {
+    background-color: #17a2b8;*/ /* Color de fondo azul claro */
+    /*color: white;*/ /* Texto blanco */
+/*}*/
 
 /* Estilo para los botones */
 .btn {
