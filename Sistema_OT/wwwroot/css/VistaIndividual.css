@@ -1,15 +1,13 @@
-﻿
-
-/* Estilo para los tabs */
+﻿/* Estilo para los tabs */
 .nav-tabs .nav-link {
-    border-radius: 0; /* sin bordes redondeados */
+    border-radius: 0; /* Sin bordes redondeados */
 }
 
 /* Estilo para la cabecera del formulario */
-/*.card-header {
-    background-color: #17a2b8;*/ /* Color de fondo azul claro */
-    /*color: white;*/ /* Texto blanco */
-/*}*/
+.card-header {
+    background-color: #17a2b8; /* Color de fondo azul claro */
+    color: white; /* Texto blanco */
+}
 
 /* Estilo para los botones */
 .btn {
@@ -17,20 +15,35 @@
     border-radius: 5px; /* Bordes redondeados */
 }
 
+/* Botón de imprimir en color naranja */
 .btn-warning {
-    background-color: #FF9800; /* Botón de imprimir en color naranja */
+    background-color: #ff6a00;
 }
 
+/* Botón de documentación en color azul */
 .btn-info {
-    background-color: #007BFF; /* Botón de documentación en color azul */
+    background-color: #007BFF;
 }
 
+/* Botón de agregar en color verde */
 .btn-primary {
-    background-color: #28a745; /* Botón de agregar en color verde */
+    background-color: #28a745;
 }
+
+/* Botón secundario en color naranja */
+.btn-secondary {
+    background-color: #ff6a00;
+}
+
+/* Botón de éxito en color azul claro */
+.btn-success {
+    background-color: #17a2b8;
+}
+
+/* Botón claro con color de fondo claro */
 .btn-light {
     color: #000;
-    background-color: #f8f9fa; /* Color de fondo claro */
+    background-color: #f8f9fa;
     margin-right: 5px; /* Espaciado entre botones */
 }
 
