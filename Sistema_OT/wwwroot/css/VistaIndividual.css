@@ -17,17 +17,8 @@
 s
 .btn-primary {
     
-    background-color: #ff6a00;
+    background-color: #e86000 ;
 }
-
-
-/* Botón claro con color de fondo claro */
-.btn-light {
-    color: #000;
-    background-color: #f8f9fa;
-    margin-right: 5px; /* Espaciado entre botones */
+.btn-light:hover {
+    background-color: #ff6a00; /* Color al pasar el ratón */
 }
-
-    .btn-light:hover {
-        background-color: #e2e6ea; /* Color al pasar el ratón */
-    }
