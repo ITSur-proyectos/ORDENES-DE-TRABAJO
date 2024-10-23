@@ -3,11 +3,11 @@
 }
 
 <!-- Contenedor principal para el formulario Individual-->
-<div class="container mt-3" >
+<div class="container mt-3">
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <!-- Tarjeta con el formulario -->
-            @* <div class="card shadow-sm"> *@ 
+            <div class="card shadow-sm"> 
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">Individual </h5>
                 </div>
@@ -196,73 +196,64 @@
                         </div>
 
 
-                        <!-- Sección de  tabs -->
-                        <div class="row mt-4">
-                            <div class="col-md-8">
-                                <!-- Contenedor para los tabs -->
-                                <div class="container">
-                                    <!-- Navegación por tabs -->
-                                    <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Contenido de los tabs -->
-                                    <div class="tab-content">
-                                        <div id="descripcion" class="tab-pane fade show active">
-                                            <p>Descripción...</p>
-                                        </div>
-                                        <div id="avanceTrabajo" class="tab-pane fade">
-                                            <p>Contenido de avances del trabajo...</p>
-                                        </div>
-                                        <div id="tiempos" class="tab-pane fade">
-                                            <p>Contenido de tiempos...</p>
-                                        </div>
-                                        <div id="testing" class="tab-pane fade">
-                                            <p>Contenido de información de testing...</p>
-                                        </div>
-                                        <div id="produccion" class="tab-pane fade">
-                                            <p>Contenido de puesta en producción...</p>
-                                        </div>
-                                        <div id="archivoAdjunto" class="tab-pane fade">
-                                            <p>Contenido de archivo adjunto...</p>
-                                        </div>
-                                        <div id="historialEstados" class="tab-pane fade">
-                                            <p>Contenido del historial de estados...</p>
+                        <!-- Sección de descripción y tabs -->
+                                <div class="row mt-4">
+                                    <div class="col-md-8">
+                                        <!-- Contenedor para los tabs -->
+                                        <div class="container">
+                                            <!-- Navegación por tabs -->
+                                            <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
+                                                </li>
+                                            </ul>
+                                            <!-- Contenido de los tabs -->
+                                            <div class="tab-content">
+                                                <div id="descripcion" class="tab-pane fade show active">
+                                                    <p>Descripción...</p>
+                                                </div>
+                                                <div id="avanceTrabajo" class="tab-pane fade">
+                                                    <p>Contenido de avances del trabajo...</p>
+                                                </div>
+                                                <div id="tiempos" class="tab-pane fade">
+                                                    <p>Contenido de tiempos...</p>
+                                                </div>
+                                                <div id="testing" class="tab-pane fade">
+                                                    <p>Contenido de información de testing...</p>
+                                                </div>
+                                                <div id="produccion" class="tab-pane fade">
+                                                    <p>Contenido de puesta en producción...</p>
+                                                </div>
+                                                <div id="archivoAdjunto" class="tab-pane fade">
+                                                    <p>Contenido de archivo adjunto...</p>
+                                                </div>
+                                                <div id="historialEstados" class="tab-pane fade">
+                                                    <p>Contenido del historial de estados...</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div> <!-- Fin del contenedor -->
-                                <!-- Sección para los botones de edición -->
-                                <div class="mt-3" style="border-top: 1px solid #dee2e6; padding-top: 10px;">
-                                    <button class="btn btn-light" style="border: none;">Centrar</button>
-                                    <button class="btn btn-light" style="border: none;">Izquierda</button>
-                                    <button class="btn btn-light" style="border: none;">Derecha</button>
-                                    <button class="btn btn-light" style="border: none;">Negrita</button>
-                                    <button class="btn btn-light" style="border: none;">Cursiva</button>
-                                    <button class="btn btn-light" style="border: none;">Subrayado</button>
-                                    
                                 </div>
-
                                 <!-- Botones de acciones -->
-                                <div class="row mt-3">
+                                <div class="row mt-4">
                                     <div class="col-md-12 d-flex justify-content-between">
                                          <button class="btn btn-warning">Imprimir</button>
                                         <button class="btn btn-info">Ver Documentación Digital</button>
@@ -275,7 +266,7 @@
                                 </div>
                     </form>
                 </div>
-            @* </div>  *@
+            </div> 
         </div>
     </div>
 </div>
