@@ -16,12 +16,12 @@
 }
 
 .btn-warning {
-    background-color: #007BFF;
+    background-color: #007BFF !important;
 }
 
 
 .btn-info {
-    background-color: #007BFF;
+    background-color: #007BFF !important;
 }
 
 .btn-primary {
