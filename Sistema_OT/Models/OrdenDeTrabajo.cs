@@ -35,7 +35,7 @@ namespace Sistema_OT.Models
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
-        public static List<OrdenDeTrabajo> ObtenerLista(string consulta, int numOTDesde, int numOTHasta)
+        public static List<OrdenDeTrabajo> ObtenerLista(string consulta, Dictionary<string, int> parametrosSP)
         {
            
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
@@ -45,8 +45,12 @@ namespace Sistema_OT.Models
 
             {
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@P_NroOrdenTrabajoDesde", numOTDesde);
-                command.Parameters.AddWithValue("@P_NroOrdenTrabajoHasta", numOTHasta);
+                foreach (var a in parametrosSP)
+                {
+                    command.Parameters.AddWithValue(a.Key, a.Value);
+                }
+                //command.Parameters.AddWithValue("@P_NroOrdenTrabajoDesde", numOTDesde);
+                //command.Parameters.AddWithValue("@P_NroOrdenTrabajoHasta", numOTHasta);
                 try
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
