@@ -1,30 +1,30 @@
 ﻿/* Estilo para los tabs */
-.nav-tabs .nav-link {
-    border-radius: 0; /* Sin bordes redondeados */
-}
+/*.nav-tabs .nav-link {
+    border-radius: 0;*/ /* Sin bordes redondeados */
+/*}*/
 
 /* Estilo para la cabecera del formulario */
-.card-header {
-    background-color: #17a2b8; /* Color de fondo azul claro */
-    color: white; /* Texto blanco */
-}
+/*.card-header {
+    background-color: #17a2b8;*/ /* Color de fondo azul claro */
+    /*color: white;*/ /* Texto blanco */
+/*}*/
 
 /* Estilo general para los botones */
-.boton {
+/*.boton {
     background-color: #ff6a00;
-}
+}*/
 
     /* Hover para los botones */
-    .boton:hover {
+    /*.boton:hover {
         background-color: rgb(174, 43, 0);
-    }
+    }*/
 
 /* Estilo diferente para el botón de cancelar */
-.boton-cancelar {
+/*.boton-cancelar {
     background-color: rgb(230, 0, 0);
-}
+}*/
 
     /* Hover para el botón de cancelar */
-    .boton-cancelar:hover {
+    /*.boton-cancelar:hover {
         background-color: rgb(143, 0, 0);
-    }
+    }*/
