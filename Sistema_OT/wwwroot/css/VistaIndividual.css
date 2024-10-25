@@ -1,6 +1,6 @@
 ﻿/* Estilo para los tabs */
 .nav-tabs .nav-link {
-    border-radius: 0;  Sin bordes redondeados 
+    border-radius: 0; /* Sin bordes redondeados*/ 
 }
 
 /* Estilo para la cabecera del formulario */
@@ -12,6 +12,7 @@
 /* Estilo general para los botones */
 .boton {
     background-color: #ff6a00;
+    color: #ffffff;
 }
 
 /*     Hover para los botones */
@@ -22,6 +23,7 @@
 /* Estilo diferente para el botón de cancelar */
 .boton-cancelar {
     background-color: rgb(230, 0, 0);
+    color: #ffffff;
 }
 
 /*     Hover para el botón de cancelar */
@@ -61,7 +63,7 @@
     margin-right: 15px !important;
     padding: 5px !important;
     font-size: 14px !important;
-    border: none !important;
+    border-radius: 5px !important;
     background: none !important;
     color: #666 !important;
     cursor: pointer !important;
