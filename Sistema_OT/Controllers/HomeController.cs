@@ -28,10 +28,10 @@ namespace Sistema_OT.Controllers
             {
                 if ((int.TryParse(nroOTD, out int nroOTDesde)) && (int.TryParse(nroOTH, out int nroOTHasta)))
                 {
-                    string consulta = "sp_Ordenes_Trabajo";
+                    string consulta = "Ort_sp_OrdenesTrabajo_Listar2";
                     Dictionary<string, int> parametros = new Dictionary<string, int>();
-                    parametros["@P_NroOrdenTrabajoDesde"] = nroOTDesde;
-                    parametros["@P_NroOrdenTrabajoHasta"] = nroOTHasta;
+                    parametros["@P_Cliente"] = nroOTDesde;
+                    //parametros["@P_NroOrdenTrabajoHasta"] = nroOTHasta;
 
                     List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
                     if (ordenes.Count > 0)
