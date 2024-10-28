@@ -11,13 +11,13 @@
 
 /* Estilo general para los botones */
 .boton {
-    background-color: #ff6a00;
+    background-color: #1778b8;
     color: #ffffff;
 }
 
 /*     Hover para los botones */
     .boton:hover {
-        background-color: rgb(174, 43, 0);
+        background-color: #175fb8;
     }
 
 /* Estilo diferente para el botón de cancelar */
@@ -28,7 +28,7 @@
 
 /*     Hover para el botón de cancelar */
     .boton-cancelar:hover {
-        background-color: rgb(143, 0, 0);
+        background-color: rgb(170, 32, 32);
     }
 
 /* Estilos generales para la barra de herramientas */
