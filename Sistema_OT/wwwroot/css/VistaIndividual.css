@@ -14,31 +14,37 @@
     margin-bottom: 10px;
 }
 
-/* Alinear botones al mismo tamaño de inputs */
-.btn {
-    width: 100%;
-    margin: 0;
-    font-size: 12px;
-}
-
-.boton-bsqueda {
+.boton-busqueda {
     background-color: #ff6a00;
     color: #ffffff;
     width: 100%;
 }
+    .boton-busqueda:hover {
+        background-color: #ff9800;
+    }
 
-/* Ajustes de márgenes para alinear inputs y botones */
+/* Estilo general para los botones */
 .boton {
     background-color: #ff6a00;
     color: #ffffff;
-    
 }
 
+/*     Hover para los botones */
+    .boton:hover {
+        background-color: #ff9800;
+    }
+
+/* Estilo diferente para el botón de cancelar */
 .boton-cancelar {
     background-color: rgb(230, 0, 0);
     color: #ffffff;
     
 }
+
+/*     Hover para el botón de cancelar */
+    .boton-cancelar:hover {
+        background-color: rgb(170, 32, 32);
+    }
 
 /* Estilos generales para la barra de herramientas */
 .toolbar {
