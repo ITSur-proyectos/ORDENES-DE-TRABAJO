@@ -48,6 +48,11 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
+        public IActionResult VistaIndividual()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
