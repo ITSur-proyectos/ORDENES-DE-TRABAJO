@@ -16,6 +16,11 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
+
+        public IActionResult Vistas()
+        {
+            return View();
+        }
         [HttpGet]
         public IActionResult PruebaBD()
         {
@@ -57,6 +62,7 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

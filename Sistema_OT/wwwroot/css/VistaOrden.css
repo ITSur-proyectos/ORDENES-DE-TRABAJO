@@ -1,0 +1,74 @@
+﻿.boton {
+    background-color: #ff6a00 !important;
+    color: #ffffff !important;
+}
+        .boton: hover {
+    background-color: rgb(174, 43, 0) !important;
+}
+
+.container-centered {
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    margin: 10px;
+}
+
+.nav-tabs {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border-bottom: 2px solid #ddd;
+}
+
+    .nav-tabs li {
+        margin: 0;
+        padding: 0;
+    }
+
+.tab-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+    border-radius: 8px 8px 0 0;
+    outline: none;
+}
+
+    .tab-btn:hover {
+        background-color: #e2e6ea;
+    }
+
+    .tab-btn.active {
+        background-color: white;
+        border-bottom: 2px solid white;
+        font-weight: bold;
+    }
+
+.boton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 0;
+    font-size: 9px;
+    border-radius: 4px;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+    .boton:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+.card-title {
+    margin-bottom: 8px; /* Ajuste para reducir espacio */
+}
+
+.card-body {
+    gap: 8px; /* Menor espaciado entre elementos */
+}
