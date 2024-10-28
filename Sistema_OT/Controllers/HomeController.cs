@@ -12,13 +12,17 @@ namespace Sistema_OT.Controllers
         {
             _logger = logger;
         }
-        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult PruebaBD()
+        {
+            return View();
+        }
         [HttpPost]
-        public IActionResult Index(string nroOTD, string nroOTH)
+        public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {
             if ((string.IsNullOrWhiteSpace(nroOTD)) || (string.IsNullOrWhiteSpace(nroOTH)))
             {

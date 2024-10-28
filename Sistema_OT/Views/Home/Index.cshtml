@@ -1,43 +1,50 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-    var OrdenesTrabajo = ViewData["Orden"] as List<OrdenDeTrabajo>;
+﻿
+@{
+    ViewData["Title"] = "Gestión de Órdenes";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
-    <form action="@Url.Action("Index", "Home")" method="post">
-        <div class="mb-3">
-            <label for="NumOt" class="form-label">Nro OT:</label>
-            <input type="number" name="nroOTD" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
-            <input type="number" name="nroOTH" class="form-control" id="NumOt" aria-describedby="emailHelp" placeholder="1235">
+<div class="container mt-4">
+    <div class="border rounded p-3 mb-4">
+        <div class="d-flex align-items-center">
+            <div class="w-50 text-center">
+                <button class="btn btn-outline-secondary w-75" style="pointer-events: none; color: inherit;">
+                    Individual
+                </button>
+            </div>
+            <div class="border-end" style="height: 40px;"></div>
+            <div class="w-50 text-center">
+                <button class="btn btn-outline-secondary w-75 shadow-sm"
+                        style="transform: translateY(-5px); pointer-events: none; color: inherit;">
+                    Órdenes de Trabajo
+                </button>
+            </div>
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Recúerdame</label>
-        </div>
-        <div class="mb-3">
-            <label for="Asunto" class="form-label">Asunto:</label>
-            <!-- El value del input se rellena con el valor de Asunto si existe -->
-            <input type="text" name="Asunto" class="form-control" id="Asunto" value="@OrdenesTrabajo?.First().Asunto.Trim()">
-        </div>
-        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-    </form>
-    @if (OrdenesTrabajo != null && OrdenesTrabajo.Any())
-    {
-        <h2>Lista de Órdenes de Trabajo</h2>
-        <ul>
-            @foreach (var orden in OrdenesTrabajo)
-            {
-                <li>
-                    <strong>Número OT:</strong> @orden.NroOrdenTrabajo <br />
-                    <strong>Asunto:</strong> @orden.Asunto
-                </li>
-            }
-        </ul>
-    }
+    </div>
 
-    
 
+    <div class="border rounded p-3">
+        <div class="d-flex align-items-center">
+            <div class="text-center p-2">
+                <span class="fw-bold" style="color: inherit;">Cliente / Sistema</span>
+            </div>
+            <div class="mx-2 border-end" style="height: 40px;"></div>
+            <div class="text-center p-2">
+                <span>Fecha Solicitud</span>
+            </div>
+
+            <div class="mx-2 border-end" style="height: 40px;"></div>
+            <div class="text-center p-2">
+                <span>Vencimiento</span>
+            </div>
+            <div class="mx-2 border-end" style="height: 40px;"></div>
+            <div class="text-center p-2">
+                <span>Orden</span>
+            </div>
+            <div class="mx-2 border-end" style="height: 40px;"></div>
+            <div class="text-center p-2">
+                <span>Cambio de Estado</span>
+            </div>
+        </div>
+    </div>
 </div>
+
