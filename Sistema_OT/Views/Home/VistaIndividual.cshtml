@@ -16,24 +16,25 @@
                 <div class="card-body">
                     <!-- Inicio del formulario-->
                     <form method="post" action="/Individual/SubmitForm">
+
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
                             <!-- Campo de Orden -->
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="text" class="form-control" id="orden" placeholder="Ingrese el número" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" />
                                 </div>
                             </div>
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="dependencia">Depende de</label>
-                                    <input type="text" class="form-control" id="dependencia" placeholder="Depende de..." />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de..." />
                                 </div>
                             </div>
                             <!-- Botón de búsqueda -->
-                            <div style="font-size: 18px" class="col-md-1 d-flex align-items-end ">
+                            <div style="font-size: 8px" class="col-md-1 d-flex align-items-end ">
 
                                 <label>@* &nbsp; *@</label>
                                 <button type="button" class="btn boton">Buscar</button>
@@ -43,21 +44,21 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control" id="fechaSolicitud" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" />
                                 </div>
                             </div>
                             <!-- Campo de Fecha de Vencimiento -->
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control" id="fechaVencimiento" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" />
                                 </div>
                             </div>
                             <!-- Campo de Estado del Trabajo -->
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
-                                    <select class="form-control" id="estadoTrabajo">
+                                    <select class="form-control" style="font-size:12px;" id="estadoTrabajo">
                                         <option>Pendiente</option>
                                         <option>Entregado</option>
                                         <option>En desarrollo</option>
@@ -86,28 +87,28 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <input type="text" class="form-control" id="cliente" placeholder="Ingrese cliente" />
+                                    <input type="text" class="form-control" style="font-size:12px;"  id="cliente" placeholder="Ingrese cliente" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <input type="text" class="form-control" id="sistema" placeholder="Ingrese sistema" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="sistema" placeholder="Ingrese sistema" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
-                                    <input type="text" class="form-control" id="proyecto" placeholder="Ingrese proyecto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="proyecto"></label>
-                                    <input type="text" class="form-control" id="proyecto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" />
                                 </div>
                             </div>
-                            <div style="font-size: 18px" class="col-md-1 d-flex align-items-end">
+                            <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
                                 
                                     <label>@* &nbsp; *@</label>
                                     <button type="button" class="btn boton">Buscar</button>
@@ -120,23 +121,25 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="usuarioResponsable">Usuario Responsable</label>
-                                    <select class="form-control" id="usuarioResponsable">
+                                    <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
                                         <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="usuarioSolicitante">Usuario Solicitante</label>
-                                    <select class="form-control" id="usuarioSolicitante">
+                                    <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
                                         <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo / Pantalla</label>
-                                    <input type="text" class="form-control" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
                                 </div>
                             </div>
                         </div>
@@ -146,13 +149,13 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" id="asunto" placeholder="Ingrese el asunto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" />
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="solicitadoPor">Solicitado Por</label>
-                                    <input type="text" class="form-control" id="solicitadoPor" placeholder="Ingrese quien solicita" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="solicitadoPor" placeholder="Ingrese quien solicita" />
                                 </div>
                             </div>
                         </div>
@@ -163,36 +166,36 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="horasFacturables">Hs. Facturables</label>
-                                    <input type="number" class="form-control" id="horasFacturables" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance">% de Avance</label>
-                                    <input type="number" class="form-control" id="porcentajeAvance" placeholder="0" min="0" max="100" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas">Hs. Consumo</label> 
-                                    <input type="number" class="form-control" id="horasConsumidas" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances">Hs. Avances</label>
-                                    <input type="number" class="form-control" id="horasAvances" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="NroOtImp">Nro Implementación</label>
-                                    <input type="number" class="form-control" id="NroOtImp" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" />
                                 </div>
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-3; d-flex; align-items-center">
-                                    <div class="form-group">
+                                    <div class="form-group" style="font-size:12px;">
                                         @* <div class="form-check"> *@
                                         <input type="checkbox" class="form-check-input" id="premioAvance">
                                         <label class="form-check-label" for="premioAvance">Premio por Avance</label>
@@ -205,7 +208,7 @@
                                 </div>
                             </div>
                         </div>
-
+    
 
                         <!-- Sección de descripción y tabs -->
                         <div style="font-size: 12px" class="row mt-4">
@@ -264,7 +267,7 @@
                                             <p>Contenido de avances del trabajo...</p>
                                         </div>
                                         <div id="tiempos" class="tab-pane fade">
-                                            <p>Contenido de tiempos...</p>
+                                            <p>Contenido de tiempos...</p>    
                                         </div>
                                         <div id="testing" class="tab-pane fade">
                                             <p>Contenido de información de testing...</p>
