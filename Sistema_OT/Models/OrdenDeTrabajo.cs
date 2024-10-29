@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Reflection.PortableExecutable;
 
 namespace Sistema_OT.Models
 {
@@ -37,7 +38,7 @@ namespace Sistema_OT.Models
         public string UserIDResponsable { get; set; }
         public static List<OrdenDeTrabajo> ObtenerLista(string consulta, Dictionary<string, int> parametrosSP)
         {
-           
+
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
@@ -55,7 +56,7 @@ namespace Sistema_OT.Models
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        
+
                         while (reader.Read())
                         {
                             OrdenDeTrabajo Orden = new OrdenDeTrabajo
@@ -82,8 +83,8 @@ namespace Sistema_OT.Models
                                 //ModificacionesBaseDatos = reader.IsDBNull(reader.GetOrdinal("ModificacionesBaseDatos")) ? string.Empty : reader.GetString(reader.GetOrdinal("ModificacionesBaseDatos")),
                                 //UserIDSolicitante = reader.IsDBNull(reader.GetOrdinal("UserIDSolicitante")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDSolicitante")),
                                 //UserIDResponsable = reader.IsDBNull(reader.GetOrdinal("UserIDResponsable")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDResponsable"))
-                            
-                        };
+
+                            };
                             //Se agrega a la lista de OTs en caso de que hay mas de una (Para la pestaña de busqueda de multiples OTs)
                             OrdenesTrabajo.Add(Orden);
                         }
@@ -96,6 +97,37 @@ namespace Sistema_OT.Models
             }
             return OrdenesTrabajo;
         }
+        public static Dictionary<int, string> ConseguirNombres(string Tabla)
+        {
+            Dictionary<int, string> nombres = new Dictionary<int, string>();
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
+            string consulta = "Select Descripcion, " + Tabla +" From " + Tabla + "s";
+            using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(reader.GetOrdinal(Tabla));
+                            string nombre = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion"));
+                            nombres[id] = nombre;
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+            return nombres;
+        }
     }
+
+    
 
 }
