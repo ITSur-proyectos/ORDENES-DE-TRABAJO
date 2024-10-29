@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
 
 <!-- Contenedor principal para el formulario Individual-->
-<div class="container-fluid mt-3" style="width: 100%; max-width: 1600px; margin: 0 auto;">
+<div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
         <div class="col-12">
             <!-- Tarjeta con el formulario -->
@@ -34,9 +34,11 @@
                                 </div>
                             </div>
                             <!-- Botón de búsqueda -->
-                            <div class="col-md-1 d-flex align-items-end">
+                            <div style="font-size: 8px" class="col-md-1 d-flex align-items-end ">
+
                                 <label>@* &nbsp; *@</label>
                                 <button type="button" class="btn boton">Buscar</button>
+
                             </div>
                             <!-- Campo de Fecha de Solicitud -->
                             <div class="col-md-2">
@@ -85,7 +87,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="cliente" placeholder="Ingrese cliente" />
+                                    <input type="text" class="form-control" style="font-size:12px;"  id="cliente" placeholder="Ingrese cliente" />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -106,9 +108,11 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="proyecto" />
                                 </div>
                             </div>
-                            <div class="col-md-1 d-flex align-items-end">
-                                <label>@* &nbsp; *@</label>
-                                <button type="button" class="btn boton">Buscar</button>
+                            <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+                                
+                                    <label>@* &nbsp; *@</label>
+                                    <button type="button" class="btn boton">Buscar</button>
+                                
                             </div>
                         </div>
 
@@ -158,6 +162,7 @@
 
                         <!-- Quinta fila con Horas Facturables, % de Avance, Horas Consumidas, Horas Avances, Nro Implementación y Checkboxes -->
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="horasFacturables">Hs. Facturables</label>
@@ -172,7 +177,7 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="horasConsumidas">Hs. Consumo</label>
+                                    <label for="horasConsumidas">Hs. Consumo</label> 
                                     <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
                                 </div>
                             </div>
@@ -184,52 +189,121 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="nroImplementacion">Nro Implementación</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="nroImplementacion" placeholder="0" />
+                                    <label for="NroOtImp">Nro Implementación</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" />
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <div class="form-group">
-                                    <label for="facturable">Facturable</label>
-                                    <input type="checkbox" id="facturable" />
-                                </div>
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <div class="form-group">
-                                    <label for="tareaRealizada">Tarea Realizada</label>
-                                    <input type="checkbox" id="tareaRealizada" />
+                            <div class="row mt-5">
+                                <div class="col-md-3; d-flex; align-items-center">
+                                    <div class="form-group" style="font-size:12px;">
+                                        @* <div class="form-check"> *@
+                                        <input type="checkbox" class="form-check-input" id="premioAvance">
+                                        <label class="form-check-label" for="premioAvance">Premio por Avance</label>
+                                        @*  </div> *@
+                                        @* <div class="form-check"> *@
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
+                                        <label class="form-check-label" for="alcanceIndefinido">Alcance Indefinido</label>
+                                        @* </div> *@
+                                    </div>
                                 </div>
                             </div>
                         </div>
+    
 
-                        <!-- Barra de herramientas con botones -->
-                        <div class="toolbar mt-3 mb-3">
-                            <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                            <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                            <button class="toolbar-btn"><i class="fas fa-download"></i></button>
-                            <button class="toolbar-btn"><i class="fas fa-file-pdf"></i></button>
-                            <button class="toolbar-btn"><i class="fas fa-file-excel"></i></button>
-                            <button class="toolbar-btn"><i class="fas fa-file-word"></i></button>
+                        <!-- Sección de descripción y tabs -->
+                        <div style="font-size: 12px" class="row mt-4">
+                            <div class="col-12">
+                                <!-- Contenedor para los tabs -->
+                                <div class="container">
+                                    <!-- Navegación por tabs -->
+                                    <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Contenido de los tabs --> 
+                                    <div class="tab-content">
+                                        <div id="descripcion" class="tab-pane fade show active">
+                                            <!-- Barra de herramientas de formato de texto -->
+                                            <div class="toolbar">
+                                                <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
+                                                <select class="toolbar-select">
+                                                    <option value="sans-serif">Sans Serif</option>
+                                                    <option value="serif">Serif</option>
+                                                    <option value="monospace">Monospace</option>
+                                                </select>
+                                                <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
+                                            </div>
+
+                                            <textarea name="descripcion" rows="5" cols="211">Descripción...</textarea> @* <p>Descripción...</p> *@
+                                        </div>
+                                        <div id="avanceTrabajo" class="tab-pane fade">
+                                            <p>Contenido de avances del trabajo...</p>
+                                        </div>
+                                        <div id="tiempos" class="tab-pane fade">
+                                            <p>Contenido de tiempos...</p>    
+                                        </div>
+                                        <div id="testing" class="tab-pane fade">
+                                            <p>Contenido de información de testing...</p>
+                                        </div>
+                                        <div id="produccion" class="tab-pane fade">
+                                            <p>Contenido de puesta en producción...</p>
+                                        </div>
+                                        <div id="archivoAdjunto" class="tab-pane fade">
+                                            <p>Contenido de archivo adjunto...</p>
+                                        </div>
+                                        <div id="historialEstados" class="tab-pane fade">
+                                            <p>Contenido del historial de estados...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Fila de botones de acción -->
+                        <!-- Botones de acciones -->
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                <button class="btn boton">Imprimir</button>
+                                
+                                <button class="btn  boton " >Imprimir</button>
                                 <button class="btn boton">Ver Documentación Digital</button>
 
+                                <!-- Agrupación de otros botones -->
                                 <div class="grupo-botones">
                                     <button class="btn boton">Copiar Orden</button>
                                     <button class="btn boton">Enviar Orden</button>
                                     <button class="btn boton">Agregar</button>
                                     <button class="btn boton">Modificar</button>
                                     <button class="btn boton">Grabar</button>
-                                    <button class="btn boton-cancelar">Cancelar</button>
+                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
                                 </div>
                             </div>
                         </div>
-
-                    </form> <!-- Fin del formulario -->
+                    </form>
                 </div>
             </div>
         </div>

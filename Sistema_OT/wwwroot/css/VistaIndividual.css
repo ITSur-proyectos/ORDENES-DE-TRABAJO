@@ -1,16 +1,16 @@
 ﻿/* Estilo para los tabs */
-/*.nav-tabs .nav-link {
-    border-radius: 0;*/ /* Sin bordes redondeados*/ 
-/*}*/
+.nav-tabs .nav-link {
+    border-radius: 0; /* Sin bordes redondeados*/ 
+}
 
 /* Estilo para la cabecera del formulario */
-/*.card-header {
+.card-header {
     background-color: #17a2b8;  
     color: white;  
-}*/
+}
 
 /* Ajuste de márgenes y alineación */
-/*.row .form-group {
+.row .form-group {
     margin-bottom: 10px;
 }
 
@@ -21,33 +21,33 @@
 }
     .boton-busqueda:hover {
         background-color: #ff9800;
-    }*/
+    }
 
 /* Estilo general para los botones */
-/*.boton {
+.boton {
     background-color: #ff6a00;
     color: #ffffff;
-}*/
+}
 
 /*     Hover para los botones */
-    /*.boton:hover {
+    .boton:hover {
         background-color: #ff9800;
-    }*/
+    }
 
 /* Estilo diferente para el botón de cancelar */
-/*.boton-cancelar {
+.boton-cancelar {
     background-color: rgb(230, 0, 0);
     color: #ffffff;
     
-}*/
+}
 
 /*     Hover para el botón de cancelar */
-    /*.boton-cancelar:hover {
+    .boton-cancelar:hover {
         background-color: rgb(170, 32, 32);
-    }*/
+    }
 
 /* Estilos generales para la barra de herramientas */
-/*.toolbar {
+.toolbar {
     display: flex !important;
     align-items: center !important;
     padding: 8px !important;
@@ -55,10 +55,10 @@
     border-radius: 5px !important;
     margin-bottom: 15px !important;
 
-}*/
+}
 
 /* Estilos minimalistas para los botones */
-/*.toolbar-btn {
+.toolbar-btn {
     background: none !important;
     border: none !important;
     margin-right: 15px !important;
@@ -67,15 +67,15 @@
     padding: 5px !important;
     color: #666 !important;
     transition: color 0.3s ease !important;
-}*/
+}
 
     /* Cambiar color al hacer hover */
-    /*.toolbar-btn:hover {
+    .toolbar-btn:hover {
         color: #ff9800 !important;
-    }*/
+    }
 
 /* Estilos para el select */
-/*.toolbar-select {
+.toolbar-select {
     margin-right: 15px !important;
     padding: 5px !important;
     font-size: 14px !important;
@@ -83,38 +83,16 @@
     background: none !important;
     color: #666 !important;
     cursor: pointer !important;
-}*/
+}
 
 /* Estilo para los botones seleccionados */
-/*.toolbar-btn.active {
+.toolbar-btn.active {
     color: #ff9800 !important;
-}*/
+}
 
 /* Estilo para los iconos dentro de los botones */
-/*.toolbar-btn i {
-    pointer-events: none !important;*/ /* Para evitar que los íconos afecten los clics */
-/*}*/
-
-
-/* Ajuste de márgenes y alineación */
-.row .form-group {
-    margin-bottom: 12px;
+.toolbar-btn i {
+    pointer-events: none !important; /* Para evitar que los íconos afecten los clics */
 }
 
-.boton-busqueda {
-    margin-top: 5px;
-}
 
-.boton {
-    margin: 5px 0; /* Separación vertical para los botones generales */
-}
-
-.toolbar {
-    padding: 8px !important;
-    margin-bottom: 15px !important; /* Reducción del margen inferior */
-    border-radius: 4px;
-}
-
-.toolbar-btn {
-    margin-right: 10px !important;
-}
