@@ -96,3 +96,24 @@
 }
 
 
+/* Estilo personalizado para los select con flecha */
+.with-arrow {
+    position: relative;
+    padding-right: 30px; /* Espacio para la flecha */
+}
+
+    .with-arrow:focus {
+        border-color: #80bdff;
+        outline: none;
+    }
+
+    .with-arrow::after {
+        content: '\25BC'; /* Unicode para flecha hacia abajo */
+        position: absolute;
+        right: 10px; /* Espacio desde el borde derecho */
+        top: 50%; /* Centrar verticalmente */
+        transform: translateY(-50%); /* Ajustar para centrar */
+        pointer-events: none; /* Evitar que los clics en la flecha afecten el select */
+        font-size: 12px; /* Tamaño de la flecha */
+        color: #555; /* Color de la flecha */
+    }
