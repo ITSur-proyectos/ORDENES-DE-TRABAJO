@@ -87,13 +87,19 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <input type="text" class="form-control" style="font-size:12px;"  id="cliente" placeholder="Ingrese cliente" />
+                                    <select class="form-control" style="font-size:12px;" id="cliente">
+                                        <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="sistema" placeholder="Ingrese sistema" />
+                                    <select class="form-control" style="font-size:12px;" id="sistema">
+                                        <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -111,7 +117,7 @@
                             <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
                                 
                                     <label>@* &nbsp; *@</label>
-                                    <button type="button" class="btn boton">Buscar</button>
+                                    <button type="button" class="btn boton">🔍</button>
                                 
                             </div>
                         </div>
@@ -194,7 +200,7 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-md-3; d-flex; align-items-center">
+                                <div class="col-md-4; d-flex; align-items-center">
                                     <div class="form-group" style="font-size:12px;">
                                         @* <div class="form-check"> *@
                                         <input type="checkbox" class="form-check-input" id="premioAvance">
@@ -211,12 +217,12 @@
     
 
                         <!-- Sección de descripción y tabs -->
-                        <div style="font-size: 12px" class="row mt-4">
+                        <div style="font-size: 12px; " class="row mt-4 ">
                             <div class="col-12">
                                 <!-- Contenedor para los tabs -->
                                 <div class="container">
                                     <!-- Navegación por tabs -->
-                                    <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                    <ul class="nav nav-tabs justify-content-start mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
                                         </li>
