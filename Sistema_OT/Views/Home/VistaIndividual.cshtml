@@ -188,7 +188,16 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="solicitadoPor">Solicitado Por</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="solicitadoPor" placeholder="Ingrese quien solicita" />
+                                    <select class="form-control" style="font-size:12px;" id="Solicitante">
+                                        <!-- Opciones(se hace con la db) -->
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
                         </div>
