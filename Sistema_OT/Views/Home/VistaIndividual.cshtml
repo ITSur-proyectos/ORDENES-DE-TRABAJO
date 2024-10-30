@@ -1,11 +1,11 @@
-﻿@{
+@{
     ViewData["Title"] = "VistaIndividual";
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="~/css/VistaIndividual.css" />
+<link rel="stylesheet" href="~/css/VistaIndividual.css"/>
 
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
@@ -92,6 +92,9 @@
                                     <label for="cliente">Cliente</label>
                                     <select class="form-control" style="font-size:12px;" id="cliente">
                                         <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
                                         @if (nombresClientes != null)
                                         {
                                             foreach (var cliente in nombresClientes)
@@ -99,6 +102,7 @@
                                                 <option value="@cliente.Key">@cliente.Value</option>
                                             }
                                         }
+
                                     </select>
                                 </div>
                             </div>
@@ -107,6 +111,9 @@
                                     <label for="sistema">Sistema</label>
                                     <select class="form-control" style="font-size:12px;" id="sistema">
                                         <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
                                         @if (nombresSistemas != null)
                                         {
                                             foreach (var sistema in nombresSistemas)
@@ -114,6 +121,7 @@
                                                 <option value="@sistema.Key">@sistema.Value</option>
                                             }
                                         }
+
                                     </select>
                                 </div>
                             </div>
@@ -132,13 +140,13 @@
                             <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
                                 
                                     <label>@* &nbsp; *@</label>
-                                    <button type="button" class="btn boton">Buscar</button>
+                                    <button type="button" class="btn boton">🔍</button>
                                 
                             </div>
                         </div>
 
                         <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
-                        <div style="font-size: 12px" class="row mt-3">
+                        <div style=" font-size: 12px" class="row mt-3">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="usuarioResponsable">Usuario Responsable</label>
@@ -236,16 +244,15 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-md-3; d-flex; align-items-center">
+                                <div class="col-md-4; d-flex; align-items-center">
                                     <div class="form-group" style="font-size:12px;">
-                                        @* <div class="form-check"> *@
+                                        
                                         <input type="checkbox" class="form-check-input" id="premioAvance">
                                         <label class="form-check-label" for="premioAvance">Premio por Avance</label>
-                                        @*  </div> *@
-                                        @* <div class="form-check"> *@
+                                        
                                         <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
                                         <label class="form-check-label" for="alcanceIndefinido">Alcance Indefinido</label>
-                                        @* </div> *@
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -253,12 +260,12 @@
     
 
                         <!-- Sección de descripción y tabs -->
-                        <div style="font-size: 12px" class="row mt-4">
-                            <div class="col-12">
+                        <div style="padding-left:0px; font-size: 12px; padding-right:0px; " class="row mt-2 ">
+                            <div class="col-12" @* style="padding-left:0px;" *@>
                                 <!-- Contenedor para los tabs -->
-                                <div class="container">
+                                <div class="container" style="padding-left:0px; padding-right:0px;">
                                     <!-- Navegación por tabs -->
-                                    <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                    <ul class="nav nav-tabs justify-content-start mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
                                         </li>
@@ -302,8 +309,9 @@
                                                 <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
                                                 <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                             </div>
-
-                                            <textarea name="descripcion" rows="5" cols="211">Descripción...</textarea> @* <p>Descripción...</p> *@
+                                            
+                                            <textarea  name="descripcion" rows="5" cols="211">Descripción...</textarea> @* <p>Descripción...</p> *@
+                                            
                                         </div>
                                         <div id="avanceTrabajo" class="tab-pane fade">
                                             <p>Contenido de avances del trabajo...</p>

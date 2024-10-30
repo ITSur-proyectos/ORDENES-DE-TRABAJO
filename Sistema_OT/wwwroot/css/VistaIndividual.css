@@ -9,6 +9,20 @@
     color: white;  
 }
 
+/* Ajuste de márgenes y alineación */
+.row .form-group {
+    margin-bottom: 10px;
+}
+
+.boton-busqueda {
+    background-color: #ff6a00;
+    color: #ffffff;
+    width: 100%;
+}
+    .boton-busqueda:hover {
+        background-color: #ff9800;
+    }
+
 /* Estilo general para los botones */
 .boton {
     background-color: #ff6a00;
@@ -40,6 +54,7 @@
     background-color: #f9f9f9 !important;
     border-radius: 5px !important;
     margin-bottom: 15px !important;
+
 }
 
 /* Estilos minimalistas para los botones */
