@@ -1,5 +1,8 @@
 ﻿@{
     ViewData["Title"] = "VistaIndividual";
+    var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+    var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+    var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
@@ -87,13 +90,31 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <input type="text" class="form-control" style="font-size:12px;"  id="cliente" placeholder="Ingrese cliente" />
+                                    <select class="form-control" style="font-size:12px;" id="cliente">
+                                        <!-- Opciones(se hace con la db) -->
+                                        @if (nombresClientes != null)
+                                        {
+                                            foreach (var cliente in nombresClientes)
+                                            {
+                                                <option value="@cliente.Key">@cliente.Value</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="sistema" placeholder="Ingrese sistema" />
+                                    <select class="form-control" style="font-size:12px;" id="sistema">
+                                        <!-- Opciones(se hace con la db) -->
+                                        @if (nombresSistemas != null)
+                                        {
+                                            foreach (var sistema in nombresSistemas)
+                                            {
+                                                <option value="@sistema.Key">@sistema.Value</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -123,7 +144,13 @@
                                     <label for="usuarioResponsable">Usuario Responsable</label>
                                     <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
                                         <!-- Opciones(se hace con la db) -->
-                                        <option>...</option>
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -132,7 +159,13 @@
                                     <label for="usuarioSolicitante">Usuario Solicitante</label>
                                     <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
                                         <!-- Opciones(se hace con la db) -->
-                                        <option>...</option>
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
                                     </select>
                                 </div>
                             </div>
