@@ -16,8 +16,16 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public IActionResult Vistas()
+        {
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Vistas(int cliente, int sistema)
         {
             return View();
         }
