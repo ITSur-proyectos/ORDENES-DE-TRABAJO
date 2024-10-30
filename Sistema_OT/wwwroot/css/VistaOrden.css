@@ -72,3 +72,8 @@
 .card-body {
     gap: 8px; /* Menor espaciado entre elementos */
 }
+
+.container-centered {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
