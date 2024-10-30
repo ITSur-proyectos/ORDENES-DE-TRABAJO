@@ -1,5 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Gestión de Órdenes";
+    var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+    var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+    var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
 
@@ -30,18 +33,30 @@
                                     <div class="col-md-4" style="font-size: 13px">
                                             <div class="form-group" >
                                                 <label for="cliente">Cliente</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                                            <select class="form-control" style="font-size:12px;" id="Cliente">
 
-                                                <option>...</option>
+                                                @if (nombresClientes != null)
+                                                {
+                                                    foreach (var cliente in nombresClientes)
+                                                    {
+                                                        <option value="@cliente.Key">@cliente.Value</option>
+                                                    }
+                                                }
                                             </select>
                                             </div>
                                         </div>
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="sistema">Sistema</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                                            <select class="form-control" style="font-size:12px;" id="Sistema">
 
-                                                <option>...</option>
+                                                @if (nombresSistemas != null)
+                                                {
+                                                    foreach (var sistema in nombresSistemas)
+                                                    {
+                                                        <option value="@sistema.Key">@sistema.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -71,17 +86,42 @@
                                                 <label for="Responsable">Responsable</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
-                                                <option>...</option>
+                                                @if (nombresUsuarios != null)
+                                                {
+                                                    foreach (var usuario in nombresUsuarios)
+                                                    {
+                                                        <option value="@usuario.Key">@usuario.Value</option>
+                                                    }
+                                                }
                                             </select>
                                             </div>
                                         </div>
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                                            
 
-                                                <option>...</option>
-                                            </select>
+                                                <select class="form-control" style="font-size:12px;" id="estadoTrabajo">
+                                                    <option>Pendiente</option>
+                                                    <option>Entregado</option>
+                                                    <option>En desarrollo</option>
+                                                    <option>Terminado</option>
+                                                    <option>En produccion</option>
+                                                    <option>Anulada</option>
+                                                    <option>Facturada</option>
+                                                    <option>Bonificada</option>
+                                                    <option>Presupuesto enviado al cliente</option>
+                                                    <option>Prueba realizada OK</option>
+                                                    <option>Para revisar problemas en las pruebas</option>
+                                                    <option>Presupuesto aprobado</option>
+                                                    <option>Presupuesto asignado</option>
+                                                    <option>Presupuesto no aprobado</option>
+                                                    <option>Facturada(incluida abono)</option>
+                                                    <option>En proceso de presupuesto</option>
+                                                    <option>Presupuesto facturado</option>
+                                                    <option>Incluida en version</option>
+                                                </select>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-4" style="font-size: 13px">
@@ -105,7 +145,13 @@
                                             <label for="usuarioResponsable">Usuario Responsable</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
                                             
-                                                <option>...</option>
+                                                @if (nombresUsuarios != null)
+                                                {
+                                                    foreach (var usuario in nombresUsuarios)
+                                                    {
+                                                        <option value="@usuario.Key">@usuario.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -116,7 +162,13 @@
                                                 <label for="solicitadoPor">Solicitado Por</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
-                                                <option>...</option>
+                                                @if (nombresUsuarios != null)
+                                                {
+                                                    foreach (var usuario in nombresUsuarios)
+                                                    {
+                                                        <option value="@usuario.Key">@usuario.Value</option>
+                                                    }
+                                                }
                                             </select>
                                             </div>
                                         </div>
