@@ -35,6 +35,11 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
+        public IActionResult Index(string activeTab = "AvanceTrabajo")
+        {
+            ViewBag.ActiveTab = activeTab;
+            return View();
+        }
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {
             if ((string.IsNullOrWhiteSpace(nroOTD)) || (string.IsNullOrWhiteSpace(nroOTH)))
