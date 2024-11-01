@@ -35,9 +35,9 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Index(string activeTab = "AvanceTrabajo")
+        public IActionResult VistaAvancesDelTrabajo()
         {
-            ViewBag.ActiveTab = activeTab;
+            
             return View();
         }
         public IActionResult PruebaBD(string nroOTD, string nroOTH)

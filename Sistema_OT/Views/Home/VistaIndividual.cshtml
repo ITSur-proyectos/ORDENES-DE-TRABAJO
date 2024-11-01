@@ -6,6 +6,7 @@
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="~/css/VistaIndividual.css"/>
 
 <!-- Contenedor principal para el formulario Individual-->
@@ -305,81 +306,122 @@
                             </div>
                         </div>
 
-                        <!-- Sección de descripción y tabs -->
-                        <div style="padding-left:0px; font-size: 12px; padding-right:0px; " class="row mt-2 ">
-                            <div class="col-12" @* style="padding-left:0px;" *@>
-                                <!-- Contenedor para los tabs -->
-                                <div class="container" style="padding-left:0px; padding-right:0px;">
-                                    <!-- Navegación por tabs -->
-                                    <ul class="nav nav-tabs justify-content-start mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Contenido de los tabs -->
-                                    <div class="tab-content">
-                                        <div id="descripcion" class="tab-pane fade show active">
-                                            <!-- Barra de herramientas de formato de texto -->
-                                            <div class="toolbar">
-                                                <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                                                <select class="toolbar-select">
-                                                    <option value="sans-serif">Sans Serif</option>
-                                                    <option value="serif">Serif</option>
-                                                    <option value="monospace">Monospace</option>
-                                                </select>
-                                                <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
-                                            </div>
-
-                                            <textarea name="descripcion" rows="5" cols="220">Descripción...</textarea> @* <p>Descripción...</p> *@
-
-                                        </div>
-                                        <div id="avanceTrabajo" class="tab-pane fade">
-                                            <p>Contenido de avances del trabajo...</p>
-                                        </div>
-                                        <div id="tiempos" class="tab-pane fade">
-                                            <p>Contenido de tiempos...</p>
-                                        </div>
-                                        <div id="testing" class="tab-pane fade">
-                                            <p>Contenido de información de testing...</p>
-                                        </div>
-                                        <div id="produccion" class="tab-pane fade">
-                                            <p>Contenido de puesta en producción...</p>
-                                        </div>
-                                        <div id="archivoAdjunto" class="tab-pane fade">
-                                            <p>Contenido de archivo adjunto...</p>
-                                        </div>
-                                        <div id="historialEstados" class="tab-pane fade">
-                                            <p>Contenido del historial de estados...</p>
-                                        </div>
+                         <div id="accordion">
+                            <!-- Descripción -->
+                            <div class="card">
+                                <div class="card-header" id="headingDescripcion">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion">
+                                            Descripción
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                        <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Avances de Trabajo -->
+                            <div class="card">
+                                <div class="card-header" id="headingAvances">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances">
+                                            Avances de Trabajo
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Fecha</th>
+                                                        <th>Descripción del Avance</th>
+                                                        <th>Estado</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>2024-11-01</td>
+                                                        <td>Completado el análisis inicial</td>
+                                                        <td>Completo</td>
+                                                        <td>
+                                                            <button class="btn btn-secondary btn-sm">Editar</button>
+                                                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Más filas de ejemplo -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button class="btn btn-primary mt-2">Agregar Avance</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Puesta en Producción -->
+                            <div class="card">
+                                <div class="card-header" id="headingProduccion">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion">
+                                            Puesta en Producción
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <select class="form-select mb-3">
+                                            <option>Seleccionar tipo de modificación...</option>
+                                            <option value="formulario">Formulario</option>
+                                            <option value="baseDatos">Base de Datos</option>
+                                        </select>
+                                        <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Archivo Adjunto -->
+                            <div class="card">
+                                <div class="card-header" id="headingArchivo">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
+                                            Archivo Adjunto
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <input type="file" class="form-control mb-2">
+                                        <button class="btn btn-danger">Quitar Archivo</button>
+                                        <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Historial de Estado -->
+                            <div class="card">
+                                <div class="card-header" id="headingHistorial">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                                            Historial de Estado
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="mb-3">Registro de cambios de estado.</div>
+                                        <button class="btn btn-success">Agregar Estado</button>
+                                        <button class="btn btn-warning">Modificar Estado</button>
+                                        <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
 
