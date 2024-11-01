@@ -34,7 +34,8 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
-        [HttpPost]
+        
+        [HttpGet]
         public IActionResult VistaIndividual(string activeSection = "descripcion")
         {
             ViewBag.ActiveSection = activeSection;
@@ -43,6 +44,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             return View();
         }
+
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {
             if ((string.IsNullOrWhiteSpace(nroOTD)) || (string.IsNullOrWhiteSpace(nroOTH)))
