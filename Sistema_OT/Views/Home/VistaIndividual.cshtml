@@ -1,12 +1,12 @@
 @{
-    ViewData["Title"] = "VistaAvancesDelTrabajo";
-    var activeTab = ViewBag.ActiveTab;
+    ViewData["Title"] = "VistaIndividual";
+    var activeSection = ViewBag.ActiveSection;
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="~/css/VistaIndividual.css"/>
 
 <!-- Contenedor principal para el formulario Individual-->
@@ -306,17 +306,24 @@
                             </div>
                         </div>
 
-                         <div id="accordion">
+                        <!-- Acordeon con los tabs-->
+                        <div id="accordion">
                             <!-- Descripción -->
                             <div class="card">
                                 <div class="card-header" id="headingDescripcion">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion">
+                                        <a class="btn btn-link @(activeSection == "descripcion" ? "" : "collapsed")" 
+                                           href="@Url.Action("VistaIndividual", new { activeSection = "descripcion" })" 
+                                           data-toggle="collapse" 
+                                           data-target="#collapseDescripcion" 
+                                           aria-expanded="@(activeSection == "descripcion")" 
+                                           aria-controls="collapseDescripcion">
                                             Descripción
-                                        </button>
+                                        </a>
                                     </h5>
                                 </div>
-                                <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                <div id="collapseDescripcion" class="collapse @(activeSection == "descripcion" ? "show" : "")" 
+                                     aria-labelledby="headingDescripcion" data-parent="#accordion">
                                     <div class="card-body">
                                         <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
                                         <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
@@ -328,12 +335,18 @@
                             <div class="card">
                                 <div class="card-header" id="headingAvances">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances">
+                                        <a class="btn btn-link @(activeSection == "avanceTrabajo" ? "" : "collapsed")" 
+                                           href="@Url.Action("VistaIndividual", new { activeSection = "avanceTrabajo" })" 
+                                           data-toggle="collapse" 
+                                           data-target="#collapseAvances" 
+                                           aria-expanded="@(activeSection == "avanceTrabajo")" 
+                                           aria-controls="collapseAvances">
                                             Avances de Trabajo
-                                        </button>
+                                        </a>
                                     </h5>
                                 </div>
-                                <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                <div id="collapseAvances" class="collapse @(activeSection == "avanceTrabajo" ? "show" : "")" 
+                                     aria-labelledby="headingAvances" data-parent="#accordion">
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
@@ -355,7 +368,6 @@
                                                             <button class="btn btn-danger btn-sm">Eliminar</button>
                                                         </td>
                                                     </tr>
-                                                    <!-- Más filas de ejemplo -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -368,12 +380,18 @@
                             <div class="card">
                                 <div class="card-header" id="headingProduccion">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion">
+                                        <a class="btn btn-link @(activeSection == "produccion" ? "" : "collapsed")" 
+                                           href="@Url.Action("VistaIndividual", new { activeSection = "produccion" })" 
+                                           data-toggle="collapse" 
+                                           data-target="#collapseProduccion" 
+                                           aria-expanded="@(activeSection == "produccion")" 
+                                           aria-controls="collapseProduccion">
                                             Puesta en Producción
-                                        </button>
+                                        </a>
                                     </h5>
                                 </div>
-                                <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                <div id="collapseProduccion" class="collapse @(activeSection == "produccion" ? "show" : "")" 
+                                     aria-labelledby="headingProduccion" data-parent="#accordion">
                                     <div class="card-body">
                                         <select class="form-select mb-3">
                                             <option>Seleccionar tipo de modificación...</option>
@@ -389,12 +407,18 @@
                             <div class="card">
                                 <div class="card-header" id="headingArchivo">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
+                                        <a class="btn btn-link @(activeSection == "archivoAdjunto" ? "" : "collapsed")" 
+                                           href="@Url.Action("VistaIndividual", new { activeSection = "archivoAdjunto" })" 
+                                           data-toggle="collapse" 
+                                           data-target="#collapseArchivo" 
+                                           aria-expanded="@(activeSection == "archivoAdjunto")" 
+                                           aria-controls="collapseArchivo">
                                             Archivo Adjunto
-                                        </button>
+                                        </a>
                                     </h5>
                                 </div>
-                                <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                <div id="collapseArchivo" class="collapse @(activeSection == "archivoAdjunto" ? "show" : "")" 
+                                     aria-labelledby="headingArchivo" data-parent="#accordion">
                                     <div class="card-body">
                                         <input type="file" class="form-control mb-2">
                                         <button class="btn btn-danger">Quitar Archivo</button>
@@ -407,12 +431,18 @@
                             <div class="card">
                                 <div class="card-header" id="headingHistorial">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                                        <a class="btn btn-link @(activeSection == "historialEstados" ? "" : "collapsed")" 
+                                           href="@Url.Action("VistaIndividual", new { activeSection = "historialEstados" })" 
+                                           data-toggle="collapse" 
+                                           data-target="#collapseHistorial" 
+                                           aria-expanded="@(activeSection == "historialEstados")" 
+                                           aria-controls="collapseHistorial">
                                             Historial de Estado
-                                        </button>
+                                        </a>
                                     </h5>
                                 </div>
-                                <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                <div id="collapseHistorial" class="collapse @(activeSection == "historialEstados" ? "show" : "")" 
+                                     aria-labelledby="headingHistorial" data-parent="#accordion">
                                     <div class="card-body">
                                         <div class="mb-3">Registro de cambios de estado.</div>
                                         <button class="btn btn-success">Agregar Estado</button>
@@ -421,7 +451,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
 

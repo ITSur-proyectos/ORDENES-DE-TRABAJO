@@ -35,9 +35,12 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult VistaAvancesDelTrabajo()
+        public IActionResult VistaIndividual(string activeSection = "descripcion")
         {
-            
+            ViewBag.ActiveSection = activeSection;
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             return View();
         }
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
@@ -67,13 +70,7 @@ namespace Sistema_OT.Controllers
         }
 
         [HttpGet]
-        public IActionResult VistaIndividual()
-        {
-            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-            return View();
-        }
+        
 
         public IActionResult Privacy()
         {
