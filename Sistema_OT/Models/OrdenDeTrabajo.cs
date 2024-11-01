@@ -36,7 +36,7 @@ namespace Sistema_OT.Models
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
-        public static List<OrdenDeTrabajo> ObtenerLista(string consulta, Dictionary<string, int> parametrosSP)
+        public static List<OrdenDeTrabajo> ObtenerLista(string consulta, Dictionary<string, object> parametrosSP)
         {
 
             List<OrdenDeTrabajo> OrdenesTrabajo = new List<OrdenDeTrabajo>();
@@ -102,7 +102,7 @@ namespace Sistema_OT.Models
             Dictionary<int, string> nombres = new Dictionary<int, string>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
-            string consulta = "Select Descripcion, " + Tabla +" From " + Tabla + "s";
+            string consulta = "Select Descripcion, " + Tabla +" From " + Tabla + "s"; // +s porque menos mal que las tablas estan en plural
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
@@ -115,6 +115,7 @@ namespace Sistema_OT.Models
                             int id = reader.GetInt32(reader.GetOrdinal(Tabla));
                             string nombre = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion"));
                             nombres[id] = nombre;
+                            
 
                         }
                     }

@@ -25,8 +25,45 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Vistas(int cliente, int sistema)
+        public IActionResult Vistas(string Cliente, string Sistema)
         {
+            Dictionary<string, object> parametros = new Dictionary<string, object>();
+
+            //Añade el valor a los parametros de la sp si es que se ingresó
+            if (!string.IsNullOrWhiteSpace(Cliente))
+            {
+                if (int.TryParse(Cliente, out int ClienteInt)){
+                    parametros["@Cliente"] = ClienteInt;
+                }
+                parametros["@Cliente"] = ClienteInt;
+            }
+
+            
+            if (!string.IsNullOrWhiteSpace(Sistema))
+            {
+                if (int.TryParse(Cliente, out int ClienteInt))
+                {
+                    parametros["@Sistema"] = Sistema;
+                }
+
+            }
+
+            // Hacer la consulta si se ingresó al menos 1 parametro
+            if (parametros.Count > 0)
+            {
+                string consulta = "sp_BuscarOrdenesTrabajo";
+                List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+
+                if (ordenes.Count > 0)
+                {
+                    ViewData["Orden"] = ordenes;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No valid parameters were entered.");
+            }
+             
             return View();
         }
         [HttpGet]
@@ -46,7 +83,7 @@ namespace Sistema_OT.Controllers
                 if ((int.TryParse(nroOTD, out int nroOTDesde)) && (int.TryParse(nroOTH, out int nroOTHasta)))
                 {
                     string consulta = "Ort_sp_OrdenesTrabajo_Listar2";
-                    Dictionary<string, int> parametros = new Dictionary<string, int>();
+                    Dictionary<string, object> parametros = new Dictionary<string, object>();
                     parametros["@P_Cliente"] = nroOTDesde;
                     //parametros["@P_NroOrdenTrabajoHasta"] = nroOTHasta;
 
