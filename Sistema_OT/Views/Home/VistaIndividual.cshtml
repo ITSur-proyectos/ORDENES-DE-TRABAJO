@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Inicio del formulario-->
-                    <form method="post" asp-action="VistaIndividual">
+                    <form method="post" action="/Individual/SubmitForm">
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -139,10 +139,10 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" />
                                 </div>
                             </div>
-                              @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
-                                
-                                    <label>@* &nbsp; </label>
-                                    <button type="button" class="btn boton">🔍</button>  *@
+                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+
+                            <label>@* &nbsp; </label>
+                            <button type="button" class="btn boton">🔍</button>  *@
                         </div>
 
                         <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
@@ -191,6 +191,51 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" />
                                 </div>
                             </div>
+                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+
+                            <label>@* &nbsp; </label>
+                            <button type="button" class="btn boton">🔍</button>  *@
+                        </div>
+                        @*  <div style=" font-size: 12px" class="row mt-3">
+                        <div class="col-md-3">
+                        <div class="form-group">
+                        <label for="usuarioResponsable">Usuario Responsable</label>
+                        <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                        <!-- Opciones(se hace con la db) -->
+                        <option>...</option>
+                        @if (nombresUsuarios != null)
+                        {
+                        foreach (var usuario in nombresUsuarios)
+                        {
+                        <option value="@usuario.Key">@usuario.Value</option>
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="usuarioSolicitante">Usuario Solicitante</label>
+                        <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
+                        <!-- Opciones(se hace con la db) -->
+                        <option>...</option>
+                        @if (nombresUsuarios != null)
+                        {
+                        foreach (var usuario in nombresUsuarios)
+                        {
+                        <option value="@usuario.Key">@usuario.Value</option>
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-5">
+                        <div class="form-group">
+                        <label for="moduloPantalla">Módulo / Pantalla</label>
+                        <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
+                        </div>
+                        </div>
+                        </div> *@
 
                         <!-- Cuarta fila con Asunto y Solicitado Por -->
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
@@ -235,7 +280,7 @@
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="horasConsumidas">Hs. Consumo</label> 
+                                    <label for="horasConsumidas">Hs. Consumo</label>
                                     <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
                                 </div>
                             </div>
@@ -254,151 +299,148 @@
                             <div class="row mt-5">
                                 <div class="col-md-4; d-flex; align-items-center">
                                     <div class="form-group" style="font-size:12px;">
-                                        
+
                                         <input type="checkbox" class="form-check-input" id="premioAvance">
                                         <label class="form-check-label" for="premioAvance">Premio por Avance</label>
-                                        
+
                                         <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
                                         <label class="form-check-label" for="alcanceIndefinido">Alcance Indefinido</label>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </did>
 
-                        <!-- Sección de descripción y acordeón -->
-                        <div class="container mt-2">
-                            <div class="row">
-                                <!-- Contenedor para el acordeón -->
-                                <div class="col-12">
-                                    <div class="d-flex flex-wrap" id="accordionExample">
-                                        <!-- Panel para Descripción -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingDescripcion">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#descripcion" aria-expanded="true" aria-controls="descripcion">
-                                                    Descripción
-                                                </button>
-                                            </h2>
-                                            <div id="descripcion" class="accordion-collapse collapse show" aria-labelledby="headingDescripcion" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <!-- Barra de herramientas de formato de texto -->
-                                                    <div class="toolbar">
-                                                        <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                                                        <select class="toolbar-select">
-                                                            <option value="sans-serif">Sans Serif</option>
-                                                            <option value="serif">Serif</option>
-                                                            <option value="monospace">Monospace</option>
-                                                        </select>
-                                                        <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
-                                                        <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
-                                                    </div>
-                                                    <textarea name="descripcion" rows="5" cols="30">Descripción...</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Avances del Trabajo -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingAvanceTrabajo">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#avanceTrabajo" aria-expanded="false" aria-controls="avanceTrabajo">
-                                                    Avances del Trabajo
-                                                </button>
-                                            </h2>
-                                            <div id="avanceTrabajo" class="accordion-collapse collapse" aria-labelledby="headingAvanceTrabajo" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido de avances del trabajo...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Tiempos -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingTiempos">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tiempos" aria-expanded="false" aria-controls="tiempos">
-                                                    Tiempos
-                                                </button>
-                                            </h2>
-                                            <div id="tiempos" class="accordion-collapse collapse" aria-labelledby="headingTiempos" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido de tiempos...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Información de Testing -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingTesting">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#testing" aria-expanded="false" aria-controls="testing">
-                                                    Información de Testing
-                                                </button>
-                                            </h2>
-                                            <div id="testing" class="accordion-collapse collapse" aria-labelledby="headingTesting" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido de información de testing...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Puesta en Producción -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingProduccion">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#produccion" aria-expanded="false" aria-controls="produccion">
-                                                    Puesta en Producción
-                                                </button>
-                                            </h2>
-                                            <div id="produccion" class="accordion-collapse collapse" aria-labelledby="headingProduccion" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido de puesta en producción...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Archivo Adjunto -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingArchivoAdjunto">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#archivoAdjunto" aria-expanded="false" aria-controls="archivoAdjunto">
-                                                    Archivo Adjunto
-                                                </button>
-                                            </h2>
-                                            <div id="archivoAdjunto" class="accordion-collapse collapse" aria-labelledby="headingArchivoAdjunto" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido de archivo adjunto...</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Panel para Historial Estados -->
-                                        <div class="accordion-item flex-fill mx-1" style="min-width: 200px;">
-                                            <h2 class="accordion-header" id="headingHistorialEstados">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#historialEstados" aria-expanded="false" aria-controls="historialEstados">
-                                                    Historial Estados
-                                                </button>
-                                            </h2>
-                                            <div id="historialEstados" class="accordion-collapse collapse" aria-labelledby="headingHistorialEstados" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <p>Contenido del historial de estados...</p>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
 
+                        <!-- Sección de descripción y accordion -->
+                        <div class="container mt-5">
+                            <!-- Título -->
+                            <h2>Interfaz de Gestión - Secciones Expandibles</h2>
 
+                            <!-- Acordeón de Secciones -->
+                            <div id="accordion">
+
+                                <!-- Descripción -->
+                                <div class="card">
+                                    <div class="card-header" id="headingDescripcion">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion">
+                                                Descripción
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                            <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Avances de Trabajo -->
+                                <div class="card">
+                                    <div class="card-header" id="headingAvances">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances">
+                                                Avances de Trabajo
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fecha</th>
+                                                            <th>Descripción del Avance</th>
+                                                            <th>Estado</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>2024-11-01</td>
+                                                            <td>Completado el análisis inicial</td>
+                                                            <td>Completo</td>
+                                                            <td>
+                                                                <button class="btn btn-secondary btn-sm">Editar</button>
+                                                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                                                            </td>
+                                                        </tr>
+                                                        <!-- Más filas de ejemplo -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <button class="btn btn-primary mt-2">Agregar Avance</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Puesta en Producción -->
+                                <div class="card">
+                                    <div class="card-header" id="headingProduccion">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion">
+                                                Puesta en Producción
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <select class="form-select mb-3">
+                                                <option>Seleccionar tipo de modificación...</option>
+                                                <option value="formulario">Formulario</option>
+                                                <option value="baseDatos">Base de Datos</option>
+                                            </select>
+                                            <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Archivo Adjunto -->
+                                <div class="card">
+                                    <div class="card-header" id="headingArchivo">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
+                                                Archivo Adjunto
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <input type="file" class="form-control mb-2">
+                                            <button class="btn btn-danger">Quitar Archivo</button>
+                                            <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Historial de Estado -->
+                                <div class="card">
+                                    <div class="card-header" id="headingHistorial">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                                                Historial de Estado
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="mb-3">Registro de cambios de estado.</div>
+                                            <button class="btn btn-success">Agregar Estado</button>
+                                            <button class="btn btn-warning">Modificar Estado</button>
+                                            <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Botones de acciones -->
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
-                                
-                                <button class="btn  boton " >Imprimir</button>
+
+                                <button class="btn  boton ">Imprimir</button>
                                 <button class="btn boton">Ver Documentación Digital</button>
 
                                 <!-- Agrupación de otros botones -->
