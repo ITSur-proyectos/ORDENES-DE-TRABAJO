@@ -1,4 +1,4 @@
-﻿.container-fluid .row {
+﻿/*.container-fluid .row {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -14,7 +14,7 @@
         max-width: 100%;
     }
 }
-
+*/
 
 /* Estilo para la cabecera del formulario */
 .card-header {
