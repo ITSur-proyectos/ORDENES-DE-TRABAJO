@@ -1,12 +1,12 @@
 ﻿
 /*
- Estilo para la cabecera del formulario 
+ Estilo para la cabecera del formulario*/ 
 .card-header {
     background-color: #17a2b8;  
     color: white;  
 }
 
- Ajuste de márgenes y alineación 
+ /*Ajuste de márgenes y alineación*/ 
 .row .form-group {
     margin-bottom: 10px;
 }
@@ -20,30 +20,30 @@
         background-color: #ff9800;
     }
 
- Estilo general para los botones 
+ /*Estilo general para los botones*/ 
 .boton {
     background-color: #ff6a00;
     color: #ffffff;
 }
 
-     Hover para los botones 
+     /*Hover para los botones*/ 
     .boton:hover {
         background-color: #ff9800;
     }
 
- Estilo diferente para el botón de cancelar 
+ /*Estilo diferente para el botón de cancelar*/ 
 .boton-cancelar {
     background-color: rgb(230, 0, 0);
     color: #ffffff;
     
 }
 
-     Hover para el botón de cancelar 
+     /*Hover para el botón de cancelar*/ 
     .boton-cancelar:hover {
         background-color: rgb(170, 32, 32);
     }
 
- Estilos generales para la barra de herramientas*/ 
+ /*Estilos generales para la barra de herramientas*/ 
 .toolbar {
     display: flex !important;
     align-items: center !important;
@@ -94,12 +94,6 @@
 
 
 
-/* General */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Color de fondo suave */
-}
-
 .row {
     margin-bottom: 15px; /* Espaciado entre filas */
 }
@@ -108,39 +102,10 @@ body {
     border: 1px solid #ced4da; /* Bordes suaves */
 }
 
-.card-header {
-    font-size: 14px; /* Tamaño de fuente para encabezados */
-}
-
 .form-control, .form-select {
     font-size: 12px; /* Tamaño de fuente uniforme para formularios */
 }
 
-/* Botones */
-.btn {
-    padding: 10px 15px; /* Espaciado interno para botones */
-    font-size: 12px; /* Tamaño de fuente para botones */
-}
-
-.boton {
-    background-color: #007bff; /* Color de fondo para botones principales */
-    color: white; /* Color de texto para botones */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Bordes redondeados */
-    transition: background-color 0.3s; /* Efecto al pasar el mouse */
-}
-
-    .boton:hover {
-        background-color: #0056b3; /* Color al pasar el mouse */
-    }
-
-.boton-cancelar {
-    background-color: #dc3545; /* Color de fondo para botón de cancelar */
-}
-
-    .boton-cancelar:hover {
-        background-color: #c82333; /* Color al pasar el mouse */
-    }
 
 /* Estilos para el acordeón */
 #accordion .card {
