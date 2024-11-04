@@ -1,12 +1,36 @@
 ﻿
-/*
- Estilo para la cabecera del formulario*/ 
-.card-header {
-    background-color: #17a2b8;  
-    color: white;  
+.form-control, .form-select {
+    font-size: 12px;  /*Tamaño de fuente uniforme para formularios*/
 }
 
- /*Ajuste de márgenes y alineación*/ 
+
+/* Estilos para el acordeón */
+#accordion .card {
+    margin-bottom: 10px;  /*Espaciado entre tarjetas del acordeón */
+}
+
+/*.card-body {
+    padding: 15px;*/  /*Espaciado interno para el cuerpo de la tarjeta*/ 
+/*}*/
+
+/* Estilos para los checkboxes */
+.form-check {
+    margin-bottom: 10px; }
+
+/* Estilos de texto */
+.form-text {
+    font-size: 10px;  
+    color: #6c757d;  
+}
+
+
+/* Estilo para la cabecera del formulario */
+.card-header {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* Ajuste de márgenes y alineación */
 .row .form-group {
     margin-bottom: 10px;
 }
@@ -16,34 +40,34 @@
     color: #ffffff;
     width: 100%;
 }
+
     .boton-busqueda:hover {
         background-color: #ff9800;
     }
 
- /*Estilo general para los botones*/ 
+/* Estilo general para los botones */
 .boton {
     background-color: #ff6a00;
     color: #ffffff;
 }
 
-     /*Hover para los botones*/ 
+    /*     Hover para los botones */
     .boton:hover {
         background-color: #ff9800;
     }
 
- /*Estilo diferente para el botón de cancelar*/ 
+/* Estilo diferente para el botón de cancelar */
 .boton-cancelar {
     background-color: rgb(230, 0, 0);
     color: #ffffff;
-    
 }
 
-     /*Hover para el botón de cancelar*/ 
+    /*     Hover para el botón de cancelar */
     .boton-cancelar:hover {
         background-color: rgb(170, 32, 32);
     }
 
- /*Estilos generales para la barra de herramientas*/ 
+/* Estilos generales para la barra de herramientas */
 .toolbar {
     display: flex !important;
     align-items: center !important;
@@ -51,10 +75,9 @@
     background-color: #f9f9f9 !important;
     border-radius: 5px !important;
     margin-bottom: 15px !important;
-
 }
 
- /*Estilos minimalistas para los botones*/ 
+/* Estilos minimalistas para los botones */
 .toolbar-btn {
     background: none !important;
     border: none !important;
@@ -66,12 +89,12 @@
     transition: color 0.3s ease !important;
 }
 
-     /*Cambiar color al hacer hover*/ 
+    /* Cambiar color al hacer hover */
     .toolbar-btn:hover {
         color: #ff9800 !important;
     }
 
- /*Estilos para el select*/ 
+/* Estilos para el select */
 .toolbar-select {
     margin-right: 15px !important;
     padding: 5px !important;
@@ -82,49 +105,12 @@
     cursor: pointer !important;
 }
 
- /*Estilo para los botones seleccionados*/ 
+/* Estilo para los botones seleccionados */
 .toolbar-btn.active {
     color: #ff9800 !important;
 }
 
- /*Estilo para los iconos dentro de los botones*/ 
+/* Estilo para los iconos dentro de los botones */
 .toolbar-btn i {
-    pointer-events: none !important;  Para evitar que los íconos afecten los clics 
+    pointer-events: none !important; /* Para evitar que los íconos afecten los clics */
 }
-
-
-
-.row {
-    margin-bottom: 15px; /* Espaciado entre filas */
-}
-
-.card {
-    border: 1px solid #ced4da; /* Bordes suaves */
-}
-
-.form-control, .form-select {
-    font-size: 12px; /* Tamaño de fuente uniforme para formularios */
-}
-
-
-/* Estilos para el acordeón */
-#accordion .card {
-    margin-bottom: 10px; /* Espaciado entre tarjetas del acordeón */
-}
-
-.card-body {
-    padding: 15px; /* Espaciado interno para el cuerpo de la tarjeta */
-}
-
-/* Estilos para los checkboxes */
-.form-check {
-    margin-bottom: 10px; /* Espaciado entre checkboxes */
-}
-
-/* Estilos de texto */
-.form-text {
-    font-size: 10px; /* Tamaño de fuente para textos de ayuda */
-    color: #6c757d; /* Color de texto suave */
-}
-
-
