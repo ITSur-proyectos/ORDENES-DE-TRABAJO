@@ -13,7 +13,10 @@
     font-size: 12px;
     margin: 10px;
 }
-
+/*.table-grid {
+    display: grid;
+    grid-template-columns: 1fr 15fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1fr 2fr;
+}*/
 .nav-tabs {
     display: flex;
     margin: 0;
@@ -37,6 +40,9 @@
     transition: background-color 0.3s;
     border-radius: 8px 8px 0 0;
     outline: none;
+}
+.borderThead {
+    border: 1px solid #dee2e6;
 }
 
     .tab-btn:hover {

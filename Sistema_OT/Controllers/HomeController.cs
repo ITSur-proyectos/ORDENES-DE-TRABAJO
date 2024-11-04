@@ -25,43 +25,57 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Vistas(string Cliente, string Sistema)
+        public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo)
         {
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
             //Añade el valor a los parametros de la sp si es que se ingresó
-            if (!string.IsNullOrWhiteSpace(Cliente))
+            if (Cliente != -1)
             {
-                if (int.TryParse(Cliente, out int ClienteInt)){
-                    parametros["@Cliente"] = ClienteInt;
-                }
-                parametros["@Cliente"] = ClienteInt;
+                parametros["@Cliente"] = Cliente;
+            }
+            if (Sistema != -1)
+            {
+                parametros["@Sistema"] = Sistema;
             }
 
-            
-            if (!string.IsNullOrWhiteSpace(Sistema))
+            if (estadoTrabajo != 0)
             {
-                if (int.TryParse(Cliente, out int ClienteInt))
-                {
-                    parametros["@Sistema"] = Sistema;
-                }
-
+                parametros["@Estado"] = estadoTrabajo;
             }
-
+            if (!string.IsNullOrWhiteSpace(usuarioSolicitante))
+            {
+                parametros["@UsuarioSolicitante"] = usuarioSolicitante;
+            }
+            if (!string.IsNullOrWhiteSpace(Responsable))
+            {
+                parametros["@UserIDResponsable"] = Responsable;
+            }
+            if (!string.IsNullOrWhiteSpace(asunto))
+            {
+                parametros["@Asunto"] = asunto;
+            }
+            if (!string.IsNullOrWhiteSpace(modulo))
+            {
+                parametros["@Modulo"] = modulo;
+            }
             // Hacer la consulta si se ingresó al menos 1 parametro
             if (parametros.Count > 0)
             {
                 string consulta = "sp_BuscarOrdenesTrabajo";
-                List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+                List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
                 if (ordenes.Count > 0)
                 {
-                    ViewData["Orden"] = ordenes;
+                    ViewData["Ordenes"] = ordenes;
                 }
             }
             else
             {
-                Console.WriteLine("No valid parameters were entered.");
+                Console.WriteLine("No llenaste los formularios.");
             }
              
             return View();
@@ -87,7 +101,7 @@ namespace Sistema_OT.Controllers
                     parametros["@P_Cliente"] = nroOTDesde;
                     //parametros["@P_NroOrdenTrabajoHasta"] = nroOTHasta;
 
-                    List<OrdenDeTrabajo> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+                    List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
                     if (ordenes.Count > 0)
                     {
                         ViewData["Orden"] = ordenes;
