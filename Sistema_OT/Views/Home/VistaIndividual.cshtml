@@ -19,7 +19,7 @@
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 d-flex flex-wrap gap-3">
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
@@ -316,119 +316,121 @@
 
                         <!-- Sección de descripción y accordion -->
                         <div class="container mt-5">
-                            <!-- Acordeón de Secciones -->
-                            <div id="accordion">
-                                <!-- Descripción -->
-                                <div class="card">
-                                    <div class="card-header" id="headingDescripcion">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion">
-                                                Descripción
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
-                                            <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                            <div class="card shadow">
+                                <!-- Acordeón de Secciones -->
+                                <div id="accordion">
+                                    <!-- Descripción -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingDescripcion">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion">
+                                                    Descripción
+                                                </button>
+                                            </h5>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- Avances de Trabajo -->
-                                <div class="card">
-                                    <div class="card-header" id="headingAvances">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances">
-                                                Avances de Trabajo
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Fecha</th>
-                                                            <th>Descripción del Avance</th>
-                                                            <th>Estado</th>
-                                                            <th>Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>2024-11-01</td>
-                                                            <td>Completado el análisis inicial</td>
-                                                            <td>Completo</td>
-                                                            <td>
-                                                                <button class="btn btn-secondary btn-sm">Editar</button>
-                                                                <button class="btn btn-danger btn-sm">Eliminar</button>
-                                                            </td>
-                                                        </tr>
-                                                        <!-- Más filas de ejemplo -->
-                                                    </tbody>
-                                                </table>
+                                        <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                                <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                             </div>
-                                            <button class="btn btn-primary mt-2">Agregar Avance</button>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Puesta en Producción -->
-                                <div class="card">
-                                    <div class="card-header" id="headingProduccion">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion">
-                                                Puesta en Producción
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <select class="form-select mb-3">
-                                                <option>Seleccionar tipo de modificación...</option>
-                                                <option value="formulario">Formulario</option>
-                                                <option value="baseDatos">Base de Datos</option>
-                                            </select>
-                                            <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                    <!-- Avances de Trabajo -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingAvances">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances">
+                                                    Avances de Trabajo
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Descripción del Avance</th>
+                                                                <th>Estado</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>2024-11-01</td>
+                                                                <td>Completado el análisis inicial</td>
+                                                                <td>Completo</td>
+                                                                <td>
+                                                                    <button class="btn btn-secondary btn-sm">Editar</button>
+                                                                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- Más filas de ejemplo -->
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <button class="btn btn-primary mt-2">Agregar Avance</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Archivo Adjunto -->
-                                <div class="card">
-                                    <div class="card-header" id="headingArchivo">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
-                                                Archivo Adjunto
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <input type="file" class="form-control mb-2">
-                                            <button class="btn btn-danger">Quitar Archivo</button>
-                                            <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                    <!-- Puesta en Producción -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingProduccion">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion">
+                                                    Puesta en Producción
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <select class="form-select mb-3">
+                                                    <option>Seleccionar tipo de modificación...</option>
+                                                    <option value="formulario">Formulario</option>
+                                                    <option value="baseDatos">Base de Datos</option>
+                                                </select>
+                                                <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Historial de Estado -->
-                                <div class="card">
-                                    <div class="card-header" id="headingHistorial">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
-                                                Historial de Estado
-                                            </button>
-                                        </h5>
+                                    <!-- Archivo Adjunto -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingArchivo">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
+                                                    Archivo Adjunto
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <input type="file" class="form-control mb-2">
+                                                <button class="btn btn-danger">Quitar Archivo</button>
+                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <div class="mb-3">Registro de cambios de estado.</div>
-                                            <button class="btn btn-success">Agregar Estado</button>
-                                            <button class="btn btn-warning">Modificar Estado</button>
-                                            <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+
+                                    <!-- Historial de Estado -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingHistorial">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                                                    Historial de Estado
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="mb-3">Registro de cambios de estado.</div>
+                                                <button class="btn btn-success">Agregar Estado</button>
+                                                <button class="btn btn-warning">Modificar Estado</button>
+                                                <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
