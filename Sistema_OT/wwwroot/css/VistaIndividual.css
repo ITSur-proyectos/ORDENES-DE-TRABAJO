@@ -27,6 +27,7 @@
 
     .boton-busqueda:hover {
         background-color: #ff9800;
+        color: white;
     }
 
 /* Estilo general para los botones */
@@ -38,6 +39,7 @@
     /*     Hover para los botones */
     .boton:hover {
         background-color: #ff9800;
+        color: white;
     }
 
 /* Estilo diferente para el botón de cancelar */
@@ -49,6 +51,7 @@
     /*     Hover para el botón de cancelar */
     .boton-cancelar:hover {
         background-color: rgb(170, 32, 32);
+        color: white;
     }
 
 /* Estilos generales para la barra de herramientas */
