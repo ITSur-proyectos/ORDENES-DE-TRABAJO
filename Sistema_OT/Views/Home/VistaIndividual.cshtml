@@ -312,110 +312,7 @@
                             </div>
 
                         </div>
-
-
-                        <!-- Sección de descripción y tabs -->
-                        <div style="padding-left:0px; font-size: 12px; padding-right:0px; " class="row mt-2 ">
-                            <div class="col-12" @* style="padding-left:0px;" *@>
-                                <!-- Contenedor para los tabs -->
-                                <div class="container" style="padding-left:0px; padding-right:0px;">
-                                    <!-- Navegación por tabs -->
-                                    <ul class="nav nav-tabs justify-content-start mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Contenido de los tabs -->
-                                    <div class="tab-content">
-                                        <div id="descripcion" class="tab-pane fade show active">
-                                            <!-- Barra de herramientas de formato de texto -->
-                                            <div class="toolbar">
-                                                <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                                                <select class="toolbar-select">
-                                                    <option value="sans-serif">Sans Serif</option>
-                                                    <option value="serif">Serif</option>
-                                                    <option value="monospace">Monospace</option>
-                                                </select>
-                                                <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
-                                                <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
-                                            </div>
-
-                                            <textarea name="descripcion" rows="5" cols="220">Descripción...</textarea> @* <p>Descripción...</p> *@
-
-                                        </div>
-                                        <div id="avanceTrabajo" class="tab-pane fade">
-                                            <p>Contenido de avances del trabajo...</p>
-                                        </div>
-                                        <div id="tiempos" class="tab-pane fade">
-                                            <p>Contenido de tiempos...</p>
-                                        </div>
-                                        <div id="testing" class="tab-pane fade">
-                                            <p>Contenido de información de testing...</p>
-                                        </div>
-                                        <div id="produccion" class="tab-pane fade">
-                                            <p>Contenido de puesta en producción...</p>
-                                        </div>
-                                        <div id="archivoAdjunto" class="tab-pane fade">
-                                            <p>Contenido de archivo adjunto...</p>
-                                        </div>
-                                        <div id="historialEstados" class="tab-pane fade">
-                                            <p>Contenido del historial de estados...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Botones de acciones -->
-                        <div class="row mt-2">
-                            <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
-
-                                <button class="btn  boton ">Imprimir</button>
-                                <button class="btn boton">Ver Documentación Digital</button>
-
-                                <!-- Agrupación de otros botones -->
-                                <div class="grupo-botones" style="font-size:12px;">
-                                    <button class="btn boton">Copiar Orden</button>
-                                    <button class="btn boton">Enviar Orden</button>
-                                    <button class="btn boton">Agregar</button>
-                                    <button class="btn boton">Modificar</button>
-                                    <button class="btn boton">Grabar</button>
-                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-                            @* Sección de descripción y accordion
+                         <!--Sección de descripción y accordion-->
                             <!-- Segunda Tarjeta -->
                             <div class="card shadow-sm mb-3">
                                 <div class="card-body">
@@ -558,6 +455,30 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>*@
+                            </div>
 
-                           
+                        
+                        <!-- Botones de acciones -->
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
+
+                                <button class="btn  boton ">Imprimir</button>
+                                <button class="btn boton">Ver Documentación Digital</button>
+
+                                <!-- Agrupación de otros botones -->
+                                <div class="grupo-botones" style="font-size:12px;">
+                                    <button class="btn boton">Copiar Orden</button>
+                                    <button class="btn boton">Enviar Orden</button>
+                                    <button class="btn boton">Agregar</button>
+                                    <button class="btn boton">Modificar</button>
+                                    <button class="btn boton">Grabar</button>
+                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
