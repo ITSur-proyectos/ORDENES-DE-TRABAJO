@@ -5,316 +5,415 @@
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
 }
-
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-<link rel="stylesheet" href="~/css/VistaIndividual.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="~/css/VistaIndividual.css" />
 
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
         <div class="col-12">
-            <!-- Formulario Principal -->
-            <form method="post" asp-action="VistaIndividual">
-                <!-- Tarjeta con el formulario -->
-                <div class="card shadow-sm mb-3">
-                    <div class="btn btn secondary; card-header bg-info text-white">
-                        <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Inicio del formulario-->
-                            <div style="font-size: 12px" class="row row-cols-3 g-3">
-                                <!-- Primera fila con campos de la orden -->
-                                <!-- Campo de Orden -->
-                                
-                                <div class="col-md-1">
-                                    <div class="form-group">
-                                        <label for="orden">Orden</label>
-                                        <input type="text" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" />
-                                    </div>
-                                </div>
-                                <!-- Campo de Dependencia -->
-                                <div class="col-md-1">
-                                    <div class="form-group">
-                                        <label for="dependencia">Depende de</label>
-                                        <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de..." />
-                                    </div>
-                                </div>
-                                <!-- Botón de búsqueda -->
-                                <div style="font-size: 8px" class="col-md-1 d-flex align-items-end ">
+            <!-- Tarjeta con el formulario -->
+            <div class="card shadow-sm">
+                <div class="btn btn secondary; card-header bg-info text-white">
+                    <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Inicio del formulario-->
+                    <form method="post" action="/Individual/SubmitForm">
 
-                                    <label>@* &nbsp; *@</label>
-                                    <button type="button" class="btn boton">Buscar</button>
-
-                                </div>
-                                <!-- Campo de Fecha de Solicitud -->
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                        <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" />
-                                    </div>
-                                </div>
-                                <!-- Campo de Fecha de Vencimiento -->
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                        <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" />
-                                    </div>
-                                </div>
-                                <!-- Campo de Estado del Trabajo -->
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="estadoTrabajo">Estado del Trabajo</label>
-                                        <select class="form-control" style="font-size:12px;" id="estadoTrabajo">
-                                            <option>...</option>
-                                            <option>Pendiente</option>
-                                            <option>Entregado</option>
-                                            <option>En desarrollo</option>
-                                            <option>Terminado</option>
-                                            <option>En produccion</option>
-                                            <option>Anulada</option>
-                                            <option>Facturada</option>
-                                            <option>Bonificada</option>
-                                            <option>Presupuesto enviado al cliente</option>
-                                            <option>Prueba realizada OK</option>
-                                            <option>Para revisar problemas en las pruebas</option>
-                                            <option>Presupuesto aprobado</option>
-                                            <option>Presupuesto asignado</option>
-                                            <option>Presupuesto no aprobado</option>
-                                            <option>Facturada(incluida abono)</option>
-                                            <option>En proceso de presupuesto</option>
-                                            <option>Presupuesto facturado</option>
-                                            <option>Incluida en version</option>
-                                        </select>
-                                    </div>
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <!-- Primera fila con campos de la orden -->
+                            <!-- Campo de Orden -->
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="orden">Orden</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" />
                                 </div>
                             </div>
-                            
-
-                            <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
-                            <div style="font-size: 12px" class="row row-cols-3 g-3">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="cliente">Cliente</label>
-                                        <select class="form-control" style="font-size:12px;" id="cliente">
-                                            <!-- Opciones(se hace con la db) -->
-
-                                            <option>...</option>
-
-                                            @if (nombresClientes != null)
-                                            {
-                                                foreach (var cliente in nombresClientes)
-                                                {
-                                                    <option value="@cliente.Key">@cliente.Value</option>
-                                                }
-                                            }
-
-                                        </select>
-                                    </div>
+                            <!-- Campo de Dependencia -->
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="dependencia" class="text-nowrap">Depende de</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de..." />
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="sistema">Sistema</label>
-                                        <select class="form-control" style="font-size:12px;" id="sistema">
-                                            <!-- Opciones(se hace con la db) -->
-
-                                            <option>...</option>
-
-                                            @if (nombresSistemas != null)
-                                            {
-                                                foreach (var sistema in nombresSistemas)
-                                                {
-                                                    <option value="@sistema.Key">@sistema.Value</option>
-                                                }
-                                            }
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="proyecto">Proyecto</label>
-                                        <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" />
-                                    </div>
-                                </div>
-                                @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
-
-                                <label>@* &nbsp; </label>
-                                <button type="button" class="btn boton">🔍</button>  *@
                             </div>
+                            <!-- Botón de búsqueda -->
+                            <div style="font-size: 8px" class="col-md-1 d-flex align-items-end ">
 
-                            <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
-                            <div style="font-size: 12px" class="row row-cols-3 g-3">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="usuarioResp">Usuario Responsable</label>
-                                        <select class="form-control" style="font-size:12px;" id="usuarioResp">
-                                            <!-- Opciones(se hace con la db) -->
+                                <label>@* &nbsp; *@</label>
+                                <button type="button" class="btn boton">Buscar</button>
 
-                                            <option>...</option>
-
-                                            @if (nombresClientes != null)
-                                            {
-                                                foreach (var cliente in nombresClientes)
-                                                {
-                                                    <option value="@cliente.Key">@cliente.Value</option>
-                                                }
-                                            }
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="usuarioSoli">Usuario Solicitante</label>
-                                        <select class="form-control" style="font-size:12px;" id="usuarioSoli">
-                                            <!-- Opciones(se hace con la db) -->
-
-                                            <option>...</option>
-
-                                            @if (nombresSistemas != null)
-                                            {
-                                                foreach (var sistema in nombresSistemas)
-                                                {
-                                                    <option value="@sistema.Key">@sistema.Value</option>
-                                                }
-                                            }
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="moduloPantalla">Módulo/Pantalla</label>
-                                        <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" />
-                                    </div>
-                                </div>
-                                @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
-
-                                <label>@* &nbsp; </label>
-                                <button type="button" class="btn boton">🔍</button>  *@
                             </div>
-                            @*  <div style=" font-size: 12px" class="row mt-3">
+                            <!-- Campo de Fecha de Solicitud -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="fechaSolicitud">Fecha de Solicitud</label>
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" />
+                                </div>
+                            </div>
+                            <!-- Campo de Fecha de Vencimiento -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="fechaVencimiento">Fecha de Vencimiento</label>
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" />
+                                </div>
+                            </div>
+                            <!-- Campo de Estado del Trabajo -->
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="estadoTrabajo">Estado del Trabajo</label>
+                                    <select class="form-control" style="font-size:12px;" id="estadoTrabajo">
+                                        <option>...</option>
+                                        <option>Pendiente</option>
+                                        <option>Entregado</option>
+                                        <option>En desarrollo</option>
+                                        <option>Terminado</option>
+                                        <option>En produccion</option>
+                                        <option>Anulada</option>
+                                        <option>Facturada</option>
+                                        <option>Bonificada</option>
+                                        <option>Presupuesto enviado al cliente</option>
+                                        <option>Prueba realizada OK</option>
+                                        <option>Para revisar problemas en las pruebas</option>
+                                        <option>Presupuesto aprobado</option>
+                                        <option>Presupuesto asignado</option>
+                                        <option>Presupuesto no aprobado</option>
+                                        <option>Facturada(incluida abono)</option>
+                                        <option>En proceso de presupuesto</option>
+                                        <option>Presupuesto facturado</option>
+                                        <option>Incluida en version</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <div class="col-md-3">
-                            <div class="form-group">
-                            <label for="usuarioResponsable">Usuario Responsable</label>
-                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
-                            <!-- Opciones(se hace con la db) -->
-                            <option>...</option>
-                            @if (nombresUsuarios != null)
-                            {
-                            foreach (var usuario in nombresUsuarios)
-                            {
-                            <option value="@usuario.Key">@usuario.Value</option>
-                            }
-                            }
-                            </select>
-                            </div>
+                                <div class="form-group">
+                                    <label for="cliente">Cliente</label>
+                                    <select class="form-control" style="font-size:12px;" id="cliente">
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
+                                        @if (nombresClientes != null)
+                                        {
+                                            foreach (var cliente in nombresClientes)
+                                            {
+                                                <option value="@cliente.Key">@cliente.Value</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-4">
-                            <div class="form-group">
-                            <label for="usuarioSolicitante">Usuario Solicitante</label>
-                            <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
-                            <!-- Opciones(se hace con la db) -->
-                            <option>...</option>
-                            @if (nombresUsuarios != null)
-                            {
-                            foreach (var usuario in nombresUsuarios)
-                            {
-                            <option value="@usuario.Key">@usuario.Value</option>
-                            }
-                            }
-                            </select>
-                            </div>
+                                <div class="form-group">
+                                    <label for="sistema">Sistema</label>
+                                    <select class="form-control" style="font-size:12px;" id="sistema">
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
+                                        @if (nombresSistemas != null)
+                                        {
+                                            foreach (var sistema in nombresSistemas)
+                                            {
+                                                <option value="@sistema.Key">@sistema.Value</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-5">
-                            <div class="form-group">
-                            <label for="moduloPantalla">Módulo / Pantalla</label>
-                            <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
-                            </div>
-                            </div>
-                            </div> *@
-
-                            <!-- Cuarta fila con Asunto y Solicitado Por -->
-                            <div style="font-size: 12px" class="row row-cols-3 g-3">
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label for="asunto">Asunto</label>
-                                        <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" />
-                                    </div>
+                                <div class="form-group">
+                                    <label for="proyecto">Proyecto</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" />
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="solicitadoPor">Solicitado Por</label>
-                                        <select class="form-control" style="font-size:12px;" id="Solicitante">
-                                            <!-- Opciones(se hace con la db) -->
-                                            <option>...</option>
-                                            @if (nombresUsuarios != null)
+                            </div>
+                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+
+                            <label>@* &nbsp; </label>
+                            <button type="button" class="btn boton">🔍</button>  *@
+                        </div>
+
+                        <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="usuarioResp">Usuario Responsable</label>
+                                    <select class="form-control" style="font-size:12px;" id="usuarioResp">
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
+                                        @if (nombresClientes != null)
+                                        {
+                                            foreach (var cliente in nombresClientes)
                                             {
-                                                foreach (var usuario in nombresUsuarios)
-                                                {
-                                                    <option value="@usuario.Key">@usuario.Value</option>
-                                                }
+                                                <option value="@cliente.Key">@cliente.Value</option>
                                             }
-                                        </select>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="usuarioSoli">Usuario Solicitante</label>
+                                    <select class="form-control" style="font-size:12px;" id="usuarioSoli">
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
+                                        @if (nombresSistemas != null)
+                                        {
+                                            foreach (var sistema in nombresSistemas)
+                                            {
+                                                <option value="@sistema.Key">@sistema.Value</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="moduloPantalla">Módulo/Pantalla</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" />
+                                </div>
+                            </div>
+                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+
+                            <label>@* &nbsp; </label>
+                            <button type="button" class="btn boton">🔍</button>  *@
+                        </div>
+                        @*  <div style=" font-size: 12px" class="row mt-3">
+                        <div class="col-md-3">
+                        <div class="form-group">
+                        <label for="usuarioResponsable">Usuario Responsable</label>
+                        <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                        <!-- Opciones(se hace con la db) -->
+                        <option>...</option>
+                        @if (nombresUsuarios != null)
+                        {
+                        foreach (var usuario in nombresUsuarios)
+                        {
+                        <option value="@usuario.Key">@usuario.Value</option>
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                        <label for="usuarioSolicitante">Usuario Solicitante</label>
+                        <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
+                        <!-- Opciones(se hace con la db) -->
+                        <option>...</option>
+                        @if (nombresUsuarios != null)
+                        {
+                        foreach (var usuario in nombresUsuarios)
+                        {
+                        <option value="@usuario.Key">@usuario.Value</option>
+                        }
+                        }
+                        </select>
+                        </div>
+                        </div>
+                        <div class="col-md-5">
+                        <div class="form-group">
+                        <label for="moduloPantalla">Módulo / Pantalla</label>
+                        <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
+                        </div>
+                        </div>
+                        </div> *@
+
+                        <!-- Cuarta fila con Asunto y Solicitado Por -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="asunto">Asunto</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" />
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="solicitadoPor">Solicitado Por</label>
+                                    <select class="form-control" style="font-size:12px;" id="Solicitante">
+                                        <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quinta fila con Horas Facturables, % de Avance, Horas Consumidas, Horas Avances, Nro Implementación y Checkboxes -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="horasFacturables" class="text-nowrap">Hs. Facturables</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-md-4 d-flex  align-items-center">
+                                    <div class="form-check me-3">
+                                        <!-- Este div contiene el primer checkbox -->
+                                        <input type="checkbox" class="form-check-input" id="premioAvance">
+                                        <label class="form-check-label text-nowrap" for="premioAvance">Premio por Avance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <!-- Este div contiene el segundo checkbox -->
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
+                                        <label class="form-check-label text-nowrap" for="alcanceIndefinido">Alcance Indefinido</label>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Quinta fila con Horas Facturables, % de Avance, Horas Consumidas, Horas Avances, Nro Implementación y Checkboxes -->
-                            <div style="font-size: 12px" class="row row-cols-3 g-3">
+                        </div>
 
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="horasFacturables">Hs. Facturables</label>
-                                        <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="form-group">
-                                        <label for="porcentajeAvance">% de Avance</label>
-                                        <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="form-group">
-                                        <label for="horasConsumidas">Hs. Consumo</label>
-                                        <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="form-group">
-                                        <label for="horasAvances">Hs. Avances</label>
-                                        <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" />
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="NroOtImp">Nro Implementación</label>
-                                        <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" />
-                                    </div>
-                                </div>
-                                <div class="row mt-5">
-                                    <div class="col-md-4; d-flex; align-items-center">
-                                        <div class="form-group" style="font-size:12px;">
 
-                                            <input type="checkbox" class="form-check-input" id="premioAvance">
-                                            <label class="form-check-label" for="premioAvance">Premio por Avance</label>
+                        <!-- Sección de descripción y tabs -->
+                        <div style="padding-left:0px; font-size: 12px; padding-right:0px; " class="row mt-2 ">
+                            <div class="col-12" @* style="padding-left:0px;" *@>
+                                <!-- Contenedor para los tabs -->
+                                <div class="container" style="padding-left:0px; padding-right:0px;">
+                                    <!-- Navegación por tabs -->
+                                    <ul class="nav nav-tabs justify-content-start mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#descripcion">Descripción</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#avanceTrabajo">Avances del Trabajo</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#tiempos">Tiempos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#testing">Información de Testing</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#produccion">Puesta en Producción</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#archivoAdjunto">Archivo Adjunto</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#historialEstados">Historial Estados</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Contenido de los tabs -->
+                                    <div class="tab-content">
+                                        <div id="descripcion" class="tab-pane fade show active">
+                                            <!-- Barra de herramientas de formato de texto -->
+                                            <div class="toolbar">
+                                                <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
+                                                <select class="toolbar-select">
+                                                    <option value="sans-serif">Sans Serif</option>
+                                                    <option value="serif">Serif</option>
+                                                    <option value="monospace">Monospace</option>
+                                                </select>
+                                                <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
+                                                <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
+                                            </div>
 
-                                            <input type="checkbox" class="form-check-input" id="alcanceIndefinido">
-                                            <label class="form-check-label" for="alcanceIndefinido">Alcance Indefinido</label>
+                                            <textarea name="descripcion" rows="5" cols="220">Descripción...</textarea> @* <p>Descripción...</p> *@
 
+                                        </div>
+                                        <div id="avanceTrabajo" class="tab-pane fade">
+                                            <p>Contenido de avances del trabajo...</p>
+                                        </div>
+                                        <div id="tiempos" class="tab-pane fade">
+                                            <p>Contenido de tiempos...</p>
+                                        </div>
+                                        <div id="testing" class="tab-pane fade">
+                                            <p>Contenido de información de testing...</p>
+                                        </div>
+                                        <div id="produccion" class="tab-pane fade">
+                                            <p>Contenido de puesta en producción...</p>
+                                        </div>
+                                        <div id="archivoAdjunto" class="tab-pane fade">
+                                            <p>Contenido de archivo adjunto...</p>
+                                        </div>
+                                        <div id="historialEstados" class="tab-pane fade">
+                                            <p>Contenido del historial de estados...</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <!-- Botones de acciones -->
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
 
+                                <button class="btn  boton ">Imprimir</button>
+                                <button class="btn boton">Ver Documentación Digital</button>
+
+                                <!-- Agrupación de otros botones -->
+                                <div class="grupo-botones" style="font-size:12px;">
+                                    <button class="btn boton">Copiar Orden</button>
+                                    <button class="btn boton">Enviar Orden</button>
+                                    <button class="btn boton">Agregar</button>
+                                    <button class="btn boton">Modificar</button>
+                                    <button class="btn boton">Grabar</button>
+                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                             @* Sección de descripción y accordion
                             <!-- Segunda Tarjeta -->
@@ -461,28 +560,4 @@
                                 </div>
                             </div>*@
 
-                            <!-- Botones de acciones -->
-                            <div class="row mt-2">
-                                <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
-
-                                    <button class="btn  boton ">Imprimir</button>
-                                    <button class="btn boton">Ver Documentación Digital</button>
-
-                                    <!-- Agrupación de otros botones -->
-                                    <div class="grupo-botones" style="font-size:12px;">
-                                        <button class="btn boton">Copiar Orden</button>
-                                        <button class="btn boton">Enviar Orden</button>
-                                        <button class="btn boton">Agregar</button>
-                                        <button class="btn boton">Modificar</button>
-                                        <button class="btn boton">Grabar</button>
-                                        <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
-                                    </div>
-                                </div>
-                            </div>
-                        
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                           
