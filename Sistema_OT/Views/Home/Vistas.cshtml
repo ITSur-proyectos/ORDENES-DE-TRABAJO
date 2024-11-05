@@ -3,6 +3,7 @@
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+    var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
@@ -49,7 +50,7 @@
                                         </div>
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
-                                            <label for="sistema">Sistema</label>
+                                            <label for="Sistema">Sistema</label>
                                             <select class="form-control" style="font-size:12px;" id="Sistema" name="Sistema">
 
                                                 @if (nombresSistemas != null)
@@ -64,25 +65,23 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-1" style="font-size: 13px">
+                                    <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
-                                            <label for="proyecto">Proyecto</label>
-                                            <input type="text" class="form-control " style="font-size: 12px"  id="proyecto" placeholder="Ingrese" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2" style="font-size: 13px">
-                                        <div class="form-group">
-                                            <label for="proyecto"></label>
-                                            <input type="text" class="form-control " style="font-size: 12px"  id="proyecto" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1 d-flex align-items-end">
-                                        @* <div class="form-group"> *@
-                                            @* <label>&nbsp;</label> *@
-                                            <button type="button" class="btn boton" style="font-size: 11px">Buscar</button>
-                                        @* </div> *@
-                                    </div>
+                                            <label for="Proyecto">Proyecto</label>
+                                            <select class="form-control" style="font-size:12px;" id="Proyecto" name="Proyecto">
 
+                                                @if (nombresProyectos != null)
+                                                {
+                                                    <option value="-1">...</option>
+
+                                                    foreach (var proyecto in nombresProyectos)
+                                                    {
+                                                        <option value="@proyecto.Key">@proyecto.Value</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
                                     </div>
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
@@ -205,6 +204,7 @@
                             <table class="table table-bordered table-striped mb-0">
                                 <thead class="table-primary" style="border-collapse: collapse ;position: sticky; top: 0; z-index: 1;">
                                     <tr class="text-nowrap">
+                                        <th scope="col">N°</th>
                                         <th scope="col">OT N°</th>
                                         <th scope="col">Depende De</th>
                                         <th scope="col">Ot Impl.</th>
@@ -231,18 +231,20 @@
                                 <tbody class="table-grid">
                                     @if (OrdenesBuscadas != null)
                                     {
+                                        int num = 1;
                                         foreach (var orden in OrdenesBuscadas)
                                         {
                                             <tr>
-                                                
-                                                    @foreach (var item in orden)
+                                                <td>@num</td>
+                                                    @for (int i = 0; i < 21; i++)
                                                     {
-                                                    <td>
-                                                        <text>@item.Value<br /></text>
-                                                    </td>
+                                                        <td>
+                                                            <text>@orden.ElementAt(i).Value<br /></text>
+                                                        </td>
                                                     }
-                                                
+                                                @{num++;}
                                             </tr>
+                                            
                                         }
                                     }
                                 </tbody>
@@ -260,27 +262,27 @@
                         <div class="" style="width:415px">
                             <div class="form-group" style="padding-left: 0px">
                                 <label for="cantidadOT">Cantidad OT</label>
-                                <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" />
+                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
                             </div>
                         </div>
 
                         <div class="" style="width: 415px">
                             <div class="form-group">
                                 <label for="totalHorasEstimadas">Total de horas estimadas</label>
-                                <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" />
+                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
                             </div>
                         </div>
 
                         <div class="" style="width: 415px">
                             <div class="form-group" style="padding-right: 28px">
                                 <label for="totalHorasAvances">Total de horas avances</label>
-                                <input type="number" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" />
+                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-
+                    
 			</div>
 		</div>
     </div>    

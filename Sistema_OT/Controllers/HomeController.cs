@@ -22,14 +22,16 @@ namespace Sistema_OT.Controllers
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
         [HttpPost]
-        public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo)
+        public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
             //Añade el valor a los parametros de la sp si es que se ingresó
@@ -40,6 +42,10 @@ namespace Sistema_OT.Controllers
             if (Sistema != -1)
             {
                 parametros["@Sistema"] = Sistema;
+            }
+            if (Proyecto != -1)
+            {
+                parametros["@Proyecto"] = Proyecto;
             }
 
             if (estadoTrabajo != 0)
