@@ -196,46 +196,6 @@
                             <label>@* &nbsp; </label>
                             <button type="button" class="btn boton">🔍</button>  *@
                         </div>
-                        @*  <div style=" font-size: 12px" class="row mt-3">
-                        <div class="col-md-3">
-                        <div class="form-group">
-                        <label for="usuarioResponsable">Usuario Responsable</label>
-                        <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
-                        <!-- Opciones(se hace con la db) -->
-                        <option>...</option>
-                        @if (nombresUsuarios != null)
-                        {
-                        foreach (var usuario in nombresUsuarios)
-                        {
-                        <option value="@usuario.Key">@usuario.Value</option>
-                        }
-                        }
-                        </select>
-                        </div>
-                        </div>
-                        <div class="col-md-4">
-                        <div class="form-group">
-                        <label for="usuarioSolicitante">Usuario Solicitante</label>
-                        <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
-                        <!-- Opciones(se hace con la db) -->
-                        <option>...</option>
-                        @if (nombresUsuarios != null)
-                        {
-                        foreach (var usuario in nombresUsuarios)
-                        {
-                        <option value="@usuario.Key">@usuario.Value</option>
-                        }
-                        }
-                        </select>
-                        </div>
-                        </div>
-                        <div class="col-md-5">
-                        <div class="form-group">
-                        <label for="moduloPantalla">Módulo / Pantalla</label>
-                        <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
-                        </div>
-                        </div>
-                        </div> *@
 
                         <!-- Cuarta fila con Asunto y Solicitado Por -->
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
@@ -371,10 +331,12 @@
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
+                                                                    <th>Avance Trabajo</th>
+                                                                    <th>Descripción</th>
+                                                                    <th>Tipo Avance</th>
                                                                     <th>Fecha</th>
-                                                                    <th>Descripción del Avance</th>
-                                                                    <th>Estado</th>
-                                                                    <th>Acciones</th>
+                                                                    <th>Usuario</th>
+                                                                    <th>Tiempo Insumido(hs)</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -383,15 +345,17 @@
                                                                     <td>Completado el análisis inicial</td>
                                                                     <td>Completo</td>
                                                                     <td>
-                                                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                                                        <button class="btn btn-danger btn-sm">Eliminar</button>
+                                                                        
                                                                     </td>
                                                                 </tr>
                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <button class="btn boton mt-2">Agregar Avance</button>
+                                                    <button class="btn boton mt-2">Agregar</button>
+                                                    <button class="btn boton btn-sm">Modificar</button>
+                                                    <button class="btn btn-secondary btn-sm">Grabar</button>
+                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
                                                 </div>
                                             </div>
                                         </div>
