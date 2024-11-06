@@ -26,7 +26,7 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
-        [HttpPost]
+     
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {
             if ((string.IsNullOrWhiteSpace(nroOTD)) || (string.IsNullOrWhiteSpace(nroOTH)))
@@ -71,3 +71,6 @@ namespace Sistema_OT.Controllers
         }
     }
 }
+
+
+

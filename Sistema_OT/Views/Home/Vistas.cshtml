@@ -5,15 +5,15 @@
 
 
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
-    <div class="row">
+    <div class="row" style="padding-top: 30px">
         <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="btn btn secondary; card-header bg-info text-white">
-                <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
-            </div>
+            <div class="card shadow-sm">
+                <div class="btn btn secondary; card-header bg-info text-white">
+                    <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
+                </div>
 
                 <div class="card-body" style="font-size: 12px; padding: 0;">
-                    <ul class="nav-tabs">
+                    <ul class="nav-tabs" style="padding: 20px">
                         <li><button class="tab-btn active">Cliente/Sistema</button></li>
                         <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
                         <li><button class="tab-btn">Orden</button></li>
@@ -21,23 +21,23 @@
                     </ul>
                 </div>
 
-                
-                    <div class="container" >
-                        <div class="row">
-                            <div class="col-md-9" >
-                               <form method="post" action="/GestionOrdenes/SubmitForm">
-                                    <div class="row row-cols-3 g-3">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <form method="post" action="/GestionOrdenes/SubmitForm">
+                                <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
-                                            <div class="form-group" >
-                                                <label for="cliente">Cliente</label>
+                                        <div class="form-group" style="padding-top: 10px">
+                                            <label for="cliente">Cliente</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
                                                 <option>...</option>
                                             </select>
-                                            </div>
                                         </div>
+                                    </div>
                                     <div class="col-md-4" style="font-size: 13px">
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-top: 10px">
                                             <label for="sistema">Sistema</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
@@ -46,35 +46,36 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1" style="font-size: 13px">
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-top: 10px">
                                             <label for="proyecto">Proyecto</label>
-                                            <input type="text" class="form-control " style="font-size: 12px"  id="proyecto" placeholder="Ingrese" />
+                                            <input type="text" class="form-control " style="font-size: 12px" id="proyecto" placeholder="Ingrese" />
                                         </div>
                                     </div>
                                     <div class="col-md-2" style="font-size: 13px">
-                                        <div class="form-group">
+                                        <div class="form-group0 " style="padding-top: 10px">
                                             <label for="proyecto"></label>
-                                            <input type="text" class="form-control " style="font-size: 12px"  id="proyecto" />
+                                            <input type="text" class="form-control " style="font-size: 12px" id="proyecto" />
                                         </div>
                                     </div>
                                     <div class="col-md-1 d-flex align-items-end">
                                         @* <div class="form-group"> *@
-                                            @* <label>&nbsp;</label> *@
-                                            <button type="button" class="btn boton" style="font-size: 11px">Buscar</button>
+                                        @* <label>&nbsp;</label> *@
+                                        <button type="button" class="btn boton" style="font-size: 11px">Buscar</button>
                                         @* </div> *@
                                     </div>
 
-                                    </div>
+                                </div>
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
-                                            <div class="form-group">
-                                                <label for="Responsable">Responsable</label>
+                                        <div class="form-group">
+                                            <label for="Responsable">Responsable</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
                                                 <option>...</option>
                                             </select>
-                                            </div>
                                         </div>
+                                    </div>
+
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
@@ -84,6 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="moduloPantalla">Módulo / Pantalla</label>
@@ -92,19 +94,19 @@
                                     </div>
                                 </div>
 
-                                    <div class="row row-cols-3 g-3">
+                                <div class="row row-cols-3 g-3">
                                     <div class="col-md-4 " style="font-size: 13px">
-                                            <div class="form-group">
-                                                <label for="asunto">Asunto</label>
+                                        <div class="form-group">
+                                            <label for="asunto">Asunto</label>
                                             <input type="text" class="form-control" style="font-size: 12px" id="asunto" placeholder="Ingrese el asunto" />
-                                            </div>
                                         </div>
+                                    </div>
 
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="usuarioResponsable">Usuario Responsable</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
-                                            
+
                                                 <option>...</option>
                                             </select>
                                         </div>
@@ -112,17 +114,17 @@
 
 
                                     <div class="col-md-4" style="font-size: 13px">
-                                            <div class="form-group">
-                                                <label for="solicitadoPor">Solicitado Por</label>
+                                        <div class="form-group">
+                                            <label for="solicitadoPor">Solicitado Por</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
                                                 <option>...</option>
                                             </select>
-                                            </div>
                                         </div>
-                                    </div> 
-                               </form>
-                            </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
 
 
@@ -139,82 +141,82 @@
 
 
 
-                                <div class="row mt-4" style="padding-left: 0px">
-                                    <div class="col-12" style="padding-left: 0px">
-                               
-                                        <div class="container" style="font-size: 12px">
-                                           
-                                            <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
-                                                <li class="nav-item">
+                        <div class="row mt-4" style="padding-left: 0px">
+                            <div class="col-12" style="padding-left: 0px">
+
+                                <div class="container" style="font-size: 12px">
+
+                                    <ul class="nav nav-tabs justify-content-between mt-3" id="tabContent" style="border-bottom: 1px solid #dee2e6;">
+                                        <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#OT N">OT N°</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#aDependeDe">Depende De</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#Ot Impl.">Ot Impl.</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#FechaSolicitud">Fecha Solicitud</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#FechaVencimiento">Fecha Vencimiento</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#Clientes">Clientes</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#hSistemas">Sistemas</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#Proyectos">Proyectos</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#Responsable">Responsable</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-toggle="tab" href="#Estado">Estado</a>
-                                                </li>
-                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#aDependeDe">Depende De</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#Ot Impl.">Ot Impl.</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#FechaSolicitud">Fecha Solicitud</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#FechaVencimiento">Fecha Vencimiento</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#Clientes">Clientes</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#hSistemas">Sistemas</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#Proyectos">Proyectos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#Responsable">Responsable</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#Estado">Estado</a>
+                                        </li>
+                                    </ul>
 
                                     <div class="tab-content" style="font-size: 12px">
 
                                         <textarea name="descripcion" rows="5" cols="210">    N°</textarea>
-                                                
-                                                <div id="avanceTrabajo" class="tab-pane fade">
-                                                    <p>Dep</p>
-                                                </div>
-                                                <div id="tiempos" class="tab-pane fade">
-                                                    <p>Contenido de Ot. Impl</p>
-                                                </div>
-                                                <div id="testing" class="tab-pane fade">
-                                                    <p>Contenido de FechaSolicitud</p>
-                                                </div>
-                                                <div id="produccion" class="tab-pane fade">
-                                                    <p>Contenido de FechaVencimiento</p>
-                                                </div>
-                                                <div id="archivoAdjunto" class="tab-pane fade">
-                                                    <p>Contenido de Clientes</p>
-                                                </div>
-                                                <div id="historialEstados" class="tab-pane fade">
-                                                    <p>Contenido de Sistemas</p>
-                                                </div>
-                                                <div id="historialEstados" class="tab-pane fade">
-                                                    <p>Contenido de Proyecto</p>
-                                                </div>
-                                                <div id="historialEstados" class="tab-pane fade">
-                                                    <p>Contenido de Responsable</p>
-                                                    <div id="historialEstados" class="tab-pane fade">
-                                                    <p>Contenido de Estado</p>
-                                                </div>
-                                                </div>
+
+                                        <div id="avanceTrabajo" class="tab-pane fade">
+                                            <p>Dep</p>
+                                        </div>
+                                        <div id="tiempos" class="tab-pane fade">
+                                            <p>Contenido de Ot. Impl</p>
+                                        </div>
+                                        <div id="testing" class="tab-pane fade">
+                                            <p>Contenido de FechaSolicitud</p>
+                                        </div>
+                                        <div id="produccion" class="tab-pane fade">
+                                            <p>Contenido de FechaVencimiento</p>
+                                        </div>
+                                        <div id="archivoAdjunto" class="tab-pane fade">
+                                            <p>Contenido de Clientes</p>
+                                        </div>
+                                        <div id="historialEstados" class="tab-pane fade">
+                                            <p>Contenido de Sistemas</p>
+                                        </div>
+                                        <div id="historialEstados" class="tab-pane fade">
+                                            <p>Contenido de Proyecto</p>
+                                        </div>
+                                        <div id="historialEstados" class="tab-pane fade">
+                                            <p>Contenido de Responsable</p>
+                                            <div id="historialEstados" class="tab-pane fade">
+                                                <p>Contenido de Estado</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                        
+                            </div>
                         </div>
+
                     </div>
+                </div>
 
                 <div class="container-centered">
                     <div class="row justify-content-center">
@@ -240,9 +242,7 @@
                         </div>
                     </div>
                 </div>
-
-
-			</div>
-		</div>
-    </div>    
+            </div>
+        </div>
+    </div>
 </div>
