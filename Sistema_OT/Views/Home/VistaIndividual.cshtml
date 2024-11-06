@@ -434,7 +434,7 @@
                                             </div>
                                                 <div class="card-body">
                                                     @* <input type="file" class="form-control mb-2"> *@
-                                                    <form asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+                                                    <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
                                                         <div>
                                                             <label for="files">Selecciona archivos:</label>
                                                             <input type="file" id="files" name="files" multiple />
