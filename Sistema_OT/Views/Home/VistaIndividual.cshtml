@@ -433,7 +433,14 @@
                                                 </table>
                                             </div>
                                                 <div class="card-body">
-                                                    <input type="file" class="form-control mb-2">
+                                                    @* <input type="file" class="form-control mb-2"> *@
+                                                    <form asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+                                                        <div>
+                                                            <label for="files">Selecciona archivos:</label>
+                                                            <input type="file" id="files" name="files" multiple />
+                                                        </div>
+                                                        <button type="submit">Subir Archivos</button>
+                                                    </form>
                                                     <button class="btn boton btn-sm">Copiar</button>
                                                     <button class="btn boton btn-sm">Adjuntar</button>
                                                     <button class="btn btn-danger btn-sm">Quitar</button>
