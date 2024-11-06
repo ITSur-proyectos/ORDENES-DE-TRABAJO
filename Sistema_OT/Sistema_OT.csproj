@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Files\Imagenes\" />
     <Folder Include="Files\Documentos\" />
+    <Folder Include="Files\Otros\" />
     <Folder Include="Files\Videos\" />
   </ItemGroup>
 
