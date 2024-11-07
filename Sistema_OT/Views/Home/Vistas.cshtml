@@ -10,14 +10,14 @@
 
 
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
-    <div class="row" style="padding-top: 10px">
+    <div class="row" style="padding-top: 10px ">
         <div class="col-12" >
         <div class="card shadow-sm">
             <div class="btn btn secondary; card-header bg-info text-white" >
                 <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
             </div>
 
-                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px">
+                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px; padding-left: 22px">
                     <ul class="nav-tabs">
                         <li><button class="tab-btn active">Cliente/Sistema</button></li>
                         <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
@@ -198,6 +198,43 @@
                         </div>
                     </form>
 
+                    <div class="row" style="padding-top: 15px">
+                        <!-- Contenedor para "Fecha solicitud" -->
+                        <div class="col-md-6" >
+                            <div class="form-group">
+                                <label>Fecha solicitud:</label>
+                                <div class="row" style="padding-top: 15px">
+                                    <div class="col-6">
+                                        <label for="fechaSolicitudDesde">Desde</label>
+                                        <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="fechaSolicitudHasta">Hasta</label>
+                                        <input type="date" class="form-control" id="fechaSolicitudHasta" name="fechaSolicitudHasta">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contenedor para "Fecha vencimiento" -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Fecha vencimiento:</label>
+                                <div class="row" style="padding-top: 15px">
+                                    <div class="col-6" >
+                                        <label for="fechaVencimientoDesde">Desde</label>
+                                        <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="fechaVencimientoHasta">Hasta</label>
+                                        <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                     <div class="container mt-3" style="padding-top: 10px">
                         <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
@@ -258,22 +295,22 @@
 
 
                     <div class="container-centered" style="padding-top: 10px">
-                    <div class="row justify-content-center">
-                        <div class="" style="width:415px">
+                        <div class="row justify-content-center" style=" padding-bottom: 15px">
+                        <div class="" style="width:33%">
                             <div class="form-group" style="padding-left: 0px">
                                 <label for="cantidadOT">Cantidad OT</label>
                                     <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
                             </div>
                         </div>
 
-                        <div class="" style="width: 415px">
+                            <div class="" style="width:33%">
                             <div class="form-group">
                                 <label for="totalHorasEstimadas">Total de horas estimadas</label>
                                     <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
                             </div>
                         </div>
 
-                        <div class="" style="width: 415px; padding-bottom: 15px" >
+                            <div class="" style="width: 33%; ">
                             <div class="form-group" style="padding-right: 28px">
                                 <label for="totalHorasAvances">Total de horas avances</label>
                                     <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
