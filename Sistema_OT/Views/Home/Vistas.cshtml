@@ -1,18 +1,23 @@
 ﻿@{
     ViewData["Title"] = "Gestión de Órdenes";
+    var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+    var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+    var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+    var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
+    var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
 
 
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
-    <div class="row">
+    <div class="row" style="padding-top: 10px">
         <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="btn btn secondary; card-header bg-info text-white">
-                <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
-            </div>
+            <div class="card shadow-sm">
+                <div class="btn btn secondary; card-header bg-info text-white">
+                    <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
+                </div>
 
-                <div class="card-body" style="font-size: 12px; padding: 0;">
+                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px">
                     <ul class="nav-tabs">
                         <li><button class="tab-btn active">Cliente/Sistema</button></li>
                         <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
@@ -23,69 +28,107 @@
 
 
                 <div class="container">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <form method="post" action="/GestionOrdenes/SubmitForm">
+                    <form method="post" action="@Url.Action("Vistas", "Home")">
+                        <div class="row" style="padding-top: 15px">
+                            <div class="col-md-9">
+
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
-                                        <div class="form-group" style="padding-top: 10px">
+                                        <div class="form-group">
                                             <label for="cliente">Cliente</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
-
-                                                <option>...</option>
+                                            <select class="form-control" style="font-size:12px;" id="Cliente" name="Cliente">
+                                                <option value="-1">...</option>
+                                                @if (nombresClientes != null)
+                                                {
+                                                    foreach (var cliente in nombresClientes)
+                                                    {
+                                                        <option value="@cliente.Key">@cliente.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4" style="font-size: 13px">
-                                        <div class="form-group" style="padding-top: 10px">
-                                            <label for="sistema">Sistema</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                                        <div class="form-group">
+                                            <label for="Sistema">Sistema</label>
+                                            <select class="form-control" style="font-size:12px;" id="Sistema" name="Sistema">
 
-                                                <option>...</option>
+                                                @if (nombresSistemas != null)
+                                                {
+                                                    <option value="-1">...</option>
+
+                                                    foreach (var sistema in nombresSistemas)
+                                                    {
+                                                        <option value="@sistema.Key">@sistema.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-1" style="font-size: 13px">
-                                        <div class="form-group" style="padding-top: 10px">
-                                            <label for="proyecto">Proyecto</label>
-                                            <input type="text" class="form-control " style="font-size: 12px" id="proyecto" placeholder="Ingrese" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2" style="font-size: 13px">
-                                        <div class="form-group0 " style="padding-top: 10px">
-                                            <label for="proyecto"></label>
-                                            <input type="text" class="form-control " style="font-size: 12px" id="proyecto" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1 d-flex align-items-end">
-                                        @* <div class="form-group"> *@
-                                        @* <label>&nbsp;</label> *@
-                                        <button type="button" class="btn boton" style="font-size: 11px">Buscar</button>
-                                        @* </div> *@
-                                    </div>
+                                    <div class="col-md-4" style="font-size: 13px">
+                                        <div class="form-group">
+                                            <label for="Proyecto">Proyecto</label>
+                                            <select class="form-control" style="font-size:12px;" id="Proyecto" name="Proyecto">
 
+                                                @if (nombresProyectos != null)
+                                                {
+                                                    <option value="-1">...</option>
+
+                                                    foreach (var proyecto in nombresProyectos)
+                                                    {
+                                                        <option value="@proyecto.Key">@proyecto.Value</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="Responsable">Responsable</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
+                                            <select class="form-control" style="font-size:12px;" id="Responsable" name="Responsable">
 
-                                                <option>...</option>
+                                                @if (nombresUsuarios != null)
+                                                {
+                                                    <option value="">...</option>
+                                                    foreach (var usuario in nombresUsuarios)
+                                                    {
+                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
 
-                                                <option>...</option>
+
+                                            <select class="form-control" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
+                                                <option value="0">...</option>
+                                                <option value="1">Pendiente</option>
+                                                <option value="2">Entregado</option>
+                                                <option value="3">En desarrollo</option>
+                                                <option value="4">Terminado</option>
+                                                <option value="5">En produccion</option>
+                                                <option value="6">Anulada</option>
+                                                <option value="7">Facturada</option>
+                                                <option value="8">Bonificada</option>
+                                                <option value="9">Presupuesto enviado al cliente</option>
+                                                <option value="10">Prueba realizada OK</option>
+                                                <option value="11">Para revisar problemas en las pruebas</option>
+                                                <option value="12">Presupuesto aprobado</option>
+                                                <option value="13">Presupuesto asignado</option>
+                                                <option value="14">Presupuesto no aprobado</option>
+                                                <option value="15">Facturada(incluida abono)</option>
+                                                <option value="16">En proceso de presupuesto</option>
+                                                <option value="17">Presupuesto facturado</option>
+                                                <option value="18">Incluida en version</option>
                                             </select>
+
                                         </div>
                                     </div>
-
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="moduloPantalla">Módulo / Pantalla</label>
@@ -96,17 +139,17 @@
 
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4 " style="font-size: 13px">
-                                            <div class="form-group">
-                                                <label for="asunto">Asunto</label>
+                                        <div class="form-group">
+                                            <label for="asunto">Asunto</label>
                                             <input type="text" class="form-control" style="font-size: 12px" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
-                                            </div>
                                         </div>
+                                    </div>
 
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="usuarioResponsable">Solicitante</label>
                                             <select class="form-control" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
-                                                
+
                                                 @if (nombresUsuarios != null)
                                                 {
                                                     <option value="">...</option>
@@ -122,40 +165,41 @@
 
 
                                     <div class="col-md-4" style="font-size: 13px">
-                                            <div class="form-group">
-                                                <label for="solicitadoPor">Solicitado Por</label>
+                                        <div class="form-group">
+                                            <label for="solicitadoPor">Solicitado Por</label>
                                             <select class="form-control" style="font-size:12px;" id="Solicitante" name="Solicitante">
 
-                                                <option>...</option>
+                                                @if (nombresUsuarios != null)
+                                                {
+                                                    <option value="">...</option>
+                                                    foreach (var usuario in nombresUsuarios)
+                                                    {
+                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-
-
-
-
-                        <div class="col-md-3" style="width: 282px">
-
-                            <div class="card border-dark mt-4" style="height: 130px">
-
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="font-size: 10px;">
-
-                                    <h5 class="card-title mb-2" style="font-size: 15px;"> 🔍Búsqueda</h5>
-                                    <button type="submit" class="btn boton mb-1 w-75" style="font-size: 11px;">Buscar</button>
-                                    <button type="reset" class="btn boton w-75" style="font-size: 11px;">Limpiar</button>
-
-                                </div>
 
                             </div>
 
-                        </div>
+
+
+
+                            <div class="col-md-3" style="width: 282px">
+                                <div class="card border-dark mt-4" style="height: 130px">
+                                    <div class="card-body d-flex flex-column justify-content-center align-items-center" style="font-size: 10px;">
+                                        <h5 class="card-title mb-2" style="font-size: 15px;"> 🔍Búsqueda</h5>
+                                        <button type="submit" class="btn boton mb-1 w-75" style="font-size: 11px;">Buscar</button>
+                                        <button type="reset" class="btn boton w-75" style="font-size: 11px;">Limpiar</button>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
 
 
-                    <div class="container mt-3">
+                    <div class="container mt-3" style="padding-top: 10px">
                         <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                             <table class="table table-bordered table-striped mb-0">
                                 <thead class="table-primary" style="border-collapse: collapse ;position: sticky; top: 0; z-index: 1;">
@@ -192,15 +236,17 @@
                                         {
                                             <tr>
                                                 <td>@num</td>
-                                                    @for (int i = 0; i < 21; i++)
-                                                    {
-                                                        <td>
-                                                            <text>@orden.ElementAt(i).Value<br /></text>
-                                                        </td>
-                                                    }
-                                                @{num++;}
+                                                @for (int i = 0; i < 21; i++)
+                                                {
+                                                    <td>
+                                                        <text>@orden.ElementAt(i).Value<br /></text>
+                                                    </td>
+                                                }
+                                                @{
+                                                    num++;
+                                                }
                                             </tr>
-                                            
+
                                         }
                                     }
                                 </tbody>
@@ -208,38 +254,38 @@
                         </div>
                     </div>
 
-                  
-                     
-                        
-                   
 
-                    <div class="row justify-content-center">
 
-                        <div class="" style="width:402px">
-                            <div class="form-group" style="padding-left: 0px">
-                                <label for="cantidadOT">Cantidad OT</label>
-                                <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" />
+
+
+
+                    <div class="container-centered" style="padding-top: 10px">
+                        <div class="row justify-content-center">
+                            <div class="" style="width:415px">
+                                <div class="form-group" style="padding-left: 0px">
+                                    <label for="cantidadOT">Cantidad OT</label>
+                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="" style="width: 402px">
-                            <div class="form-group">
-                                <label for="totalHorasEstimadas">Total de horas estimadas</label>
-                                <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" />
+                            <div class="" style="width: 415px">
+                                <div class="form-group">
+                                    <label for="totalHorasEstimadas">Total de horas estimadas</label>
+                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="" style="width: 402px">
-                            <div class="form-group" style="padding-right: 28px">
-                                <label for="totalHorasAvances">Total de horas avances</label>
-                                <input type="number" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" />
+                            <div class="" style="width: 415px; padding-bottom: 15px">
+                                <div class="form-group" style="padding-right: 28px">
+                                    <label for="totalHorasAvances">Total de horas avances</label>
+                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                    
-			</div>
-		</div>
-    </div>    
-</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
