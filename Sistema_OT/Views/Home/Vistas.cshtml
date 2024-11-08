@@ -200,9 +200,9 @@
 
 
                     <div class="container mt-3">
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <div class="table-responsive" style="max-height: 270px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 5px;">
                             <table class="table table-bordered table-striped mb-0">
-                                <thead class="table-primary" style="border-collapse: collapse ;position: sticky; top: 0; z-index: 1;">
+                                <thead class="table-primary" style="border-collapse: collapse; position: sticky; top: 0; z-index: 1;">
                                     <tr class="text-nowrap text-center">
                                         <th scope="col">N°</th>
                                         <th scope="col">OT N°</th>
@@ -223,12 +223,13 @@
                                         <th scope="col">Prioridad</th>
                                         <th scope="col">Proyecto</th>
                                         <th scope="col">Premio por Avance</th>
-                                        <th scope="col">Alcanze Indefinido</th>
+                                        <th scope="col">Alcance Indefinido</th>
                                         <th scope="col">Fecha Vencimiento</th>
                                         <th scope="col">Clientes y Usuarios</th>
+                                    </tr>
                                 </thead>
-                                <tbody class="table-grid">
-                                    @if (OrdenesBuscadas != null)
+                                <tbody class="table-grid" style="height: 220px;">
+                                    @if (OrdenesBuscadas != null && OrdenesBuscadas.Any())
                                     {
                                         int num = 1;
                                         foreach (var orden in OrdenesBuscadas)
@@ -260,6 +261,7 @@
                                             num++;
                                         }
                                     }
+                                   
                                 </tbody>
                             </table>
                         </div>
