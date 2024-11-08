@@ -107,7 +107,22 @@ namespace Sistema_OT.Controllers
         {
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros["@NroOrdenTrabajo"] = orden;
+            // Hacer la consulta si se ingresó al menos 1 parametro
+            if (parametros.Count > 0)
+            {
+                string consulta = "sp_ConsultarOrdenTrabajoIndividual";
+                List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
+                if (ordenes.Count > 0)
+                {
+                    ViewData["Ordenes"] = ordenes;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No llenaste los formularios.");
+            }
+            return View();
         }
 
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
