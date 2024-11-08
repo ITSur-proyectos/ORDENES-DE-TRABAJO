@@ -112,8 +112,14 @@ namespace Sistema_OT.Models
             }
             return nombres;
         }
+
+        // Método para consultar una orden de trabajo individual usando el Stored Procedure `sp_ConsultarOrdenTrabajoIndividual`
+        public static Dictionary<string, object> ConsultarOrdenTrabajoIndividual(decimal nroOrdenTrabajo)
+        {
+            Dictionary<string, object> ordenTrabajo = new Dictionary<string, object>();
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
+
+        } 
     }
-
-    
-
 }
