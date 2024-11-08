@@ -138,7 +138,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyectos"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyecto"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -280,19 +280,19 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" />
                                 </div>
                             </div>
                             <div class="col-md-2">
