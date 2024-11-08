@@ -107,7 +107,7 @@ namespace Sistema_OT.Controllers
         {
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros["@NroOrdenTrabajo"] = orden;
-            // Hacer la consulta si se ingresó al menos 1 parametro
+            // Hacer la consulta si se ingresó parametro
             if (parametros.Count > 0)
             {
                 string consulta = "sp_ConsultarOrdenTrabajoIndividual";
