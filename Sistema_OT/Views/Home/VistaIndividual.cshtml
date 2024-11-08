@@ -4,6 +4,7 @@
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+    var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
 }
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -25,7 +26,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Inicio del formulario-->
-                    <form method="post" action="/Individual/SubmitForm">
+                    <form method="post" action="@Url.Action("VistaIndividual", "Home")">
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -246,7 +247,7 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
                             <div class="col-md-5">
