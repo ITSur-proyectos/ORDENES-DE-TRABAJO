@@ -236,54 +236,69 @@
 
 
 
-                    <div class="container mt-3" style="padding-top: 10px">
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <div class="container mt-3">
+                        <div class="table-responsive" style="max-height: 270px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 5px;">
                             <table class="table table-bordered table-striped mb-0">
-                                <thead class="table-primary" style="border-collapse: collapse ;position: sticky; top: 0; z-index: 1;">
-                                    <tr class="text-nowrap">
+                                <thead class="table-primary" style="border-collapse: collapse; position: sticky; top: 0; z-index: 1;">
+                                    <tr class="text-nowrap text-center">
                                         <th scope="col">N°</th>
                                         <th scope="col">OT N°</th>
                                         <th scope="col">Depende De</th>
                                         <th scope="col">Ot Impl.</th>
                                         <th scope="col">Fecha Solicitud</th>
-                                        <th scope="col">Fecha Vencimiento</th>
-                                        <th scope="col">Clientes</th>
-                                        <th scope="col">Sistemas</th>
-                                        <th scope="col">Proyectos</th>
+                                        <th scope="col" style="min-width: 200px;">Clientes</th>
+                                        <th scope="col" style="min-width: 200px;">Sistemas</th>
+                                        <th scope="col" style="min-width: 200px;">Proyectos</th>
                                         <th scope="col">Responsable</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Modulo</th>
-                                        <th scope="col">Asunto</th>
+                                        <th scope="col" style="min-width: 150px;">Estado</th>
+                                        <th scope="col" style="min-width: 300px;">Modulo</th>
+                                        <th scope="col" style="min-width: 400px;">Asunto</th>
                                         <th scope="col">Porcentaje Avance</th>
                                         <th scope="col">Horas Estimadas</th>
                                         <th scope="col">Horas Consumidas</th>
                                         <th scope="col">Total Horas Avance</th>
-                                        <th scope="col">Clientes y Usuarios</th>
                                         <th scope="col">Prioridad</th>
                                         <th scope="col">Proyecto</th>
                                         <th scope="col">Premio por Avance</th>
-                                        <th scope="col">Alcanze Indefinido</th>
+                                        <th scope="col">Alcance Indefinido</th>
+                                        <th scope="col">Fecha Vencimiento</th>
+                                        <th scope="col">Clientes y Usuarios</th>
                                     </tr>
                                 </thead>
-                                <tbody class="table-grid">
-                                    @if (OrdenesBuscadas != null)
+                                <tbody class="table-grid" style="height: 220px;">
+                                    @if (OrdenesBuscadas != null && OrdenesBuscadas.Any())
                                     {
                                         int num = 1;
                                         foreach (var orden in OrdenesBuscadas)
                                         {
-                                            <tr>
+                                            <tr style="font-size: 11px;">
                                                 <td>@num</td>
-                                                    @for (int i = 0; i < 21; i++)
-                                                    {
-                                                        <td>
-                                                            <text>@orden.ElementAt(i).Value<br /></text>
-                                                        </td>
-                                                    }
-                                                @{num++;}
+                                                <td>@orden["NroOrdenTrabajo"]</td>
+                                                <td>@orden["DependeDe"]</td>
+                                                <td>@orden["NroOtImplementacion"]</td>
+                                                <td>@orden["FechaSolicitud"]</td>
+                                                <td>@orden["Clientes"]</td>
+                                                <td>@orden["Sistemas"]</td>
+                                                <td>@orden["Proyectos"]</td>
+                                                <td>@orden["UserIDResponsable"]</td>
+                                                <td>@orden["Estados_Trabajo"]</td>
+                                                <td>@orden["Modulo"]</td>
+                                                <td>@orden["Asunto"]</td>
+                                                <td>@orden["PorcentajeAvance"]</td>
+                                                <td>@orden["CantidadHorasEstimadas"]</td>
+                                                <td>@orden["CantidadHorasConsumidas"]</td>
+                                                <td>@orden["TotalHorasAvances"]</td>
+                                                <td>@orden["Prioridad"]</td>
+                                                <td>@orden["Proyecto"]</td>
+                                                <td>@orden["PremioPorAvance"]</td>
+                                                <td>@orden["AlcanceIndefinido"]</td>
+                                                <td>@orden["FechaVencimiento"]</td>
+                                                <td>@orden["Clientes_Usuarios"]</td>
                                             </tr>
-                                            
+                                            num++;
                                         }
                                     }
+                                   
                                 </tbody>
                             </table>
                         </div>
