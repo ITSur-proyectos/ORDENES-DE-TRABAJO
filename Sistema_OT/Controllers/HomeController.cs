@@ -115,7 +115,7 @@ namespace Sistema_OT.Controllers
 
                 if (ordenes.Count > 0)
                 {
-                    ViewData["Ordenes"] = ordenes;
+                    ViewData["Orden"] = ordenes;
                 }
             }
             else

@@ -48,7 +48,7 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="dependencia" class="text-nowrap">Depende</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
                                 </div>
                             </div>
                             
@@ -56,7 +56,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
