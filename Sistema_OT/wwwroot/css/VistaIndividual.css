@@ -1,12 +1,17 @@
-﻿/* Estilo para los tabs */
-.nav-tabs .nav-link {
-    border-radius: 0; /* Sin bordes redondeados*/ 
+﻿body {
+    background-color: #f9f9f9 ; /* Fondo oscuro */
+    color: black; /* Texto blanco */
 }
+
+.card {
+    background-color: #f9f9f9; /* Color de fondo para las tarjetas */
+}
+
 
 /* Estilo para la cabecera del formulario */
 .card-header {
-    background-color: #17a2b8;  
-    color: white;  
+    background-color: #17a2b8;
+    color: white;
 }
 
 /* Ajuste de márgenes y alineación */
@@ -18,9 +23,12 @@
     background-color: #ff6a00;
     color: #ffffff;
     width: 100%;
+
 }
+
     .boton-busqueda:hover {
         background-color: #ff9800;
+        color: white;
     }
 
 /* Estilo general para los botones */
@@ -29,21 +37,22 @@
     color: #ffffff;
 }
 
-/*     Hover para los botones */
+    /*     Hover para los botones */
     .boton:hover {
         background-color: #ff9800;
+        color: white;
     }
 
 /* Estilo diferente para el botón de cancelar */
 .boton-cancelar {
     background-color: rgb(230, 0, 0);
     color: #ffffff;
-    
 }
 
-/*     Hover para el botón de cancelar */
+    /*     Hover para el botón de cancelar */
     .boton-cancelar:hover {
         background-color: rgb(170, 32, 32);
+        color: white;
     }
 
 /* Estilos generales para la barra de herramientas */
@@ -54,7 +63,6 @@
     background-color: #f9f9f9 !important;
     border-radius: 5px !important;
     margin-bottom: 15px !important;
-
 }
 
 /* Estilos minimalistas para los botones */
@@ -94,5 +102,6 @@
 .toolbar-btn i {
     pointer-events: none !important; /* Para evitar que los íconos afecten los clics */
 }
+
 
 
