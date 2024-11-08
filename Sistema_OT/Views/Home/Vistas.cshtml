@@ -1,24 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Gestión de Órdenes";
+
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
+
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
 
 
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
-    <div class="row" style="padding-top: 10px">
+    <div class="row" style="padding-top: 10px ">
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
                 </div>
 
-                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px">
-
+                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px; padding-left: 22px">
                     <ul class="nav-tabs">
                         <li><button class="tab-btn active">Cliente/Sistema</button></li>
                         <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
@@ -28,99 +32,88 @@
                 </div>
 
 
-                
-                    <div class="container" >
+                <div class="container">
                     <form method="post" action="@Url.Action("Vistas", "Home")">
-                        <div class="row" style="padding-top: 15px">
-                            <div class="col-md-9" >
-                               
-                                    <div class="row row-cols-3 g-3">
+                        <div class="row">
+                            <div class="col-md-9">
+
+                                <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
-                                            <div class="form-group" >
-                                                <label for="cliente">Cliente</label>
+                                        <div class="form-group">
+                                            <label for="cliente">Cliente</label>
                                             <select class="form-control" style="font-size:12px;" id="Cliente" name="Cliente">
                                                 <option value="-1">...</option>
                                                 @if (nombresClientes != null)
+
                                                 {
+
                                                     foreach (var cliente in nombresClientes)
+
                                                     {
                                                         <option value="@cliente.Key">@cliente.Value</option>
                                                     }
+
                                                 }
                                             </select>
-                                            </div>
                                         </div>
+                                    </div>
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="Sistema">Sistema</label>
                                             <select class="form-control" style="font-size:12px;" id="Sistema" name="Sistema">
 
                                                 @if (nombresSistemas != null)
+
                                                 {
                                                     <option value="-1">...</option>
 
                                                     foreach (var sistema in nombresSistemas)
+
                                                     {
                                                         <option value="@sistema.Key">@sistema.Value</option>
-
                                                     }
+
                                                 }
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4" style="font-size: 13px">
-
-                                        <div class="form-group">
-                                            <label for="Sistema">Sistema</label>
-                                            <select class="form-control" style="font-size:12px;" id="Sistema" name="Sistema">
-
-                                                @if (nombresSistemas != null)
-                                                {
-                                                    <option value="-1">...</option>
-
-                                                    foreach (var sistema in nombresSistemas)
-                                                    {
-                                                        <option value="@sistema.Key">@sistema.Value</option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4" style="font-size: 13px">
-
                                         <div class="form-group">
                                             <label for="Proyecto">Proyecto</label>
                                             <select class="form-control" style="font-size:12px;" id="Proyecto" name="Proyecto">
 
                                                 @if (nombresProyectos != null)
+
                                                 {
                                                     <option value="-1">...</option>
 
                                                     foreach (var proyecto in nombresProyectos)
+
                                                     {
                                                         <option value="@proyecto.Key">@proyecto.Value</option>
                                                     }
+
                                                 }
                                             </select>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4" style="font-size: 13px">
-
                                         <div class="form-group">
                                             <label for="Responsable">Responsable</label>
-
                                             <select class="form-control" style="font-size:12px;" id="Responsable" name="Responsable">
 
                                                 @if (nombresUsuarios != null)
+
                                                 {
                                                     <option value="">...</option>
                                                     foreach (var usuario in nombresUsuarios)
+
                                                     {
                                                         <option value="@usuario.Value">@usuario.Value</option>
                                                     }
+
                                                 }
                                             </select>
                                         </div>
@@ -128,7 +121,6 @@
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
-
 
 
                                             <select class="form-control" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
@@ -165,11 +157,9 @@
 
                                 <div class="row row-cols-3 g-3">
                                     <div class="col-md-4 " style="font-size: 13px">
-
                                         <div class="form-group">
                                             <label for="asunto">Asunto</label>
                                             <input type="text" class="form-control" style="font-size: 12px" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
-
                                         </div>
                                     </div>
 
@@ -179,13 +169,16 @@
                                             <select class="form-control" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
 
                                                 @if (nombresUsuarios != null)
+
                                                 {
                                                     <option value="">...</option>
 
                                                     foreach (var usuario in nombresUsuarios)
+
                                                     {
                                                         <option value="@usuario.Value">@usuario.Value</option>
                                                     }
+
                                                 }
                                             </select>
                                         </div>
@@ -195,43 +188,45 @@
                                     <div class="col-md-4" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="solicitadoPor">Solicitado Por</label>
-
-
                                             <select class="form-control" style="font-size:12px;" id="Solicitante" name="Solicitante">
 
                                                 @if (nombresUsuarios != null)
+
                                                 {
                                                     <option value="">...</option>
                                                     foreach (var usuario in nombresUsuarios)
+
                                                     {
                                                         <option value="@usuario.Value">@usuario.Value</option>
                                                     }
+
                                                 }
                                             </select>
                                         </div>
-
                                     </div>
                                 </div>
 
+                            </div>
 
 
 
 
                             <div class="col-md-3" style="width: 282px">
-                                <div class="card border-dark mt-4" style="height: 130px">
-                                    <div class="card-body d-flex flex-column justify-content-center align-items-center" style="font-size: 10px;">
-                                        <h5 class="card-title mb-2" style="font-size: 15px;"> 🔍Búsqueda</h5>
-                                        <button type="submit" class="btn boton mb-1 w-75" style="font-size: 11px;">Buscar</button>
-                                        <button type="reset" class="btn boton w-75" style="font-size: 11px;">Limpiar</button>
-                                    </div>
+
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="font-size: 10px; padding-top: 30px">
+
+                                    <button type="submit" class="btn boton mb-1 w-75" style="font-size: 11px;">Buscar</button>
+                                    <button type="reset" class="btn boton w-75" style="font-size: 11px;">Limpiar</button>
                                 </div>
                             </div>
-
+                        </div>
                     </form>
 
+
+
                     <div class="row" style="padding-top: 15px">
-                        <!-- Contenedor para "Fecha solicitud" -->
-                        <div class="col-md-6" >
+
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Fecha solicitud:</label>
                                 <div class="row" style="padding-top: 15px">
@@ -246,12 +241,12 @@
                                 </div>
                             </div>
                         </div>
-                       <!-- Contenedor para "Fecha vencimiento" -->
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Fecha vencimiento:</label>
                                 <div class="row" style="padding-top: 15px">
-                                    <div class="col-6" >
+                                    <div class="col-6">
                                         <label for="fechaVencimientoDesde">Desde</label>
                                         <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
                                     </div>
@@ -261,65 +256,8 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
-
-
-                    <div class="container mt-3" style="padding-top: 10px">
-                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                            <table class="table table-bordered table-striped mb-0">
-                                <thead class="table-primary" style="border-collapse: collapse ;position: sticky; top: 0; z-index: 1;">
-                                    <tr class="text-nowrap">
-                                        <th scope="col">N°</th>
-                                        <th scope="col">OT N°</th>
-                                        <th scope="col">Depende De</th>
-                                        <th scope="col">Ot Impl.</th>
-                                        <th scope="col">Fecha Solicitud</th>
-                                        <th scope="col">Fecha Vencimiento</th>
-                                        <th scope="col">Clientes</th>
-                                        <th scope="col">Sistemas</th>
-                                        <th scope="col">Proyectos</th>
-                                        <th scope="col">Responsable</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Modulo</th>
-                                        <th scope="col">Asunto</th>
-                                        <th scope="col">Porcentaje Avance</th>
-                                        <th scope="col">Horas Estimadas</th>
-                                        <th scope="col">Horas Consumidas</th>
-                                        <th scope="col">Total Horas Avance</th>
-                                        <th scope="col">Clientes y Usuarios</th>
-                                        <th scope="col">Prioridad</th>
-                                        <th scope="col">Proyecto</th>
-                                        <th scope="col">Premio por Avance</th>
-                                        <th scope="col">Alcanze Indefinido</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-grid">
-                                    @if (OrdenesBuscadas != null)
-                                    {
-                                        int num = 1;
-                                        foreach (var orden in OrdenesBuscadas)
-                                        {
-                                            <tr>
-                                                <td>@num</td>
-                                                @for (int i = 0; i < 21; i++)
-                                                {
-                                                    <td>
-                                                        <text>@orden.ElementAt(i).Value<br /></text>
-                                                    </td>
-                                                }
-                                                @{
-                                                    num++;
-                                                }
-                                            </tr>
-
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-          
 
 
 
@@ -354,9 +292,13 @@
                                 </thead>
                                 <tbody class="table-grid" style="height: 220px;">
                                     @if (OrdenesBuscadas != null && OrdenesBuscadas.Any())
+
                                     {
+
                                         int num = 1;
+
                                         foreach (var orden in OrdenesBuscadas)
+
                                         {
                                             <tr style="font-size: 11px;">
                                                 <td>@num</td>
@@ -383,43 +325,49 @@
                                                 <td>@orden["Clientes_Usuarios"]</td>
                                             </tr>
                                             num++;
+
                                         }
+
                                     }
-                                   
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div class="container-centered" style="padding-top: 10px">
 
-                        <div class="row justify-content-center">
-                            <div class="" style="width:415px">
+
+
+
+
+
+                    <div class="container-centered" style="padding-top: 10px">
+                        <div class="row justify-content-center" style=" padding-bottom: 15px">
+                            <div class="" style="width:33%">
                                 <div class="form-group" style="padding-left: 0px">
                                     <label for="cantidadOT">Cantidad OT</label>
                                     <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
                                 </div>
+                            </div>
 
-
-                            <div class="" style="width: 415px">
+                            <div class="" style="width:33%">
                                 <div class="form-group">
                                     <label for="totalHorasEstimadas">Total de horas estimadas</label>
                                     <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
                                 </div>
-
                             </div>
 
-
                             <div class="" style="width: 33%; ">
-                            <div class="form-group" style="padding-right: 28px">
-                                <label for="totalHorasAvances">Total de horas avances</label>
+                                <div class="form-group" style="padding-right: 28px">
+                                    <label for="totalHorasAvances">Total de horas avances</label>
                                     <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
-
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-
+</div>
