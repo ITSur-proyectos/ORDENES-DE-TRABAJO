@@ -34,7 +34,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
-            //Añade el valor a los parametros de la sp si es que se ingresó
+            //AÃ±ade el valor a los parametros de la sp si es que se ingresÃ³
             if (Cliente != -1)
             {
                 parametros["@Cliente"] = Cliente;
@@ -68,7 +68,7 @@ namespace Sistema_OT.Controllers
             {
                 parametros["@Modulo"] = modulo;
             }
-            // Hacer la consulta si se ingresó al menos 1 parametro
+            // Hacer la consulta si se ingresÃ³ al menos 1 parametro
             if (parametros.Count > 0)
             {
                 string consulta = "sp_BuscarOrdenesTrabajo";
@@ -91,7 +91,7 @@ namespace Sistema_OT.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult VistaIndividual(string activeSection = "descripcion")
         {
@@ -144,3 +144,6 @@ namespace Sistema_OT.Controllers
         }
     }
 }
+
+
+

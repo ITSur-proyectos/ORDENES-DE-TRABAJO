@@ -1,6 +1,4 @@
-﻿
-
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 namespace Sistema_OT.Services
 {
     class ConexionDB
