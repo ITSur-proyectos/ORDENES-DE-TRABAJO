@@ -119,7 +119,13 @@ namespace Sistema_OT.Models
             Dictionary<string, object> ordenTrabajo = new Dictionary<string, object>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
+            using (SqlCommand command = new SqlCommand("sp_ConsultarOrdenTrabajoIndividual", conexionDB.con))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@P_NroOrdenTrabajo", nroOrdenTrabajo); // Parámetro del SP
 
-        } 
+
+        }
+    
     }
 }
