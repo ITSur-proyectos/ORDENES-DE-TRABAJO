@@ -113,39 +113,7 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
-        // Método para consultar una orden de trabajo individual usando el Stored Procedure `sp_ConsultarOrdenTrabajoIndividual`
-        public static Dictionary<string, object> ConsultarOrdenTrabajoIndividual(decimal nroOrdenTrabajo)
-        {
-            Dictionary<string, object> ordenTrabajo = new Dictionary<string, object>();
-            ConexionDB conexionDB = new ConexionDB();
-            conexionDB.AbrirConexion();
-            using (SqlCommand command = new SqlCommand("sp_ConsultarOrdenTrabajoIndividual", conexionDB.con))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@P_NroOrdenTrabajo", nroOrdenTrabajo); // Parámetro del SP
-                try
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                string columnName = reader.GetName(i);
-                                object value = reader.IsDBNull(i) ? "" : reader.GetValue(i);
-                                ordenTrabajo[columnName] = value;
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Hubo un error al ejecutar el Stored Procedure: " + e.ToString());
-                }
-            }
-
-            return ordenTrabajo;
-        }
+     
         
     
     }

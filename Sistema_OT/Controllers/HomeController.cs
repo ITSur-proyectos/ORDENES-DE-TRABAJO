@@ -92,6 +92,7 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
+
         [HttpGet]
         public IActionResult VistaIndividual(string activeSection = "descripcion")
         {
@@ -100,6 +101,13 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             return View();
+        }
+        [HttpPost]
+        public IActionResult VistaIndividual(int orden)
+        {
+            Dictionary<string, object> parametros = new Dictionary<string, object>();
+            parametros["@NroOrdenTrabajo"] = orden;
+
         }
 
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
