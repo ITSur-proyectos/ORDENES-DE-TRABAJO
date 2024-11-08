@@ -63,7 +63,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
@@ -138,7 +138,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyectos"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
