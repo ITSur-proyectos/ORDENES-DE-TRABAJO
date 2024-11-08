@@ -123,9 +123,18 @@ namespace Sistema_OT.Models
             {
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@P_NroOrdenTrabajo", nroOrdenTrabajo); // Parámetro del SP
-
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                string columnName = reader.GetName(i);
 
         }
+        
     
     }
 }
