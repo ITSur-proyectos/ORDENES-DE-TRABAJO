@@ -92,6 +92,7 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
+
         [HttpGet]
         public IActionResult VistaIndividual(string activeSection = "descripcion")
         {
@@ -99,6 +100,28 @@ namespace Sistema_OT.Controllers
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult VistaIndividual(int orden)
+        {
+            Dictionary<string, object> parametros = new Dictionary<string, object>();
+            parametros["@NroOrdenTrabajo"] = orden;
+            // Hacer la consulta si se ingresó parametro
+            if (parametros.Count > 0)
+            {
+                string consulta = "sp_ConsultarOrdenTrabajoIndividual";
+                List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+
+                if (ordenes.Count > 0)
+                {
+                    ViewData["Orden"] = ordenes;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No llenaste los formularios.");
+            }
             return View();
         }
 
