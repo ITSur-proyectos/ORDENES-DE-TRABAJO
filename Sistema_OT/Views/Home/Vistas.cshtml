@@ -35,13 +35,13 @@
                 <div class="container">
                     <form method="post" action="@Url.Action("Vistas", "Home")">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
 
                                 <div class="row row-cols-6">
-                                    <div class="col-md-3" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
+                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="cliente">Cliente</label>
-                                            <select class="form-control" style="font-size:12px;" id="Cliente" name="Cliente">
+                                            <select class="form-control " style="font-size:12px; height: 38px;" id="Cliente" name="Cliente">
                                                 <option value="-1">...</option>
                                                 @if (nombresClientes != null)
 
@@ -57,10 +57,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 13px; padding-top: 10px">
+
+                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
                                             <label for="Sistema">Sistema</label>
-                                            <select class="form-control" style="font-size:12px;" id="Sistema" name="Sistema">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Sistema" name="Sistema">
 
                                                 @if (nombresSistemas != null)
 
@@ -77,10 +78,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 13px; padding-top: 10px">
+
+                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
                                             <label for="Proyecto">Proyecto</label>
-                                            <select class="form-control" style="font-size:12px;" id="Proyecto" name="Proyecto">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Proyecto" name="Proyecto">
 
                                                 @if (nombresProyectos != null)
 
@@ -97,14 +99,16 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
+
+                                    <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
                                         <div class="form-group">
                                             <label for="fechaSolicitud" class="d-block mb-1">Fecha</label>
                                             <label for="fechaSolicitud" class="d-block mt-1">Solicitud</label>
 
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
+
+                                    <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
                                         <div class="form-group">
                                             <label for="fechaVencimiento" class="d-block mb-1">Fecha</label>
                                             <label for="fechaVencimiento" class="d-block mt-1">Vencimiento</label>
@@ -116,10 +120,10 @@
 
                                 <div class="row row-cols-5 g-5">
 
-                                    <div class="col-md-3" style="font-size: 13px; padding-left: 20px">
+                                    <div class="col-md-2" style="font-size: 13px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="Responsable">Responsable</label>
-                                            <select class="form-control" style="font-size:12px;" id="Responsable" name="Responsable">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
 
                                                 @if (nombresUsuarios != null)
 
@@ -135,12 +139,12 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 13px">
+                                    <div class="col-md-2" style="font-size: 13px; ">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
 
 
-                                            <select class="form-control" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="estadoTrabajo" name="estadoTrabajo">
                                                 <option value="0">...</option>
                                                 <option value="1">Pendiente</option>
                                                 <option value="2">Entregado</option>
@@ -164,32 +168,36 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 13px">
-                                        <div class="form-group">
+                                    <div class="col-md-2" style="font-size: 13px">
+                                        <div class="form-group ">
                                             <label for="moduloPantalla">Módulo / Pantalla</label>
-                                            <input type="text" class="form-control " style="font-size: 12px" id="moduloPantalla" name="modulo" placeholder="Ingrese módulo/pantalla" />
+                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="moduloPantalla" name="modulo" placeholder="Ingrese módulo/pantalla" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3" style="font-size: 13px">
+                                    <div class="col-md-2" style="font-size: 13px">
                                         <label for="fechaSolicitudDesde">Desde</label>
                                         <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde">
                                     </div>
+                                    <div class="col-md-2" style="font-size: 13px">                                    
+                                    <label for="fechaVencimientoDesde">Desde</label>
+                                    <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
+                                    </div>
                                 </div>
-
+                                
 
 
                                 <div class="row row-cols-3 g-3">
-                                    <div class="col-md-3 " style="font-size: 13px; padding-left: 20px">
+                                    <div class="col-md-2" style="font-size: 13px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="asunto">Asunto</label>
-                                            <input type="text" class="form-control" style="font-size: 12px" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
+                                            <input type="text" class="form-control" style="font-size: 12px; height: 38px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3" style="font-size: 13px">
+                                    <div class="col-md-2" style="font-size: 13px">
                                         <div class="form-group">
                                             <label for="usuarioResponsable">Solicitante</label>
-                                            <select class="form-control" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="usuarioSolicitante" name="usuarioSolicitante">
 
                                                 @if (nombresUsuarios != null)
 
@@ -208,10 +216,10 @@
                                     </div>
 
 
-                                    <div class="col-md-3" style="font-size: 13px">
+                                    <div class="col-md-2" style="font-size: 13px; height: 38px;">
                                         <div class="form-group">
                                             <label for="solicitadoPor">Solicitado Por</label>
-                                            <select class="form-control" style="font-size:12px;" id="Solicitante" name="Solicitante">
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Solicitante" name="Solicitante">
 
                                                 @if (nombresUsuarios != null)
 
@@ -227,11 +235,15 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2 col-md-3" style="font-size: 13px">
+
+                                    <div class="col-sm-2 col-md-2" style="font-size: 13px">
                                         <label for="fechaSolicitudHasta">Hasta</label>
                                         <input type="date" class="form-control" id="fechaSolicitudHasta" name="fechaSolicitudHasta">
                                     </div>
 
+                                    <div class="col-sm-2 col-md-2" style="font-size: 13px">
+                                        <label for="fechaVencimientoHasta">Hasta</label>
+                                        <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">                                    
                                 </div>
 
                             </div>
@@ -242,26 +254,7 @@
 
 
 
-                    <div class="row" style="padding-top: 15px">
-
-
-
-                        <div class="col-md-6">
-                            <div class="form-group" style="padding-top: 15px">
-                                <label>Fecha vencimiento:</label>
-                                <div class="row" style="padding-top: 15px">
-                                    <div class="col-5">
-                                        <label for="fechaVencimientoDesde">Desde</label>
-                                        <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
-                                    </div>
-                                    <div class="col-5">
-                                        <label for="fechaVencimientoHasta">Hasta</label>
-                                        <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
 
                     </form>
 
