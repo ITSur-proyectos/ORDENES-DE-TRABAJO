@@ -26,15 +26,16 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto)
-        {
+        
+         public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitudDesde, DateTime? fechaSolicitudHasta, DateTime? fechaVencimientoDesde, DateTime? fechaVencimientoHasta)
+         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
-            //Añade el valor a los parametros de la sp si es que se ingresó
+            // Añade el valor a los parámetros de la sp si se ingresó
             if (Cliente != -1)
             {
                 parametros["@Cliente"] = Cliente;
@@ -47,7 +48,6 @@ namespace Sistema_OT.Controllers
             {
                 parametros["@Proyecto"] = Proyecto;
             }
-
             if (estadoTrabajo != 0)
             {
                 parametros["@Estado"] = estadoTrabajo;
@@ -68,7 +68,26 @@ namespace Sistema_OT.Controllers
             {
                 parametros["@Modulo"] = modulo;
             }
-            // Hacer la consulta si se ingresó al menos 1 parametro
+
+            // Agrega los parámetros de fecha solo si tienen valor
+            if (fechaSolicitudDesde.HasValue)
+            {
+                parametros["@FechaDesde"] = fechaSolicitudDesde.Value;
+            }
+            if (fechaSolicitudHasta.HasValue)
+            {
+                parametros["@FechaHasta"] = fechaSolicitudHasta.Value;
+            }
+            if (fechaVencimientoDesde.HasValue)
+            {
+                parametros["@FechaVencimientoDesde"] = fechaVencimientoDesde.Value;
+            }
+            if (fechaVencimientoHasta.HasValue)
+            {
+                parametros["@FechaVencimientoHasta"] = fechaVencimientoHasta.Value;
+            }
+
+            // Hacer la consulta si se ingresó al menos 1 parámetro
             if (parametros.Count > 0)
             {
                 string consulta = "sp_BuscarOrdenesTrabajo";
@@ -83,9 +102,10 @@ namespace Sistema_OT.Controllers
             {
                 Console.WriteLine("No llenaste los formularios.");
             }
-             
+
             return View();
-        }
+         }
+    
         [HttpGet]
         public IActionResult PruebaBD()
         {
