@@ -33,7 +33,7 @@
 
 
                 <div class="container">
-                    <form method="post" action="@Url.Action("Vistas", "Home")">
+                    <form method="post" action="@Url.Action("Vistas", "Buscar")">
                         <div class="row">
                             <div class="col-md-12">
 
@@ -340,21 +340,21 @@
                             <div class="" style="width:33%">
                                 <div class="form-group" style="padding-left: 0px">
                                     <label for="cantidadOT">Cantidad OT</label>
-                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?[" CantidadOrdenesTrabajo"]" />
+                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
                                 </div>
                             </div>
 
                             <div class="" style="width:33%">
                                 <div class="form-group">
                                     <label for="totalHorasEstimadas">Total de horas estimadas</label>
-                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?[" TotalHorasEstimadas"]" />
+                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
                                 </div>
                             </div>
 
                             <div class="" style="width: 33%; ">
                                 <div class="form-group" style="padding-right: 5px">
                                     <label for="totalHorasAvances">Total de horas avances</label>
-                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?[" TotalHorasAvanzadas"]" />
+                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
                                 </div>
                             </div>
 
