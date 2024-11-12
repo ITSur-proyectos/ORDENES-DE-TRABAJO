@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace Sistema_OT.Controllers
 {
-    public class BuscarController : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<BuscarController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public BuscarController(ILogger<BuscarController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
