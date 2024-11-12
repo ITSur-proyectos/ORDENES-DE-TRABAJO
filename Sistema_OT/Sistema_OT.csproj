@@ -22,4 +22,12 @@
     <Folder Include="Files\Videos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\fanti\Source\Repos\ORDENES-DE-TRABAJO\Sistema_OT\Views\Home\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\fanti\Source\Repos\ORDENES-DE-TRABAJO\Sistema_OT\Views\Home\.editorconfig" />
+  </ItemGroup>
+
 </Project>
