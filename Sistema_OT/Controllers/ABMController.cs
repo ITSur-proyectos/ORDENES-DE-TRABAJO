@@ -7,7 +7,7 @@ namespace Sistema_OT.Controllers
     public class ABMController : Controller
     {
         [HttpPost]
-        public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto)
+        public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
@@ -37,7 +37,7 @@ namespace Sistema_OT.Controllers
                 }
                 if (!string.IsNullOrWhiteSpace(usuarioSolicitante))
                 {
-                    parametros["@UsuarioSolicitante"] = usuarioSolicitante;
+                    parametros["@UserIDSolicitante"] = usuarioSolicitante;
                 }
                 if (!string.IsNullOrWhiteSpace(Responsable))
                 {
@@ -50,6 +50,10 @@ namespace Sistema_OT.Controllers
                 if (!string.IsNullOrWhiteSpace(modulo))
                 {
                     parametros["@Modulo"] = modulo;
+                }
+                if (fechaSolicitud.HasValue)
+                {
+                    parametros["@FechaSolicitud"] = fechaSolicitud.Value;
                 }
                 if (parametros.Count > 0)
                 {

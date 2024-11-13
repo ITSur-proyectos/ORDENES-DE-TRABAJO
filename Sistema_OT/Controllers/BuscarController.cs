@@ -120,6 +120,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
         [HttpPost]

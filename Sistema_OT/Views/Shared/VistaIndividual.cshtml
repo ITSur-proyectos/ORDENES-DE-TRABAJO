@@ -4,6 +4,7 @@
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+    var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
 }
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
@@ -24,9 +25,10 @@
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
                 </div>
+                <form method="post" action="@Url.Action("VistaIndividual", "ABM")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
-                    <form method="post" action="@Url.Action("VistaIndividual", "Buscar")">
+                    
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -48,7 +50,7 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="dependencia" class="text-nowrap">Depende</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
                                 </div>
                             </div>
                             
@@ -56,22 +58,22 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
-                                    <select class="form-select" style="font-size:12px;" id="estadoTrabajo">
-                                        <option>...</option>
+                                    <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
+                                        <option value="0">...</option>
                                         <option>Pendiente</option>
                                         <option>Entregado</option>
                                         <option>En desarrollo</option>
@@ -100,10 +102,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <select class="form-select" style="font-size:12px;" id="cliente">
+                                    <select class="form-select" style="font-size:12px;" id="cliente" name="cliente">
                                         <!-- Opciones(se hace con la db) -->
 
-                                        <option>...</option>
+                                        <option value="-1">...</option>
 
                                         @if (nombresClientes != null)
                                         {
@@ -119,10 +121,10 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <select class="form-select" style="font-size:12px;" id="sistema">
+                                    <select class="form-select" style="font-size:12px;" id="sistema" name="sistema">
                                         <!-- Opciones(se hace con la db) -->
 
-                                        <option>...</option>
+                                        <option value="-1">...</option>
 
                                         @if (nombresSistemas != null)
                                         {
@@ -138,7 +140,21 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyecto"]" />
+                                    <select class="form-control" style="font-size:12px; height: 38px;" id="Proyecto" name="Proyecto">
+
+                                        @if (nombresProyectos != null)
+
+                                        {
+                                            <option value="-1">...</option>
+
+                                            foreach (var proyecto in nombresProyectos)
+
+                                            {
+                                                <option value="@proyecto.Key">@proyecto.Value</option>
+                                            }
+
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -152,16 +168,16 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="usuarioResp">Usuario Responsable</label>
-                                    <select class="form-select" style="font-size:12px;" id="usuarioResp">
+                                    <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable">
                                         <!-- Opciones(se hace con la db) -->
 
-                                        <option>...</option>
+                                        <option value="">...</option>
 
-                                        @if (nombresClientes != null)
+                                        @if (nombresUsuarios != null)
                                         {
-                                            foreach (var cliente in nombresClientes)
+                                            foreach (var usuario in nombresUsuarios)
                                             {
-                                                <option value="@cliente.Key">@cliente.Value</option>
+                                                <option value="@usuario.Value">@usuario.Value</option>
                                             }
                                         }
 
@@ -171,16 +187,16 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="usuarioSoli">Usuario Solicitante</label>
-                                    <select class="form-select" style="font-size:12px;" id="usuarioSoli">
+                                    <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
                                         <!-- Opciones(se hace con la db) -->
 
                                         <option>...</option>
 
-                                        @if (nombresSistemas != null)
+                                        @if (nombresUsuarios != null)
                                         {
-                                            foreach (var sistema in nombresSistemas)
+                                            foreach (var usuario in nombresUsuarios)
                                             {
-                                                <option value="@sistema.Key">@sistema.Value</option>
+                                                <option value="@usuario.Value">@usuario.Value</option>
                                             }
                                         }
 
@@ -190,7 +206,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo/Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -247,7 +263,7 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -531,7 +547,7 @@
                                 <div class="grupo-botones" style="font-size:12px;">
                                     <button class="btn boton">Copiar Orden</button>
                                     <button class="btn boton">Enviar Orden</button>
-                                    <button class="btn boton">Agregar</button>
+                                    <button type="submit" name="accion" value="Agregar" class="btn boton">Agregar</button>
                                     <button class="btn boton">Modificar</button>
                                     <button class="btn boton">Grabar</button>
                                     <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
