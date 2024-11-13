@@ -41,5 +41,31 @@ namespace Sistema_OT.Controllers
                         Directory.CreateDirectory(folderPath);
                     }
                 }
+                var filePath = Path.Combine(folderPath, file.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            else
+            {
+                var otherFolderPath = Path.Combine(basePath, "otros");
+
+                if (!Directory.Exists(otherFolderPath))
+                {
+                    Directory.CreateDirectory(otherFolderPath);
+                }
+
+                var filePath = Path.Combine(otherFolderPath, file.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            return Ok("Archivos cargados exitosamente.");
+        }
     }
+    
 }
