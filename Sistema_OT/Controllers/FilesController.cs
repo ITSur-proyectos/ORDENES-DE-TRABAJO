@@ -24,8 +24,12 @@ namespace Sistema_OT.Controllers
                 { ".png", "imagenes" },
                 { ".pdf", "documentos" },
                 { ".docx", "documentos" },
-                { ".mp4", "videos" }
-                // Añade más extensiones y carpetas según sea necesario
+                { ".txt", "documentos" },  // Agregado .txt para documentos
+                { ".mp4", "videos" },
+                { ".mp3", "videos" },  // Agregado .mp3 para videos
+                { ".gif", "imagenes" },  // Agregado .gif para imágenes
+                { ".xlsx", "documentos" }  // Agregado .xlsx para documentos
+                
             };
 
             foreach (var file in files)
