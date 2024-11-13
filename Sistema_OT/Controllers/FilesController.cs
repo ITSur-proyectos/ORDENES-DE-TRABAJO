@@ -16,17 +16,16 @@ namespace Sistema_OT.Controllers
             {
                 return BadRequest("No se han proporcionado archivos para cargar.");
             }
+
+            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var allowedExtensions = new Dictionary<string, string>
             {
                 { ".jpg", "imagenes" },
                 { ".png", "imagenes" },
                 { ".pdf", "documentos" },
                 { ".docx", "documentos" },
-                { ".txt", "documentos" },  // Agregado .txt para documentos
-                { ".mp4", "videos" },
-                { ".mp3", "videos" },  // Agregado .mp3 para videos
-                { ".gif", "imagenes" },  // Agregado .gif para imágenes
-                { ".xlsx", "documentos" }  // Agregado .xlsx para documentos
+                { ".mp4", "videos" }
+                // Añade más extensiones y carpetas según sea necesario
             };
 
             foreach (var file in files)
@@ -40,32 +39,33 @@ namespace Sistema_OT.Controllers
                     {
                         Directory.CreateDirectory(folderPath);
                     }
-                }
-                var filePath = Path.Combine(folderPath, file.FileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                    var filePath = Path.Combine(folderPath, file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+                else
                 {
-                    await file.CopyToAsync(stream);
+                    var otherFolderPath = Path.Combine(basePath, "otros");
+
+                    if (!Directory.Exists(otherFolderPath))
+                    {
+                        Directory.CreateDirectory(otherFolderPath);
+                    }
+
+                    var filePath = Path.Combine(otherFolderPath, file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
                 }
             }
-            else
-            {
-                var otherFolderPath = Path.Combine(basePath, "otros");
 
-                if (!Directory.Exists(otherFolderPath))
-                {
-                    Directory.CreateDirectory(otherFolderPath);
-                }
-
-                var filePath = Path.Combine(otherFolderPath, file.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
             return Ok("Archivos cargados exitosamente.");
         }
     }
-    
 }
