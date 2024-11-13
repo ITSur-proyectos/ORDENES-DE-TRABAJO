@@ -18,9 +18,9 @@ public class FilesController : Controller
         }
 
         // Ruta principal donde se guardarán los archivos
-        var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
+        var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Controllers", "Files");
 
-        // Asegúrate de crear la carpeta principal y subcarpetas si no existen
+        
         if (!Directory.Exists(mainUploadPath))
         {
             Directory.CreateDirectory(mainUploadPath);
@@ -61,7 +61,7 @@ public class FilesController : Controller
         }
 
         TempData["Message"] = "Archivos cargados exitosamente!";
-        return RedirectToAction("Index"); // Cambia esto a la acción o vista que desees redirigir
+        return RedirectToAction("VistaIndividual"); 
     }
 
     // Método para crear una carpeta si no existe
