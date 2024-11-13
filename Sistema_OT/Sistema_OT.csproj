@@ -18,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Files\Imagenes\" />
-    <Folder Include="Files\Documentos\" />
-    <Folder Include="Files\Otros\" />
-    <Folder Include="Files\Videos\" />
+    <Folder Include="wwwroot\Files\Documentos\" />
+    <Folder Include="wwwroot\Files\Imagenes\" />
+    <Folder Include="wwwroot\Files\Otros\" />
+    <Folder Include="wwwroot\Files\Videos\" />
   </ItemGroup>
 
 </Project>

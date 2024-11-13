@@ -18,7 +18,7 @@ public class FilesController : Controller
         }
 
         // Ruta principal donde se guardarán los archivos
-        var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Controllers", "Files");
+        var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
 
         
         if (!Directory.Exists(mainUploadPath))
