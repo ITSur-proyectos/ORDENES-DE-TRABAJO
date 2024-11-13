@@ -141,10 +141,7 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyecto"]" />
                                 </div>
                             </div>
-                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
-
-                            <label>@* &nbsp; </label>
-                            <button type="button" class="btn boton">🔍</button>  *@
+                            
                         </div>
 
                         <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
@@ -193,54 +190,8 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
-                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
-
-                            <label>@* &nbsp; </label>
-                            <button type="button" class="btn boton">🔍</button>  *@
+                           
                         </div>
-
-
-                       @*  <div style=" font-size: 12px" class="row mt-3">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="usuarioResponsable">Usuario Responsable</label>
-                                    <select class="form-control" style="font-size:12px;" id="usuarioResponsable">
-                                        <!-- Opciones(se hace con la db) -->
-                                        <option>...</option>
-                                        @if (nombresUsuarios != null)
-                                        {
-                                            foreach (var usuario in nombresUsuarios)
-                                            {
-                                                <option value="@usuario.Value">@usuario.Value</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="usuarioSolicitante">Usuario Solicitante</label>
-                                    <select class="form-control" style="font-size:12px;" id="usuarioSolicitante">
-                                        <!-- Opciones(se hace con la db) -->
-                                        <option>...</option>
-                                        @if (nombresUsuarios != null)
-                                        {
-                                            foreach (var usuario in nombresUsuarios)
-                                            {
-                                                <option value="@usuario.Value">@usuario.Value</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="moduloPantalla">Módulo / Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese módulo/pantalla" />
-                                </div>
-                            </div>
-                        </div> *@
-
 
                         <!-- Cuarta fila con Asunto y Solicitado Por -->
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
@@ -467,7 +418,6 @@
                                                         </div>
                                                         <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
                                                     </form>
-                                                    <button class="btn boton btn-sm">Copiar</button>
                                                     <button class="btn btn-danger btn-sm">Quitar</button>
                                                     <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
                                                 </div>

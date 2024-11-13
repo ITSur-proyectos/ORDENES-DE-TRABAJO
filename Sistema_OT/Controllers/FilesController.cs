@@ -1,75 +1,75 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Sistema_OT.Controllers
+public class FilesController : Controller
 {
-    public class FilesController : Controller
+    // Acción para cargar los archivos
+    [HttpPost]
+    [Route("Files/UploadFiles")]
+    public async Task<IActionResult> UploadFiles(List<IFormFile> files)
     {
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
+        if (files == null || files.Count == 0)
         {
-            if (files == null || files.Count == 0)
-            {
-                return BadRequest("No se han proporcionado archivos para cargar.");
-            }
+            ModelState.AddModelError("", "No se seleccionaron archivos.");
+            return View();
+        }
 
-            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            var allowedExtensions = new Dictionary<string, string>
+        // Ruta principal donde se guardarán los archivos
+        var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
+
+        // Asegúrate de crear la carpeta principal y subcarpetas si no existen
+        if (!Directory.Exists(mainUploadPath))
+        {
+            Directory.CreateDirectory(mainUploadPath);
+        }
+
+        // Crear subcarpetas: Documentos, Imagenes, Videos, Otros
+        var documentPath = Path.Combine(mainUploadPath, "Documentos");
+        var imagesPath = Path.Combine(mainUploadPath, "Imagenes");
+        var videosPath = Path.Combine(mainUploadPath, "Videos");
+        var othersPath = Path.Combine(mainUploadPath, "Otros");
+
+        // Crear las subcarpetas si no existen
+        CreateDirectoryIfNotExists(documentPath);
+        CreateDirectoryIfNotExists(imagesPath);
+        CreateDirectoryIfNotExists(videosPath);
+        CreateDirectoryIfNotExists(othersPath);
+
+        foreach (var file in files)
+        {
+            // Verificar la extensión del archivo y asignarlo a una subcarpeta
+            string fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+            string uploadPath = fileExtension switch
             {
-                { ".jpg", "imagenes" },
-                { ".png", "imagenes" },
-                { ".pdf", "documentos" },
-                { ".docx", "documentos" },
-                { ".txt", "documentos" },  // Agregado .txt para documentos
-                { ".mp4", "videos" },
-                { ".mp3", "videos" },  // Agregado .mp3 para videos
-                { ".gif", "imagenes" },  // Agregado .gif para imágenes
-                { ".xlsx", "documentos" }  // Agregado .xlsx para documentos
-                
+                ".pdf" or ".doc" or ".docx" or ".xls" or ".xlsx" => documentPath,  // Documentos
+                ".jpg" or ".jpeg" or ".png" or ".gif" or ".bmp" => imagesPath,     // Imagenes
+                ".mp4" or ".avi" or ".mov" or ".mkv" => videosPath,                // Videos
+                _ => othersPath                                                    // Otros
             };
 
-            foreach (var file in files)
+            // Guardar el archivo en la subcarpeta correspondiente
+            var filePath = Path.Combine(uploadPath, file.FileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
-                var extension = Path.GetExtension(file.FileName).ToLower();
-                if (allowedExtensions.TryGetValue(extension, out string folderName))
-                {
-                    var folderPath = Path.Combine(basePath, folderName);
-
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-
-                    var filePath = Path.Combine(folderPath, file.FileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-                else
-                {
-                    var otherFolderPath = Path.Combine(basePath, "otros");
-
-                    if (!Directory.Exists(otherFolderPath))
-                    {
-                        Directory.CreateDirectory(otherFolderPath);
-                    }
-
-                    var filePath = Path.Combine(otherFolderPath, file.FileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
+                await file.CopyToAsync(fileStream);
             }
+        }
 
-            return Ok("Archivos cargados exitosamente.");
+        TempData["Message"] = "Archivos cargados exitosamente!";
+        return RedirectToAction("Index"); // Cambia esto a la acción o vista que desees redirigir
+    }
+
+    // Método para crear una carpeta si no existe
+    private void CreateDirectoryIfNotExists(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
         }
     }
 }
