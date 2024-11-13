@@ -12,8 +12,13 @@ namespace Sistema_OT.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFiles(List<IFormFile> files)
         {
+            if (files == null || files.Count == 0)
+            {
+                return BadRequest("No se han proporcionado archivos para cargar.");
+            }
+            var allowedExtensions = new Dictionary<string, string>
+            {
 
-
-        }
+            }
     }
 }
