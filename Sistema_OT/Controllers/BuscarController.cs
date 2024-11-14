@@ -113,7 +113,7 @@ namespace Sistema_OT.Controllers
 
 
         [HttpGet]
-        public IActionResult VistaIndividual(string activeSection = "descripcion")
+        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
         {
             ViewBag.ActiveSection = activeSection;
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
@@ -123,7 +123,7 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult VistaIndividual(int orden)
+        public IActionResult VistaIndividualBuscar(int orden)
         {
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros["@NroOrdenTrabajo"] = orden;

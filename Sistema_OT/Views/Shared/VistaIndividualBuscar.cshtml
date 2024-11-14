@@ -25,7 +25,7 @@
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
                 </div>
-                <form method="post" action="@Url.Action("VistaIndividual", "ABM")">
+                <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
                     
@@ -44,7 +44,7 @@
                             <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
 
 
-                                <a class="btn boton-busqueda btn-sm" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar">Buscar</a>
+                                <button type="submit"  class="btn boton-busqueda btn-sm">Buscar</button>
 
                             </div>
                             <!-- Campo de Dependencia -->
@@ -548,7 +548,7 @@
                                 <div class="grupo-botones" style="font-size:12px;">
                                     <button class="btn boton">Copiar Orden</button>
                                     <button class="btn boton">Enviar Orden</button>
-                                    <button type="submit" name="accion" value="Agregar" class="btn boton">Agregar</button>
+                                    <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                     <button class="btn boton">Modificar</button>
                                     <button class="btn boton">Grabar</button>
                                     <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->

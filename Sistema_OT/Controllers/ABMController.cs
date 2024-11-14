@@ -6,6 +6,16 @@ namespace Sistema_OT.Controllers
 {
     public class ABMController : Controller
     {
+
+        [HttpGet]
+        public ActionResult VistaIndividual()
+        {
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            return View();
+        }
         [HttpPost]
         public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud)
         {
