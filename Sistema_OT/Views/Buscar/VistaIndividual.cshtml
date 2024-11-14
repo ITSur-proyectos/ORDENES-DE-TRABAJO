@@ -405,6 +405,55 @@
                                             </div>
                                         </div>
 
+                                    <script>
+                                        let nuevaFila; 
+
+                                        function agregarFilaEditable() {
+                                            
+                                            const tabla = document.getElementById('tablaAvances');
+                                            nuevaFila = document.createElement('tr');
+
+                                            
+                                            nuevaFila.innerHTML = `
+                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Avance Trabajo"></td>
+                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Descripción"></td>
+                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Tipo Avance"></td>
+                                                    <td><input type="date" class="form-control form-control-sm"></td>
+                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Usuario"></td>
+                                                    <td><input type="number" class="form-control form-control-sm" placeholder="Tiempo Insumido (hs)"></td>
+                                                `;
+
+                                           
+                                            tabla.appendChild(nuevaFila);
+                                        }
+
+                                        function cancelarFila() {
+                                        
+                                            if (nuevaFila) {
+                                                nuevaFila.remove();
+                                                nuevaFila = null;
+                                            }
+                                        }
+
+                                        function grabarFila() {
+                                           
+                                            if (nuevaFila) {
+                                                const inputs = nuevaFila.querySelectorAll('input');
+                                                const datosFila = Array.from(inputs).map(input => input.value || "N/A");
+
+                                              
+                                                const filaFinal = document.createElement('tr');
+                                                datosFila.forEach(dato => {
+                                                    const celda = document.createElement('td');
+                                                    celda.textContent = dato;
+                                                    filaFinal.appendChild(celda);
+                                                });
+
+                                                nuevaFila.replaceWith(filaFinal);
+                                                nuevaFila = null;
+                                            }
+                                        }
+                                    </script>
                                         <!-- Sección de Puesta en Producción -->
                                         <div class="card">
                                             <div class="card-header" id="headingProduccion">
