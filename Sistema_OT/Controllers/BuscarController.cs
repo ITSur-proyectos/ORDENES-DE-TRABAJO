@@ -68,7 +68,6 @@ namespace Sistema_OT.Controllers
             {
                 parametros["@Modulo"] = modulo;
             }
-
             // Agrega los parámetros de fecha solo si tienen valor
             if (fechaSolicitudDesde.HasValue)
             {
@@ -120,6 +119,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
         [HttpPost]
