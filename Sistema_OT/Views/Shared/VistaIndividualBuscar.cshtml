@@ -51,7 +51,7 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="dependencia" class="text-nowrap">Depende</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" readonly value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
                                 </div>
                             </div>
                             
@@ -59,14 +59,14 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" readonly value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" readonly name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
@@ -207,7 +207,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo/Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" readonly name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -264,13 +264,13 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" readonly placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="solicitadoPor">Solicitado Por</label>
-                                    <select class="form-select" style="font-size:12px;" id="Solicitante">
+                                    <select class="form-select" style="font-size:12px;" id="Solicitante" readonly>
                                         <!-- Opciones(se hace con la db) -->
                                         <option>...</option>
                                         @if (nombresUsuarios != null)
@@ -291,31 +291,31 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="horasFacturables" class="text-nowrap">Hs. Facturables</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" readonly />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" readonly />
                                 </div>
                             </div>
                             <div class="row mt-5">
