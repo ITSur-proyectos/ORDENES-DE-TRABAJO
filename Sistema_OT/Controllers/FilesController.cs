@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 public class FilesController : Controller
 {
+    //static string cadena = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";
+
     // Acción para mostrar la vista principal
     public ActionResult VistaIndividual()
     {
@@ -29,7 +31,7 @@ public class FilesController : Controller
         try
         {
             // Ruta principal donde se guardarán los archivos
-            var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files");
+            var mainUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Files");
 
             // Crear subcarpetas: Documentos, Imágenes, Videos, Otros
             var folders = new Dictionary<string, string>
