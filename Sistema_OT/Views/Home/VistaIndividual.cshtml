@@ -388,8 +388,32 @@
                                                 </h5>
                                             </div>
                                             <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                                @model IEnumerable<ArchivoViewModel>
                                             <div class="table-responsive">
-                                                <table class="table table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre del Archivo</th>
+                                                        <th>Fecha de Subida</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var archivo in Model)
+                                                    {
+                                                        <tr>
+                                                            <td>@archivo.Id</td>
+                                                            <td>@archivo.NombreArchivo</td>
+                                                            <td>@archivo.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
+                                                            <td>
+                                                                @* <a asp-action="DescargarArchivo" asp-route-id="@archivo.Id" class="btn btn-primary">Descargar</a> *@
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                               @*  <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Número</th>
@@ -407,11 +431,40 @@
                                                         </tr>
 
                                                     </tbody>
-                                                </table>
+                                                </table> *@
                                             </div>
                                                 <div class="card-body">
                                                     
-                                                    <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+
+                                                    <form asp-action="SubirArchivo" method="post" enctype="multipart/form-data">
+                                                        <div class="form-group">
+                                                            <label for="archivo">Seleccionar archivo</label>
+                                                            <input type="file" class="form-control" id="archivo" name="archivo" required />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
+                                                            <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
+                                                            <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="FechaAlta">Fecha de Alta</label>
+                                                            <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="UserID">ID de Usuario</label>
+                                                            <input type="text" class="form-control" id="UserID" name="userID" required />
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-primary mt-2">Subir</button>
+                                                    </form>
+                    @*                                 <form asp-controller="SubirArchivo" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
                                                         <div>
                                                             <label for="files">Selecciona archivos:</label>
                                                             <input type="file" id="files" name="files" multiple />
@@ -419,7 +472,7 @@
                                                         <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
                                                     </form>
                                                     <button class="btn btn-danger btn-sm">Quitar</button>
-                                                    <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                                    <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small> *@
                                                 </div>
                                             </div>
                                         </div>
