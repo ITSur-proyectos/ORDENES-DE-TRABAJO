@@ -361,99 +361,86 @@
                                             </div>
                                         </div>
 
+
+
+
+
+
+
+
                                         <!-- Sección de Avances de Trabajo -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingAvances">
-                                                <h5 class="mb-0">
+                                    <div class="card">
+                                        <div class="card-header" id="headingAvances">
+                                            <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
-                                                        Avances de Trabajo
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Avance Trabajo</th>
-                                                                    <th>Descripción</th>
-                                                                    <th>Tipo Avance</th>
-                                                                    <th>Fecha</th>
-                                                                    <th>Usuario</th>
-                                                                    <th>Tiempo Insumido(hs)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Completado el análisis inicial</td>
-                                                                    <td>Desarrollo</td>
-                                                                    <td>6/11/2024 </td>
-                                                                    <td>ERUIZ</td>
-                                                                    <td>4,0</td>
-                                                                </tr>
-                                                               
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <button class="btn boton btn-sm">Agregar</button>
-                                                    <button class="btn boton btn-sm">Modificar</button>
-                                                    <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                    Avances de Trabajo
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Avance Trabajo</th>
+                                                                <th>Descripción</th>
+                                                                <th>Tipo Avance</th>
+                                                                <th>Fecha</th>
+                                                                <th>Usuario</th>
+                                                                <th>Tiempo Insumido(hs)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tabla">
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Completado el análisis inicial</td>
+                                                                <td>Desarrollo</td>
+                                                                <td>6/11/2024</td>
+                                                                <td>ERUIZ</td>
+                                                                <td>4,0</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody id="nuevo_avance" style="display:none;">
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td><input type="text" id="descripcion" class="form-control" /></td>
+                                                                <td><input type="text" id="tipoAvance" class="form-control" /></td>
+                                                                <td><input type="date" id="fecha" class="form-control" /></td>
+                                                                <td><input type="text" id="usuario" class="form-control" /></td>
+                                                                <td><input type="number" id="tiempo" class="form-control" /></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+
+                                                <div id="form-section" style="display:none; margin-top: 20px;">
+                                                    <!-- Formulario adicional si lo necesitas -->
+                                                </div>
+
+                                                <button class="btn boton btn-sm" id="agregarBtn" type="button">Agregar</button>
+                                                <button class="btn boton btn-sm">Modificar</button>
+                                                <button class="btn btn-secondary btn-sm">Grabar</button>
+                                                <button class="btn btn-danger btn-sm">Cancelar</button>
                                             </div>
                                         </div>
+                                    </div>
 
                                     <script>
-                                        let nuevaFila; 
-
-                                        function agregarFilaEditable() {
-                                            
-                                            const tabla = document.getElementById('tablaAvances');
-                                            nuevaFila = document.createElement('tr');
-
-                                            
-                                            nuevaFila.innerHTML = `
-                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Avance Trabajo"></td>
-                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Descripción"></td>
-                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Tipo Avance"></td>
-                                                    <td><input type="date" class="form-control form-control-sm"></td>
-                                                    <td><input type="text" class="form-control form-control-sm" placeholder="Usuario"></td>
-                                                    <td><input type="number" class="form-control form-control-sm" placeholder="Tiempo Insumido (hs)"></td>
-                                                `;
-
-                                           
-                                            tabla.appendChild(nuevaFila);
-                                        }
-
-                                        function cancelarFila() {
-                                        
-                                            if (nuevaFila) {
-                                                nuevaFila.remove();
-                                                nuevaFila = null;
-                                            }
-                                        }
-
-                                        function grabarFila() {
-                                           
-                                            if (nuevaFila) {
-                                                const inputs = nuevaFila.querySelectorAll('input');
-                                                const datosFila = Array.from(inputs).map(input => input.value || "N/A");
-
-                                              
-                                                const filaFinal = document.createElement('tr');
-                                                datosFila.forEach(dato => {
-                                                    const celda = document.createElement('td');
-                                                    celda.textContent = dato;
-                                                    filaFinal.appendChild(celda);
-                                                });
-
-                                                nuevaFila.replaceWith(filaFinal);
-                                                nuevaFila = null;
-                                            }
-                                        }
+                                        document.getElementById("agregarBtn").addEventListener("click", function () {
+                                            // Mostrar la fila vacía para completar
+                                            document.getElementById("nuevo_avance").style.display = "table-row";
+                                        });
                                     </script>
+
+
+
+
+
+
+
+
+                                   
                                         <!-- Sección de Puesta en Producción -->
                                         <div class="card">
                                             <div class="card-header" id="headingProduccion">
