@@ -409,6 +409,8 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            using (Html.BeginForm("UploadFiles", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{                                           {
                                                 <div class="card-body">
                                                     
                                                     <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
@@ -419,6 +421,7 @@
                                                         <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
                                                     </form>
                                                     <button class="btn btn-danger btn-sm">Quitar</button>
+                                            }
                                                     <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
                                                 </div>
                                             </div>
