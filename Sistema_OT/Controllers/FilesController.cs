@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 public class FilesController : Controller
 {
+    public ActionResult Subir()
+    {
+        return View();
+    }
+
+
+
     // Acción para cargar los archivos
     [HttpPost]
     [Route("Files/UploadFiles")]

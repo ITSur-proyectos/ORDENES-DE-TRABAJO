@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="System.IO" Version="4.3.0" />
@@ -18,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Files\Documentos\" />
-    <Folder Include="wwwroot\Files\Imagenes\" />
-    <Folder Include="wwwroot\Files\Otros\" />
-    <Folder Include="wwwroot\Files\Videos\" />
+    <Folder Include="Files\Documentos\" />
+    <Folder Include="Files\Imagenes\" />
+    <Folder Include="Files\Otros\" />
+    <Folder Include="Files\Videos\" />
   </ItemGroup>
 
 </Project>
