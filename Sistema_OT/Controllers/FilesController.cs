@@ -5,7 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 
 public class FilesController : Controller
-{ 
+{
+
+    public ActionResult VistaIndividual()
+    {
+        return View();
+    }
+
+
     // Acción para cargar los archivos
     [HttpPost]
     [Route("Files/UploadFiles")]
