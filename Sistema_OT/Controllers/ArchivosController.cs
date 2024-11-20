@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Sistema_OT.Models;
 using System;
-using AspNetCore;
-
 
 namespace Sistema_OT.Controllers
 {
@@ -14,15 +12,15 @@ namespace Sistema_OT.Controllers
     {
         private readonly string _connectionString = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";
 
-        // Acción para mostrar la vista combinada y manejar la subida
+        // Acción para mostrar la vista y cargar la lista de archivos
         [HttpGet]
         public async Task<IActionResult> Archivos()
         {
             var archivos = await ObtenerArchivos();
-            return View("VistaIndividual", archivos);
+            return View("~/Views/Home/VistaIndividual.cshtml", archivos);
         }
 
-        //Metodo privado para obtener la lista de archivos
+        // Método privado para obtener la lista de archivos desde la base de datos
         private async Task<List<ArchivoViewModel>> ObtenerArchivos()
         {
             var archivos = new List<ArchivoViewModel>();
@@ -32,7 +30,7 @@ namespace Sistema_OT.Controllers
                 var query = "SELECT Id, NombreArchivo, FechaSubida FROM Archivos";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (reader.Read())
@@ -51,49 +49,77 @@ namespace Sistema_OT.Controllers
             return archivos;
         }
 
-        
+        // Acción para manejar la subida del archivo
         [HttpPost]
-        public IActionResult SubirArchivo(IFormFile archivo, int nroOrdenTrabajo, int correlativoAdjunto, DateTime fechaAlta, string userID)
+        public async Task<IActionResult> SubirArchivo(IFormFile archivo, int nroOrdenTrabajo, int correlativoAdjunto, DateTime fechaAlta, string userID)
         {
-            if (archivo != null && archivo.Length > 0)
+            if (archivo == null || archivo.Length == 0)
             {
-                // Leer el archivo como un arreglo de bytes
-                byte[] archivoBytes;
-                using (var memoryStream = new MemoryStream())
-                {
-                    archivo.CopyTo(memoryStream);
-                    archivoBytes = memoryStream.ToArray();
-                }
-
-                // Insertar en la base de datos
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    var query = @"INSERT INTO Archivos (NombreArchivo, TipoContenido, Archivo, NroOrdenTrabajo, CorrelativoAdjunto, FechaAlta, UserID) 
-                                  VALUES (@NombreArchivo, @TipoContenido, @Archivo, @NroOrdenTrabajo, @CorrelativoAdjunto, @FechaAlta, @UserID)";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@NombreArchivo", archivo.FileName);
-                        command.Parameters.AddWithValue("@TipoContenido", archivo.ContentType);
-                        command.Parameters.AddWithValue("@Archivo", archivoBytes);
-                        command.Parameters.AddWithValue("@NroOrdenTrabajo", nroOrdenTrabajo);
-                        command.Parameters.AddWithValue("@CorrelativoAdjunto", correlativoAdjunto);
-                        command.Parameters.AddWithValue("@FechaAlta", fechaAlta);
-                        command.Parameters.AddWithValue("@UserID", userID);
-
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
-                }
-
-                ViewBag.Message = "Archivo cargado con éxito.";
-            }
-            else
-            {
-                ViewBag.Message = "Por favor, selecciona un archivo válido.";
+                return BadRequest("Por favor, selecciona un archivo válido.");
             }
 
+            // Leer el archivo como un arreglo de bytes
+            byte[] archivoBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await archivo.CopyToAsync(memoryStream);
+                archivoBytes = memoryStream.ToArray();
+            }
+
+            // Insertar el archivo en la base de datos
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"INSERT INTO Archivos 
+                              (NombreArchivo, TipoContenido, Archivo, NroOrdenTrabajo, CorrelativoAdjunto, FechaAlta, UserID) 
+                              VALUES 
+                              (@NombreArchivo, @TipoContenido, @Archivo, @NroOrdenTrabajo, @CorrelativoAdjunto, @FechaAlta, @UserID)";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@NombreArchivo", archivo.FileName);
+                    command.Parameters.AddWithValue("@TipoContenido", archivo.ContentType);
+                    command.Parameters.AddWithValue("@Archivo", archivoBytes);
+                    command.Parameters.AddWithValue("@NroOrdenTrabajo", nroOrdenTrabajo);
+                    command.Parameters.AddWithValue("@CorrelativoAdjunto", correlativoAdjunto);
+                    command.Parameters.AddWithValue("@FechaAlta", fechaAlta);
+                    command.Parameters.AddWithValue("@UserID", userID);
+
+                    await connection.OpenAsync();
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+
+            // Retornar la vista actualizada
+            TempData["Message"] = "Archivo cargado con éxito.";
             return RedirectToAction("Archivos");
         }
 
+        // Acción para descargar un archivo
+        // [HttpGet]
+        //public async Task<IActionResult> DescargarArchivo(int id)
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        var query = "SELECT NombreArchivo, TipoContenido, Archivo FROM Archivos WHERE Id = @Id";
+        //        using (var command = new SqlCommand(query, connection))
+        //        {
+        //            command.Parameters.AddWithValue("@Id", id);
+
+        //            await connection.OpenAsync();
+        //            using (var reader = await command.ExecuteReaderAsync())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    var nombreArchivo = reader["NombreArchivo"].ToString();
+        //                    var tipoContenido = reader["TipoContenido"].ToString();
+        //                    var archivoBytes = (byte[])reader["Archivo"];
+
+        //                    return File(archivoBytes, tipoContenido, nombreArchivo);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return NotFound("Archivo no encontrado.");
+        //}
     }
 }

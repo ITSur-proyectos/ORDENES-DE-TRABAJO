@@ -1,11 +1,18 @@
+@model IEnumerable<ArchivoViewModel>
 @{
     ViewData["Title"] = "VistaIndividual";
+
     var activeSection = ViewBag.ActiveSection;
+
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
 }
+
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -41,7 +48,7 @@
                             <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
 
 
-                                <button type="submit"  class="btn boton-busqueda btn-sm">Buscar</button>
+                                <button type="submit" class="btn boton-busqueda btn-sm">Buscar</button>
 
                             </div>
                             <!-- Campo de Dependencia -->
@@ -51,7 +58,7 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
                                 </div>
                             </div>
-                            
+
                             <!-- Campo Fecha de Solicitud -->
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -106,11 +113,15 @@
                                         <option>...</option>
 
                                         @if (nombresClientes != null)
+
                                         {
+
                                             foreach (var cliente in nombresClientes)
+
                                             {
                                                 <option value="@cliente.Key">@cliente.Value</option>
                                             }
+
                                         }
 
                                     </select>
@@ -125,11 +136,15 @@
                                         <option>...</option>
 
                                         @if (nombresSistemas != null)
+
                                         {
+
                                             foreach (var sistema in nombresSistemas)
+
                                             {
                                                 <option value="@sistema.Key">@sistema.Value</option>
                                             }
+
                                         }
 
                                     </select>
@@ -141,7 +156,7 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="proyecto" placeholder="Ingrese proyecto" value="@ordentrabajo?.FirstOrDefault()?["Proyecto"]" />
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
@@ -155,11 +170,15 @@
                                         <option>...</option>
 
                                         @if (nombresClientes != null)
+
                                         {
+
                                             foreach (var cliente in nombresClientes)
+
                                             {
                                                 <option value="@cliente.Key">@cliente.Value</option>
                                             }
+
                                         }
 
                                     </select>
@@ -174,11 +193,15 @@
                                         <option>...</option>
 
                                         @if (nombresSistemas != null)
+
                                         {
+
                                             foreach (var sistema in nombresSistemas)
+
                                             {
                                                 <option value="@sistema.Key">@sistema.Value</option>
                                             }
+
                                         }
 
                                     </select>
@@ -190,7 +213,7 @@
                                     <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
-                           
+
                         </div>
 
                         <!-- Cuarta fila con Asunto y Solicitado Por -->
@@ -208,11 +231,15 @@
                                         <!-- Opciones(se hace con la db) -->
                                         <option>...</option>
                                         @if (nombresUsuarios != null)
+
                                         {
+
                                             foreach (var usuario in nombresUsuarios)
+
                                             {
                                                 <option value="@usuario.Value">@usuario.Value</option>
                                             }
+
                                         }
                                     </select>
                                 </div>
@@ -269,224 +296,224 @@
 
                         </div>
                         <!--Sección de descripción y accordion-->
-                            <!-- Segunda Tarjeta -->
-                            <div class="card shadow-sm mb-3">
-                                <div class="card-body">
-                                    <!-- Acordeón de Secciones -->
-                                    <div id="accordion" class="mt-1">
+                        <!-- Segunda Tarjeta -->
+                        <div class="card shadow-sm mb-3">
+                            <div class="card-body">
+                                <!-- Acordeón de Secciones -->
+                                <div id="accordion" class="mt-1">
 
-                                        <!-- Sección de Descripción -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingDescripcion">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
-                                                        Descripción
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <!-- Barra de herramientas de formato de texto -->
-                                                    <div id="descripcion" class="tab-pane fade show active">
-                                                        <div class="toolbar">
-                                                            <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                                                            <select class="toolbar-select">
-                                                                <option value="sans-serif">Sans Serif</option>
-                                                                <option value="serif">Serif</option>
-                                                                <option value="monospace">Monospace</option>
-                                                            </select>
-                                                            <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
-                                                        </div>
+                                    <!-- Sección de Descripción -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingDescripcion">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
+                                                    Descripción
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <!-- Barra de herramientas de formato de texto -->
+                                                <div id="descripcion" class="tab-pane fade show active">
+                                                    <div class="toolbar">
+                                                        <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
+                                                        <select class="toolbar-select">
+                                                            <option value="sans-serif">Sans Serif</option>
+                                                            <option value="serif">Serif</option>
+                                                            <option value="monospace">Monospace</option>
+                                                        </select>
+                                                        <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
+                                                        <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                     </div>
-                                                    <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
-                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
+                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                                <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Sección de Avances de Trabajo -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingAvances">
-                                                <h5 class="mb-0">
+                                    <!-- Sección de Avances de Trabajo -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingAvances">
+                                            <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
-                                                        Avances de Trabajo
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Avance Trabajo</th>
-                                                                    <th>Descripción</th>
-                                                                    <th>Tipo Avance</th>
-                                                                    <th>Fecha</th>
-                                                                    <th>Usuario</th>
-                                                                    <th>Tiempo Insumido(hs)</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Completado el análisis inicial</td>
-                                                                    <td>Desarrollo</td>
-                                                                    <td>6/11/2024 </td>
-                                                                    <td>ERUIZ</td>
-                                                                    <td>4,0</td>
-                                                                </tr>
-                                                               
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <button class="btn boton btn-sm">Agregar</button>
-                                                    <button class="btn boton btn-sm">Modificar</button>
-                                                    <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                    Avances de Trabajo
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Avance Trabajo</th>
+                                                                <th>Descripción</th>
+                                                                <th>Tipo Avance</th>
+                                                                <th>Fecha</th>
+                                                                <th>Usuario</th>
+                                                                <th>Tiempo Insumido(hs)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Completado el análisis inicial</td>
+                                                                <td>Desarrollo</td>
+                                                                <td>6/11/2024 </td>
+                                                                <td>ERUIZ</td>
+                                                                <td>4,0</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+                                                <button class="btn boton btn-sm">Agregar</button>
+                                                <button class="btn boton btn-sm">Modificar</button>
+                                                <button class="btn btn-secondary btn-sm">Grabar</button>
+                                                <button class="btn btn-danger btn-sm">Cancelar</button>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Sección de Puesta en Producción -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingProduccion">
-                                                <h5 class="mb-0">
+                                    <!-- Sección de Puesta en Producción -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingProduccion">
+                                            <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion" style="color:white;">
-                                                        Puesta en Producción
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <select class="form-select mb-3">
-                                                        <option>Seleccionar tipo de modificación...</option>
-                                                        <option value="formulario">Formulario</option>
-                                                        <option value="baseDatos">Base de Datos</option>
-                                                    </select>
-                                                    <textarea class="form-control" rows="3" placeholder="..."></textarea>
-                                                    <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
-                                                </div>
+                                                    Puesta en Producción
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <select class="form-select mb-3">
+                                                    <option>Seleccionar tipo de modificación...</option>
+                                                    <option value="formulario">Formulario</option>
+                                                    <option value="baseDatos">Base de Datos</option>
+                                                </select>
+                                                <textarea class="form-control" rows="3" placeholder="..."></textarea>
+                                                <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Sección de Archivo Adjunto -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingArchivo">
-                                                <h5 class="mb-0">
-                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-                                                        Archivo Adjunto
-                                                    </button>
-                                                </h5>
+                                    <!-- Sección de Archivo Adjunto -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingArchivo">
+                                            <h5 class="mb-0">
+
+                                                <button asp-controller="Archivos" asp-action="Archivos" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
+
+                                                    Archivo Adjunto
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <a asp-controller="Archivos" asp-action="Archivos" class="hidden">Ir a Archivos</a>
+
+                                                <form id="formArchivo" method="post" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label for="archivo">Seleccionar archivo</label>
+                                                        <input type="file" class="form-control" id="archivo" name="archivo" required />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
+                                                        <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
+                                                        <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="FechaAlta">Fecha de Alta</label>
+                                                        <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="UserID">ID de Usuario</label>
+                                                        <input type="text" class="form-control" id="UserID" name="userID" required />
+                                                    </div>
+
+                                                    <!-- Botón de Envío -->
+                                                    <button type="button" class="btn btn-primary mt-2" onclick="submitForm()">Subir</button>
+                                                </form>
+
+
+
+
+
+                                                @*<form asp-controller="SubirArchivo" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+                                                <div>
+                                                <label for="files">Selecciona archivos:</label>
+                                                <input type="file" id="files" name="files" multiple />
+                                                </div>
+                                                <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
+                                                </form>
+                                                <button class="btn btn-danger btn-sm">Quitar</button>
+                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small> *@
                                             </div>
-                                            <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                                @model IEnumerable<ArchivoViewModel>
                                             <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Nombre del Archivo</th>
-                                                        <th>Fecha de Subida</th>
-                                                        <th>Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var archivo in Model)
-                                                    {
-                                                        <tr>
-                                                            <td>@archivo.Id</td>
-                                                            <td>@archivo.NombreArchivo</td>
-                                                            <td>@archivo.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
-                                                            <td>
-                                                                @* <a asp-action="DescargarArchivo" asp-route-id="@archivo.Id" class="btn btn-primary">Descargar</a> *@
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                               @*  <table class="table table-bordered">
+                                                <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Número</th>
-                                                            <th>Nombre</th>
-                                                            <th>Fecha de Alta</th>
-                                                            <th>Usuario Alta</th>
+                                                            <th>#</th>
+                                                            <th>Nombre del Archivo</th>
+                                                            <th>Fecha de Subida</th>
+                                                            <th>Acciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>17658.docx</td>
-                                                            <td>6/11/2024 </td>
-                                                            <td>ERUIZ</td>
-                                                        </tr>
 
+                                                        @if (Model != null && Model.Any())
+
+
+
+                                                        {
+                                                            @foreach (var archivo in Model)
+
+
+
+                                                            {
+                                                                <tr>
+                                                                    <td>@archivo.Id</td>
+                                                                    <td>@archivo.NombreArchivo</td>
+                                                                    <td>@archivo.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
+                                                                    <td>
+                                                                        <a asp-action="DescargarArchivo" asp-route-id="@archivo.Id" class="btn btn-primary">Descargar</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
                                                     </tbody>
-                                                </table> *@
+                                                </table>
+
                                             </div>
-                                                <div class="card-body">
-                                                    
 
-                                                    <form asp-action="SubirArchivo" method="post" enctype="multipart/form-data">
-                                                        <div class="form-group">
-                                                            <label for="archivo">Seleccionar archivo</label>
-                                                            <input type="file" class="form-control" id="archivo" name="archivo" required />
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
-                                                            <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
-                                                            <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="FechaAlta">Fecha de Alta</label>
-                                                            <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="UserID">ID de Usuario</label>
-                                                            <input type="text" class="form-control" id="UserID" name="userID" required />
-                                                        </div>
-
-                                                        <button type="submit" class="btn btn-primary mt-2">Subir</button>
-                                                    </form>
-                    @*                                 <form asp-controller="SubirArchivo" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                        <div>
-                                                            <label for="files">Selecciona archivos:</label>
-                                                            <input type="file" id="files" name="files" multiple />
-                                                        </div>
-                                                        <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
-                                                    </form>
-                                                    <button class="btn btn-danger btn-sm">Quitar</button>
-                                                    <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small> *@
-                                                </div>
-                                            </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Sección de Historial de Estado -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingHistorial">
-                                                <h5 class="mb-0">
+                                    <!-- Sección de Historial de Estado -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingHistorial">
+                                            <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial" style="color:white;">
-                                                        Historial de Estado
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                                    Historial de Estado
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered">
                                                     <thead>
@@ -510,19 +537,19 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                                <div class="card-body">
-                                                   
-                                                    <button class="btn boton btn-sm">Agregar Estado</button>
-                                                    <button class="btn boton btn-sm">Modificar Estado</button>
-                                                    <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
-                                                </div>
+                                            <div class="card-body">
+
+                                                <button class="btn boton btn-sm">Agregar Estado</button>
+                                                <button class="btn boton btn-sm">Modificar Estado</button>
+                                                <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                        
+
                         <!-- Botones de acciones -->
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
