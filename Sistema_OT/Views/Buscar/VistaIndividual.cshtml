@@ -391,48 +391,85 @@
                                                                 <th>Tiempo Insumido(hs)</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="tabla">
+                                                        <tbody id="avancesTable">
                                                             <tr>
                                                                 <td>1</td>
                                                                 <td>Completado el análisis inicial</td>
                                                                 <td>Desarrollo</td>
-                                                                <td>6/11/2024</td>
+                                                                <td>2024-11-06</td>
                                                                 <td>ERUIZ</td>
                                                                 <td>4,0</td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tbody id="nuevo_avance" style="display:none;">
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td><input type="text" id="descripcion" class="form-control" /></td>
-                                                                <td><input type="text" id="tipoAvance" class="form-control" /></td>
-                                                                <td><input type="date" id="fecha" class="form-control" /></td>
-                                                                <td><input type="text" id="usuario" class="form-control" /></td>
-                                                                <td><input type="number" id="tiempo" class="form-control" /></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
 
-                                                <div id="form-section" style="display:none; margin-top: 20px;">
-                                                    <!-- Formulario adicional si lo necesitas -->
+                                                <div id="form-section" style="margin-top: 20px;">
+                                                    <div>
+                                                        <label for="avance">Avance Trabajo:</label>
+                                                        <input type="text" id="avance" class="form-control" readonly />
+                                                    </div>
+                                                    <div>
+                                                        <label for="descripcion">Descripción:</label>
+                                                        <input type="text" id="descripcion" class="form-control" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="tipoAvance">Tipo Avance:</label>
+                                                        <input type="text" id="tipoAvance" class="form-control" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="fecha">Fecha:</label>
+                                                        <input type="date" id="fecha" class="form-control" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="usuario">Usuario:</label>
+                                                        <input type="text" id="usuario" class="form-control" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="tiempo">Tiempo Insumido (hs):</label>
+                                                        <input type="number" id="tiempo" class="form-control" />
+                                                    </div>
+                                                   
                                                 </div>
-
-                                                <button class="btn boton btn-sm" id="agregarBtn" type="button">Agregar</button>
-                                                <button class="btn boton btn-sm">Modificar</button>
-                                                <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                <button id="addBtn" class="btn btn-primary btn-sm" style="margin-top: 10px;">Agregar</button>
+                                                <button class="btn boton btn-sm" style="margin-top: 10px;">Modificar</button>
+                                                <button class="btn boton btn-sm" style="margin-top: 10px;">Grabar</button>
+                                                <button class="btn btn-danger btn-sm" style="margin-top: 10px;">Cancelar</button>
                                             </div>
                                         </div>
                                     </div>
 
                                     <script>
-                                        document.getElementById("agregarBtn").addEventListener("click", function () {
-                                            // Mostrar la fila vacía para completar
-                                            document.getElementById("nuevo_avance").style.display = "table-row";
+                                        let avanceCount = 2;
+                                        document.getElementById("avance").value = avanceCount;
+
+                                        document.getElementById("addBtn").addEventListener("click", function (e) {
+                                            e.preventDefault()
+                                            let avance = avanceCount;
+                                            let descripcion = document.getElementById("descripcion").value;
+                                            let tipoAvance = document.getElementById("tipoAvance").value;
+                                            let fecha = document.getElementById("fecha").value;
+                                            let usuario = document.getElementById("usuario").value;
+                                            let tiempo = document.getElementById("tiempo").value;
+                                            let newRow = document.createElement("tr");
+                                            newRow.innerHTML = `
+                                                         <td>${avance}</td>
+                                                         <td>${descripcion}</td>
+                                                         <td>${tipoAvance}</td>
+                                                         <td>${fecha}</td>
+                                                         <td>${usuario}</td>
+                                                         <td>${tiempo}</td>
+                                                     `;
+                                            document.getElementById("avancesTable").appendChild(newRow);
+                                            avanceCount++;
+                                            document.getElementById("avance").value = avanceCount;
+                                            document.getElementById("descripcion").value = '';
+                                            document.getElementById("tipoAvance").value = '';
+                                            document.getElementById("fecha").value = '';
+                                            document.getElementById("usuario").value = '';
+                                            document.getElementById("tiempo").value = '';
                                         });
                                     </script>
-
 
 
 
