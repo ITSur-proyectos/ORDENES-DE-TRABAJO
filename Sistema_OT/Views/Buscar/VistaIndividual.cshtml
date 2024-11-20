@@ -26,7 +26,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Inicio del formulario-->
-                    <form method="post" action="@Url.Action("VistaIndividual", "Buscar")">
+                    <form method="post" action="@Url.Action("VistaIndividual", "Buscar")">  </form>
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -360,7 +360,12 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       </div>
 
 
 
@@ -369,6 +374,7 @@
 
 
                                         <!-- Sección de Avances de Trabajo -->
+
                                     <div class="card">
                                         <div class="card-header" id="headingAvances">
                                             <h5 class="mb-0">
@@ -379,32 +385,10 @@
                                         </div>
                                         <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Avance Trabajo</th>
-                                                                <th>Descripción</th>
-                                                                <th>Tipo Avance</th>
-                                                                <th>Fecha</th>
-                                                                <th>Usuario</th>
-                                                                <th>Tiempo Insumido(hs)</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="avancesTable">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Completado el análisis inicial</td>
-                                                                <td>Desarrollo</td>
-                                                                <td>2024-11-06</td>
-                                                                <td>ERUIZ</td>
-                                                                <td>4.0</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                               
 
                                                 <div id="form-section" style="margin-top: 20px;">
+                                                    <form asp-action="Create" method="post"> 
                                                     <div>
                                                         <label for="avance">Avance Trabajo:</label>
                                                         <input type="text" id="avance" class="form-control" readonly />
@@ -423,18 +407,59 @@
                                                     </div>
                                                     <div>
                                                         <label for="usuario">Usuario:</label>
-                                                        <input type="text" id="usuario" class="form-control" />
+                                                       
+                                                        <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
+
+                                                            @if (nombresUsuarios != null)
+
+                                                            {
+                                                                <option value="">...</option>
+                                                                foreach (var usuario in nombresUsuarios)
+
+                                                                {
+                                                                    <option value="@usuario.Value">@usuario.Value</option>
+                                                                }
+
+                                                            }
+                                                        </select>
                                                     </div>
+
                                                     <div>
                                                         <label for="tiempo">Tiempo Insumido (hs):</label>
                                                         <input type="text" id="tiempo" class="form-control" pattern="^[0-9]+([.][0-9]{1,2})?$" title="Ingrese un número positivo con hasta dos decimales" placeholder="0.0" />
                                                     </div>
-                                                   
-                                                </div>
+                                                    
+                                               
                                                 <button id="addBtn" class="btn btn-primary btn-sm" style="margin-top: 10px;">Agregar</button>
                                                 <button class="btn boton btn-sm" style="margin-top: 10px;">Modificar</button>
-                                                <button class="btn boton btn-sm" style="margin-top: 10px;">Grabar</button>
+                                                <button type="submit" class="btn boton btn-sm" style="margin-top: 10px;">Grabar</button>
                                                 <button class="btn btn-danger btn-sm" style="margin-top: 10px;">Cancelar</button>
+                                                </form>
+                                              </div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Avance Trabajo</th>
+                                                            <th>Descripción</th>
+                                                            <th>Tipo Avance</th>
+                                                            <th>Fecha</th>
+                                                            <th>Usuario</th>
+                                                            <th>Tiempo Insumido(hs)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="avancesTable">
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Completado el análisis inicial</td>
+                                                            <td>Desarrollo</td>
+                                                            <td>2024-11-06</td>
+                                                            <td>ERUIZ</td>
+                                                            <td>4.0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -608,7 +633,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                       
 
                         
                         <!-- Botones de acciones -->
@@ -629,9 +654,4 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        

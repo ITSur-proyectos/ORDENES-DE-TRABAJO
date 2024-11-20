@@ -20,6 +20,7 @@
     <Folder Include="Files\Documentos\" />
     <Folder Include="Files\Otros\" />
     <Folder Include="Files\Videos\" />
+    <Folder Include="Models\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
