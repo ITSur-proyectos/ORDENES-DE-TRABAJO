@@ -17,7 +17,7 @@ namespace Sistema_OT.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud)
+        public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, string premioAvance, string alcanceIndefinido)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
@@ -64,6 +64,10 @@ namespace Sistema_OT.Controllers
                 if (fechaSolicitud.HasValue)
                 {
                     parametros["@FechaSolicitud"] = fechaSolicitud.Value;
+                }
+                if (fechaVencimiento.HasValue)
+                {
+                    parametros["@FechaVencimiento"] = fechaVencimiento.Value;
                 }
                 if (parametros.Count > 0)
                 {

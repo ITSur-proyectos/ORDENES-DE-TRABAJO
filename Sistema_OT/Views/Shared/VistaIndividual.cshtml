@@ -322,12 +322,15 @@
                                 <div class="col-md-4 d-flex  align-items-center">
                                     <div class="form-check me-3">
                                         <!-- Este div contiene el primer checkbox -->
-                                        <input type="checkbox" class="form-check-input" id="premioAvance" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]">
+                                        <input type="checkbox" class="form-check-input" id="premioAvance"  name="premioAvance" value="S" />
+                                        <input type="hidden" name="premioAvance" value="N" />
                                         <label class="form-check-label text-nowrap" for="premioAvance">Premio por Avance</label>
                                     </div>
                                     <div class="form-check">
                                         <!-- Este div contiene el segundo checkbox -->
-                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]">
+                               
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" name="alcanceIndefinido" value="S" />
+                                        <input type="hidden" name="alcanceIndefinido" value="N" />
                                         <label class="form-check-label text-nowrap" for="alcanceIndefinido">Alcance Indefinido</label>
                                     </div>
                                 </div>
