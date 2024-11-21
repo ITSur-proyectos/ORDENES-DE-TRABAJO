@@ -55,7 +55,8 @@ namespace Sistema_OT.Controllers
         {
             if (archivo == null || archivo.Length == 0)
             {
-                return BadRequest("Por favor, selecciona un archivo válido.");
+                TempData["Message"] = "Por favor, selecciona un archivo válido.";
+                return RedirectToAction("Archivos");
             }
 
             // Leer el archivo como un arreglo de bytes
@@ -88,7 +89,7 @@ namespace Sistema_OT.Controllers
                 }
             }
 
-            // Retornar la vista actualizada
+            // Redirigir con un mensaje de éxito
             TempData["Message"] = "Archivo cargado con éxito.";
             return RedirectToAction("Archivos");
         }
