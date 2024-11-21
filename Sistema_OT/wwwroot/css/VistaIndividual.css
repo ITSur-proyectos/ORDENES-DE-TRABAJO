@@ -7,7 +7,16 @@
     background-color: #f9f9f9; /* Color de fondo para las tarjetas */
 }
 
-
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+    -webkit-appearance: none; /* Chrome, Safari, Brave */
+    -ms-appearance: none; /* Edge */
+}
 /* Estilo para la cabecera del formulario */
 .card-header {
     background-color: #17a2b8;

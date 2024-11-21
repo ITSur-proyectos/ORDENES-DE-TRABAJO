@@ -12,7 +12,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
 
@@ -37,7 +36,7 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@ordentrabajo?.FirstOrDefault()?["NroOrdenTrabajo"]" />
                                 </div>
                             </div>
                             <!-- Botón búsqueda -->
@@ -77,7 +76,7 @@
                                         <option value="0">...</option>
                                         @if (ordentrabajo != null)
                                         {
-                                            <option selected>@ordentrabajo?.FirstOrDefault()?["Estados_Trabajo"]?.ToString()?.Trim()</option>
+                                            <option selected>@ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString()?.Trim()</option>
                                         }
                                     </select>
                                 </div>
@@ -99,7 +98,7 @@
                                             foreach (var cliente in nombresClientes)
                                             {
                                                 
-                                                bool isSelected = cliente.Value == ordentrabajo?.FirstOrDefault()?["Clientes"]?.ToString()?.Trim();
+                                                bool isSelected = cliente.Value == ordentrabajo?.FirstOrDefault()?["Cliente"]?.ToString()?.Trim();
                                                 Console.WriteLine(isSelected);
                                                 if (isSelected)
                                                 {
@@ -130,7 +129,7 @@
                                             {
                                                 
 
-                                                bool isSelected = sistema.Value == ordentrabajo?.FirstOrDefault()?["Sistemas"]?.ToString()?.Trim();
+                                                bool isSelected = sistema.Value == ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString()?.Trim();
                                                 Console.WriteLine(isSelected);
                                                 if (isSelected)
                                                 {
@@ -354,7 +353,7 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" readonly />
+                                     <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" readonly />
                                 </div>
                             </div>
                             <div class="col-md-2">

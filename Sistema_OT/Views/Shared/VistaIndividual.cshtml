@@ -15,7 +15,20 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
+<script>
+    // Establecer la fecha de hoy en formato yyyy-mm-dd
+    window.onload = function () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        var yyyy = today.getFullYear();
 
+        today = yyyy + '-' + mm + '-' + dd;
+
+        // Establecer el valor del input de fecha
+        document.getElementById("fechaInput").value = today;
+    };
+</script>
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
@@ -25,7 +38,7 @@
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
                 </div>
-                <form method="post" action="@Url.Action("VistaIndividual", "ABM")">
+                <form method="post" action="@Url.Action("VistaIndividualBuscar", "ABM")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
                     
@@ -59,7 +72,8 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                    
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaInput" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
@@ -207,7 +221,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo/Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" required name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -264,7 +278,7 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" required placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -297,25 +311,25 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" required value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
                                 </div>
                             </div>
                             <div class="row mt-5">
