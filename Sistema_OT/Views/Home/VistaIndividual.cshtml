@@ -405,104 +405,98 @@
                                         </div>
                                     </div>
 
-                                    <!-- Sección de Archivo Adjunto -->
+                                    <!-- Sección de Archivo Adjunto-->
+
                                     <div class="card">
                                         <div class="card-header" id="headingArchivo">
                                             <h5 class="mb-0">
-
-                                                <button asp-controller="Archivos" asp-action="Archivos" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;" onclick="cargarArchivos()">
                                                     Archivo Adjunto
                                                 </button>
                                             </h5>
                                         </div>
                                         <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
                                             <div class="card-body">
-                                                <a asp-controller="Archivos" asp-action="Archivos" class="hidden">Ir a Archivos</a>
-
-                                                <form id="formArchivo" method="post" enctype="multipart/form-data">
+                                                <form id="formArchivo" method="post" enctype="multipart/form-data" asp-controller="Archivos" asp-action="SubirArchivo">
                                                     <div class="form-group">
                                                         <label for="archivo">Seleccionar archivo</label>
                                                         <input type="file" class="form-control" id="archivo" name="archivo" required />
                                                     </div>
-
                                                     <div class="form-group">
                                                         <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
                                                         <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
                                                     </div>
-
                                                     <div class="form-group">
                                                         <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
                                                         <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
                                                     </div>
-
                                                     <div class="form-group">
                                                         <label for="FechaAlta">Fecha de Alta</label>
                                                         <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
                                                     </div>
-
                                                     <div class="form-group">
                                                         <label for="UserID">ID de Usuario</label>
                                                         <input type="text" class="form-control" id="UserID" name="userID" required />
                                                     </div>
-
-                                                    <!-- Botón de Envío -->
-                                                    <button type="button" class="btn btn-primary mt-2" onclick="submitForm()">Subir</button>
+                                                    <button type="submit" class="btn btn-primary mt-2">Subir</button>
                                                 </form>
 
-
-
-
-
-                                                @*<form asp-controller="SubirArchivo" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                <div>
-                                                <label for="files">Selecciona archivos:</label>
-                                                <input type="file" id="files" name="files" multiple />
+                                                <div class="table-responsive mt-4">
+                                                    <table class="table" id="tablaArchivos">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Nombre del Archivo</th>
+                                                                <th>Fecha de Subida</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Esta sección se llenará dinámicamente -->
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
-                                                </form>
-                                                <button class="btn btn-danger btn-sm">Quitar</button>
-                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small> *@
                                             </div>
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Nombre del Archivo</th>
-                                                            <th>Fecha de Subida</th>
-                                                            <th>Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        @if (Model != null && Model.Any())
-
-
-
-                                                        {
-                                                            @foreach (var archivo in Model)
-
-
-
-                                                            {
-                                                                <tr>
-                                                                    <td>@archivo.Id</td>
-                                                                    <td>@archivo.NombreArchivo</td>
-                                                                    <td>@archivo.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
-                                                                    <td>
-                                                                        <a asp-action="DescargarArchivo" asp-route-id="@archivo.Id" class="btn btn-primary">Descargar</a>
-                                                                    </td>
-                                                                </tr>
-                                                            }
-                                                        }
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-
                                         </div>
                                     </div>
+
+                                    <script>
+                                        // Función para cargar los archivos del servidor
+                                        function cargarArchivos() {
+                                            $.ajax({
+                                                url: '/Archivos/ObtenerArchivos', // Endpoint del controlador que devuelve los archivos
+                                                method: 'GET',
+                                                success: function (data) {
+                                                    const tablaArchivos = $('#tablaArchivos tbody');
+                                                    tablaArchivos.empty(); // Limpiar la tabla
+
+                                                    // Generar filas dinámicamente
+                                                    data.forEach((archivo, index) => {
+                                                        const row = `
+                                                                <tr>
+                                                                    <td>${index + 1}</td>
+                                                                    <td>${archivo.nombreArchivo}</td>
+                                                                    <td>${new Date(archivo.fechaSubida).toLocaleString()}</td>
+                                                                    <td>
+                                                                        <a href="/Archivos/DescargarArchivo/${archivo.id}" class="btn btn-primary btn-sm">Descargar</a>
+                                                                    </td>
+                                                                </tr>
+                                                            `;
+                                                        tablaArchivos.append(row);
+                                                    });
+                                                },
+                                                error: function () {
+                                                    alert('Ocurrió un error al cargar los archivos.');
+                                                }
+                                            });
+                                        }
+
+                                        // Cargar archivos automáticamente al abrir el acordeón
+                                        $('#collapseArchivo').on('shown.bs.collapse', function () {
+                                            cargarArchivos();
+                                        });
+                                    </script>
+
 
                                     <!-- Sección de Historial de Estado -->
                                     <div class="card">
