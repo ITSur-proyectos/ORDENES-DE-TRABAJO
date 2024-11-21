@@ -94,32 +94,32 @@ namespace Sistema_OT.Controllers
         }
 
         // Acción para descargar un archivo
-        // [HttpGet]
-        //public async Task<IActionResult> DescargarArchivo(int id)
-        //{
-        //    using (var connection = new SqlConnection(_connectionString))
-        //    {
-        //        var query = "SELECT NombreArchivo, TipoContenido, Archivo FROM Archivos WHERE Id = @Id";
-        //        using (var command = new SqlCommand(query, connection))
-        //        {
-        //            command.Parameters.AddWithValue("@Id", id);
+        [HttpGet]
+        public async Task<IActionResult> DescargarArchivo(int id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT NombreArchivo, TipoContenido, Archivo FROM Archivos WHERE Id = @Id";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
 
-        //            await connection.OpenAsync();
-        //            using (var reader = await command.ExecuteReaderAsync())
-        //            {
-        //                if (reader.Read())
-        //                {
-        //                    var nombreArchivo = reader["NombreArchivo"].ToString();
-        //                    var tipoContenido = reader["TipoContenido"].ToString();
-        //                    var archivoBytes = (byte[])reader["Archivo"];
+                    await connection.OpenAsync();
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.Read())
+                        {
+                            var nombreArchivo = reader["NombreArchivo"].ToString();
+                            var tipoContenido = reader["TipoContenido"].ToString();
+                            var archivoBytes = (byte[])reader["Archivo"];
 
-        //                    return File(archivoBytes, tipoContenido, nombreArchivo);
-        //                }
-        //            }
-        //        }
-        //    }
+                            return File(archivoBytes, tipoContenido, nombreArchivo);
+                        }
+                    }
+                }
+            }
 
-        //    return NotFound("Archivo no encontrado.");
-        //}
+            return NotFound("Archivo no encontrado.");
+        }
     }
 }
