@@ -20,8 +20,16 @@ namespace Sistema_OT.Controllers
             return View("~/Views/Home/VistaIndividual.cshtml", archivos);
         }
 
+        // Acción para obtener los archivos (usada por AJAX)
+        [HttpGet]
+        public async Task<IActionResult> ObtenerArchivos()
+        {
+            var archivos = await ObtenerArchivosDesdeDB();
+            return Json(archivos);  // Devolver los archivos en formato JSON para el frontend
+        }
+
         // Método privado para obtener la lista de archivos desde la base de datos
-        private async Task<List<ArchivoViewModel>> ObtenerArchivos()
+        private async Task<List<ArchivoViewModel>> ObtenerArchivosDesdeDB()
         {
             var archivos = new List<ArchivoViewModel>();
 
