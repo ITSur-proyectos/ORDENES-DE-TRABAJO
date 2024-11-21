@@ -1,0 +1,59 @@
+﻿
+@{
+}
+
+
+<a asp-controller="AvancesDeTrabajo" asp-action="Create"> Ver avances </a>
+<div id="form-section" style="margin-top: 20px;">
+
+    <!--formulario de creacion-->
+    <form asp-action="Create" method="post">
+
+        <div class="form-group"><>
+            <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
+            <input type="number" pattern="^[0-9]+([.][0-9]{1,2})?$" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="AvanceTrabajo">Avance de Trabajo</label>
+            <input type="number" pattern="^[0-9]+([.][0-9]{1,2})?$" class="form-control" />
+        </div>
+        <div>
+            <label for="desc">Descripción:</label>
+            <input type="text" id="desc" class="form-control" />
+        </div>
+        <div>
+            <label for="tipoAvance">Tipo Avance:</label>
+            <input type="text" id="tipoAvance" class="form-control" />
+        </div>
+        <div>
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" class="form-control" />
+        </div>
+        <div>
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" class="form-control" />
+            @*  <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
+
+            @if (nombresUsuarios != null)
+
+            {
+            <option value="">...</option>
+            foreach (var usuario in nombresUsuarios)
+
+            {
+            <option value="@usuario.Value">@usuario.Value</option>
+            }
+
+            }
+            </select> *@
+        </div>
+
+        <div>
+            <label for="tiempo">Tiempo Insumido (hs):</label>
+            <input type="text" id="tiempo" class="form-control" pattern="^[0-9]+([.][0-9]{1,2})?$" title="Ingrese un número positivo con hasta dos decimales" placeholder="0.0" />
+        </div>
+
+
+        <button type="submit" class="btn boton btn-sm" style="margin-top: 10px;">Grabar</button>
+       
+    </form>

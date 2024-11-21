@@ -386,12 +386,19 @@
                                         <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                             <div class="card-body">
                                                
-
+                                                <a asp-controller="AvancesDeTrabajo" asp-action="Index"> Ver avances </a> 
                                                 <div id="form-section" style="margin-top: 20px;">
-                                                    <form asp-action="Create" method="post"> 
-                                                    <div>
-                                                        <label for="avance">Avance Trabajo:</label>
-                                                        <input type="text" id="avance" class="form-control" readonly />
+
+                                                    <!--formulario de creacion-->
+                                                    <form asp-controller="AvancesDeTrabajo" asp-action="Create" method="post">
+
+                                                    <div class="form-group">
+                                                        <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
+                                                        <input type="number" pattern="^[0-9]+([.][0-9]{1,2})?$" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="AvanceTrabajo">Avance de Trabajo</label>
+                                                        <input type="number" pattern="^[0-9]+([.][0-9]{1,2})?$"  class="form-control" />
                                                     </div>
                                                     <div>
                                                         <label for="desc">Descripción:</label>
@@ -407,8 +414,8 @@
                                                     </div>
                                                     <div>
                                                         <label for="usuario">Usuario:</label>
-                                                       
-                                                        <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
+                                                         <input type="text" id="usuario" class="form-control" />
+                                                    @*  <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
 
                                                             @if (nombresUsuarios != null)
 
@@ -421,7 +428,7 @@
                                                                 }
 
                                                             }
-                                                        </select>
+                                                        </select> *@ 
                                                     </div>
 
                                                     <div>
@@ -450,14 +457,26 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="avancesTable">
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Completado el análisis inicial</td>
-                                                            <td>Desarrollo</td>
-                                                            <td>2024-11-06</td>
-                                                            <td>ERUIZ</td>
-                                                            <td>4.0</td>
-                                                        </tr>
+                                                        @if(Model != null)
+                                                        {
+                                                                @foreach (var avances in Model)
+                                                                {
+                                                                 <tr>
+                                                                     <td>@avances.NroOrdenTrabajo</td>
+                                                                     <td>@avances.Descripcion</td>
+                                                                     <td>@avances.TipoAvance</td>
+                                                                     <td>@avances.Fecha</td>
+                                                                     <td>@avances.Usuario</td>
+                                                                     <td>@avances.HorasInsumidas</td>
+
+
+                                                                 </tr>
+                                                                }
+                                                            }else
+                                                            { 
+                                                           <div>No hay datos disponibles</div>
+                                                        }
+                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
