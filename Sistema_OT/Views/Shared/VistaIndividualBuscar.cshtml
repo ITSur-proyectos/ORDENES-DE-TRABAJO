@@ -12,23 +12,9 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
-<script>
-    // Establecer la fecha de hoy en formato yyyy-mm-dd
-    window.onload = function () {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var yyyy = today.getFullYear();
 
-        today = yyyy + '-' + mm + '-' + dd;
-
-        // Establecer el valor del input de fecha
-        document.getElementById("fechaInput").value = today;
-    };
-</script>
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
@@ -38,7 +24,7 @@
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
                 </div>
-                <form method="post" action="@Url.Action("VistaIndividualBuscar", "ABM")">
+                <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
                     
@@ -50,21 +36,21 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@ordentrabajo?.FirstOrDefault()?["NroOrdenTrabajo"]" />
                                 </div>
                             </div>
                             <!-- Botón búsqueda -->
                             <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
 
 
-                                <a class="btn boton-busqueda btn-sm" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar">Buscar</a>
+                                <button type="submit"  class="btn boton-busqueda btn-sm">Buscar</button>
 
                             </div>
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="dependencia" class="text-nowrap">Depende</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" readonly value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
                                 </div>
                             </div>
                             
@@ -72,41 +58,26 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaInput" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" readonly value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento" readonly name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
-                                    <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
+                                    <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo" disabled>
                                         <option value="0">...</option>
-                                        <option value="1">Pendiente</option>
-                                        <option value="2">Entregado</option>
-                                        <option value="3">En desarrollo</option>
-                                        <option value="4">Terminado</option>
-                                        <option value="5">En produccion</option>
-                                        <option value="6">Anulada</option>
-                                        <option value="7">Facturada</option>
-                                        <option value="8">Bonificada</option>
-                                        <option value="9">Presupuesto enviado al cliente</option>
-                                        <option value="10">Prueba realizada OK</option>
-                                        <option value="11">Para revisar problemas en las pruebas</option>
-                                        <option value="12">Presupuesto aprobado</option>
-                                        <option value="13">Presupuesto asignado</option>
-                                        <option value="14">Presupuesto no aprobado</option>
-                                        <option value="15">Facturada(incluida abono)</option>
-                                        <option value="16">En proceso de presupuesto</option>
-                                        <option value="17">Presupuesto facturado</option>
-                                        <option value="18">Incluida en version</option>
+                                        @if (ordentrabajo != null)
+                                        {
+                                            <option selected>@ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString()?.Trim()</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -117,8 +88,8 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <select class="form-select" style="font-size:12px;" id="cliente" name="cliente">
-                                        <!-- Opciones(se hace con la db) -->
+                                    <select class="form-select" style="font-size:12px;" id="cliente" name="cliente" disabled>
+                                        
 
                                         <option value="-1">...</option>
 
@@ -126,7 +97,18 @@
                                         {
                                             foreach (var cliente in nombresClientes)
                                             {
-                                                <option value="@cliente.Key">@cliente.Value</option>
+                                                
+                                                bool isSelected = cliente.Value == ordentrabajo?.FirstOrDefault()?["Cliente"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@cliente.Value" selected="selected">@cliente.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@cliente.Value">@cliente.Value</option>
+                                                }
+                                                
                                             }
                                         }
 
@@ -136,7 +118,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <select class="form-select" style="font-size:12px;" id="sistema" name="sistema">
+                                    <select class="form-select" style="font-size:12px;" id="sistema" name="sistema" disabled>
                                         <!-- Opciones(se hace con la db) -->
 
                                         <option value="-1">...</option>
@@ -145,7 +127,19 @@
                                         {
                                             foreach (var sistema in nombresSistemas)
                                             {
-                                                <option value="@sistema.Key">@sistema.Value</option>
+                                                
+
+                                                bool isSelected = sistema.Value == ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@sistema.Value" selected="selected">@sistema.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@sistema.Value">@sistema.Value</option>
+                                                }
+                                                
                                             }
                                         }
 
@@ -155,7 +149,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
-                                    <select class="form-select" style="font-size:12px;" id="Proyecto" name="Proyecto">
+                                    <select class="form-select" style="font-size:12px;" id="Proyecto" name="Proyecto" disabled>
 
                                         @if (nombresProyectos != null)
 
@@ -163,9 +157,25 @@
                                             <option value="-1">...</option>
 
                                             foreach (var proyecto in nombresProyectos)
-
                                             {
-                                                <option value="@proyecto.Key">@proyecto.Value</option>
+                                                var proyectoValue = ordentrabajo?.FirstOrDefault()?["Proyecto"];
+                                                int proyectoId = -1; // Valor por defecto
+
+                                                if (proyectoValue != null && int.TryParse(proyectoValue.ToString(), out int result))
+                                                {
+                                                    proyectoId = result;
+                                                }
+
+                                                bool isSelected = proyecto.Key == proyectoId;
+
+                                                if (isSelected)
+                                                {
+                                                    <option value="@proyecto.Key" selected="selected">@proyecto.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@proyecto.Key">@proyecto.Value</option>
+                                                }
                                             }
 
                                         }
@@ -183,26 +193,36 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="usuarioResp">Usuario Responsable</label>
-                                    <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable">
-                                        <!-- Opciones(se hace con la db) -->
-
+                                    <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable" disabled>
                                         <option value="">...</option>
-
+                                        
                                         @if (nombresUsuarios != null)
                                         {
-                                            foreach (var usuario in nombresUsuarios)
-                                            {
-                                                <option value="@usuario.Value">@usuario.Value</option>
-                                            }
+                                                foreach (var usuario in nombresUsuarios)
+                                                {
+
+                                                    bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                    Console.WriteLine(isSelected);
+                                                    if (isSelected)
+                                                    {
+                                                        <option value="@usuario.Value" selected="selected">@usuario.Value</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                    }
+                                                }
+
                                         }
 
+                                        
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="usuarioSoli">Usuario Solicitante</label>
-                                    <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
+                                    <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante" disabled>
                                         <!-- Opciones(se hace con la db) -->
 
                                         <option>...</option>
@@ -211,7 +231,17 @@
                                         {
                                             foreach (var usuario in nombresUsuarios)
                                             {
-                                                <option value="@usuario.Value">@usuario.Value</option>
+
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@usuario.Value" selected="selected">@usuario.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@usuario.Value">@usuario.Value</option>
+                                                }
                                             }
                                         }
 
@@ -221,7 +251,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo/Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" required name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" readonly name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -278,13 +308,13 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" required placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto" readonly placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="solicitadoPor">Solicitado Por</label>
-                                    <select class="form-select" style="font-size:12px;" id="Solicitante">
+                                    <select class="form-select" style="font-size:12px;" id="Solicitante" disabled>
                                         <!-- Opciones(se hace con la db) -->
                                         <option>...</option>
                                         @if (nombresUsuarios != null)
@@ -305,46 +335,43 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="horasFacturables" class="text-nowrap">Hs. Facturables</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" required value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" readonly />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["TotalHorasAvances"]" />
+                                     <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" readonly />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" readonly />
                                 </div>
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-4 d-flex  align-items-center">
                                     <div class="form-check me-3">
                                         <!-- Este div contiene el primer checkbox -->
-                                        <input type="checkbox" class="form-check-input" id="premioAvance"  name="premioAvance" value="S" />
-                                        <input type="hidden" name="premioAvance" value="N" />
+                                        <input type="checkbox" class="form-check-input" id="premioAvance" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]" disabled>
                                         <label class="form-check-label text-nowrap" for="premioAvance">Premio por Avance</label>
                                     </div>
                                     <div class="form-check">
                                         <!-- Este div contiene el segundo checkbox -->
-                               
-                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" name="alcanceIndefinido" value="S" />
-                                        <input type="hidden" name="alcanceIndefinido" value="N" />
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]" disabled>
                                         <label class="form-check-label text-nowrap" for="alcanceIndefinido">Alcance Indefinido</label>
                                     </div>
                                 </div>
@@ -565,7 +592,7 @@
                                 <div class="grupo-botones" style="font-size:12px;">
                                     <button class="btn boton">Copiar Orden</button>
                                     <button class="btn boton">Enviar Orden</button>
-                                    <button type="submit" name="accion" value="Agregar" class="btn boton">Agregar</button>
+                                    <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                     <button class="btn boton">Modificar</button>
                                     <button class="btn boton">Grabar</button>
                                     <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->

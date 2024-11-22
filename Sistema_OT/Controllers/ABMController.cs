@@ -6,8 +6,18 @@ namespace Sistema_OT.Controllers
 {
     public class ABMController : Controller
     {
+
+        [HttpGet]
+        public ActionResult VistaIndividual()
+        {
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            return View();
+        }
         [HttpPost]
-        public ActionResult VistaIndividual(string accion, int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud)
+        public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
@@ -55,14 +65,20 @@ namespace Sistema_OT.Controllers
                 {
                     parametros["@FechaSolicitud"] = fechaSolicitud.Value;
                 }
+                if (fechaVencimiento.HasValue)
+                {
+                    parametros["@FechaVencimiento"] = fechaVencimiento.Value;
+                }
                 if (parametros.Count > 0)
                 {
+                    parametros["@PremioPorAvance"] = premioAvance;
+                    parametros["@AlcanceIndefinido"] = alcanceIndefinido;
                     string consulta = "Ordenes_Trabajo_INSERT";
                     List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
                     if (ordenes.Count > 0)
                     {
-                        ViewData["Ordenes"] = ordenes;
+                        ViewData["Orden"] = ordenes;
                     }
                 }
                 else
