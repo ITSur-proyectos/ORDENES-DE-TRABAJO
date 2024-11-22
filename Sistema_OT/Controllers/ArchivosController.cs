@@ -12,59 +12,29 @@ namespace Sistema_OT.Controllers
     {
         private readonly string _connectionString = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";
 
-        // Acción para mostrar la vista y cargar la lista de archivos
+        // Acción para mostrar la tabla de archivos en VistaIndividual.cshtml
         [HttpGet]
         public async Task<IActionResult> Archivos()
         {
-            var archivos = await ObtenerArchivos();
-            return View("~/Views/Home/VistaIndividual.cshtml", archivos);
-        }
-
-        // Acción para obtener los archivos (usada por AJAX)
-        [HttpGet]
-        public async Task<IActionResult> ObtenerArchivos()
-        {
             var archivos = await ObtenerArchivosDesdeDB();
-            return Json(archivos);  // Devolver los archivos en formato JSON para el frontend
+            return View("~/Views/Home/VistaIndividual.cshtml", archivos); // Conectar VistaIndividual.cshtml
         }
 
-        // Método privado para obtener la lista de archivos desde la base de datos
-        private async Task<List<ArchivoViewModel>> ObtenerArchivosDesdeDB()
+        // Acción para mostrar la vista Subir.cshtml
+        [HttpGet]
+        public IActionResult Subir()
         {
-            var archivos = new List<ArchivoViewModel>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var query = "SELECT Id, NombreArchivo, FechaSubida FROM Archivos";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    await connection.OpenAsync();
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (reader.Read())
-                        {
-                            archivos.Add(new ArchivoViewModel
-                            {
-                                Id = (int)reader["Id"],
-                                NombreArchivo = reader["NombreArchivo"].ToString(),
-                                FechaSubida = (DateTime)reader["FechaSubida"]
-                            });
-                        }
-                    }
-                }
-            }
-
-            return archivos;
+            return View("~/Views/Archivos/Subir.cshtml"); // Conectar Subir.cshtml
         }
 
-        // Acción para manejar la subida del archivo
+        // Acción para manejar la subida del archivo desde Subir.cshtml
         [HttpPost]
         public async Task<IActionResult> SubirArchivo(IFormFile archivo, int nroOrdenTrabajo, int correlativoAdjunto, DateTime fechaAlta, string userID)
         {
             if (archivo == null || archivo.Length == 0)
             {
                 TempData["Message"] = "Por favor, selecciona un archivo válido.";
-                return RedirectToAction("Archivos");
+                return RedirectToAction("Subir");
             }
 
             // Leer el archivo como un arreglo de bytes
@@ -99,10 +69,10 @@ namespace Sistema_OT.Controllers
 
             // Redirigir con un mensaje de éxito
             TempData["Message"] = "Archivo cargado con éxito.";
-            return RedirectToAction("Archivos");
+            return RedirectToAction("Subir");
         }
 
-        // Acción para descargar un archivo
+        // Acción para descargar un archivo desde la tabla
         [HttpGet]
         public async Task<IActionResult> DescargarArchivo(int id)
         {
@@ -129,6 +99,35 @@ namespace Sistema_OT.Controllers
             }
 
             return NotFound("Archivo no encontrado.");
+        }
+
+        // Método privado para obtener la lista de archivos desde la base de datos
+        private async Task<List<ArchivoViewModel>> ObtenerArchivosDesdeDB()
+        {
+            var archivos = new List<ArchivoViewModel>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT Id, NombreArchivo, FechaSubida FROM Archivos";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    await connection.OpenAsync();
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            archivos.Add(new ArchivoViewModel
+                            {
+                                Id = (int)reader["Id"],
+                                NombreArchivo = reader["NombreArchivo"].ToString(),
+                                FechaSubida = (DateTime)reader["FechaSubida"]
+                            });
+                        }
+                    }
+                }
+            }
+
+            return archivos;
         }
     }
 }

@@ -420,29 +420,7 @@
                                         </div>
                                         <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
                                             <div class="card-body">
-                                                <form id="formArchivo" method="post" enctype="multipart/form-data" asp-controller="Archivos" asp-action="SubirArchivo">
-                                                    <div class="form-group">
-                                                        <label for="archivo">Seleccionar archivo</label>
-                                                        <input type="file" class="form-control" id="archivo" name="archivo" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
-                                                        <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
-                                                        <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="FechaAlta">Fecha de Alta</label>
-                                                        <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="UserID">ID de Usuario</label>
-                                                        <input type="text" class="form-control" id="UserID" name="userID" required />
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary mt-2">Subir</button>
-                                                </form>
+                                                <a asp-controller="Archivos" asp-action="Subir" class="btn btn-primary">Ir a Subir Archivo</a>
 
                                                 <div class="table-responsive mt-4">
                                                     <table class="table" id="tablaArchivos">
