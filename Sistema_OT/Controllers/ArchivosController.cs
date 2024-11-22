@@ -24,7 +24,7 @@ namespace Sistema_OT.Controllers
         [HttpGet]
         public IActionResult Subir()
         {
-            return View("~/Views/Archivos/Subir.cshtml"); // Conectar Subir.cshtml
+            return View("~/Views/Files/Subir.cshtml"); // Conectar Subir.cshtml
         }
 
         // Acción para manejar la subida del archivo desde Subir.cshtml
@@ -34,41 +34,46 @@ namespace Sistema_OT.Controllers
             if (archivo == null || archivo.Length == 0)
             {
                 TempData["Message"] = "Por favor, selecciona un archivo válido.";
-                return RedirectToAction("Subir");
+                return View("Subir"); // Cambia el redireccionamiento
             }
 
-            // Leer el archivo como un arreglo de bytes
-            byte[] archivoBytes;
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await archivo.CopyToAsync(memoryStream);
-                archivoBytes = memoryStream.ToArray();
-            }
-
-            // Insertar el archivo en la base de datos
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var query = @"INSERT INTO Archivos 
-                              (NombreArchivo, TipoContenido, Archivo, NroOrdenTrabajo, CorrelativoAdjunto, FechaAlta, UserID) 
-                              VALUES 
-                              (@NombreArchivo, @TipoContenido, @Archivo, @NroOrdenTrabajo, @CorrelativoAdjunto, @FechaAlta, @UserID)";
-                using (var command = new SqlCommand(query, connection))
+                byte[] archivoBytes;
+                using (var memoryStream = new MemoryStream())
                 {
-                    command.Parameters.AddWithValue("@NombreArchivo", archivo.FileName);
-                    command.Parameters.AddWithValue("@TipoContenido", archivo.ContentType);
-                    command.Parameters.AddWithValue("@Archivo", archivoBytes);
-                    command.Parameters.AddWithValue("@NroOrdenTrabajo", nroOrdenTrabajo);
-                    command.Parameters.AddWithValue("@CorrelativoAdjunto", correlativoAdjunto);
-                    command.Parameters.AddWithValue("@FechaAlta", fechaAlta);
-                    command.Parameters.AddWithValue("@UserID", userID);
-
-                    await connection.OpenAsync();
-                    await command.ExecuteNonQueryAsync();
+                    await archivo.CopyToAsync(memoryStream);
+                    archivoBytes = memoryStream.ToArray();
                 }
+
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var query = @"INSERT INTO Archivos 
+                          (NombreArchivo, TipoContenido, Archivo, NroOrdenTrabajo, CorrelativoAdjunto, FechaAlta, UserID) 
+                          VALUES 
+                          (@NombreArchivo, @TipoContenido, @Archivo, @NroOrdenTrabajo, @CorrelativoAdjunto, @FechaAlta, @UserID)";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@NombreArchivo", archivo.FileName);
+                        command.Parameters.AddWithValue("@TipoContenido", archivo.ContentType);
+                        command.Parameters.AddWithValue("@Archivo", archivoBytes);
+                        command.Parameters.AddWithValue("@NroOrdenTrabajo", nroOrdenTrabajo);
+                        command.Parameters.AddWithValue("@CorrelativoAdjunto", correlativoAdjunto);
+                        command.Parameters.AddWithValue("@FechaAlta", fechaAlta);
+                        command.Parameters.AddWithValue("@UserID", userID);
+
+                        await connection.OpenAsync();
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+
+                TempData["Message"] = "Archivo cargado con éxito.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = $"Error al subir el archivo: {ex.Message}";
             }
 
-            // Redirigir con un mensaje de éxito
-            TempData["Message"] = "Archivo cargado con éxito.";
             return RedirectToAction("Subir");
         }
 
@@ -99,6 +104,14 @@ namespace Sistema_OT.Controllers
             }
 
             return NotFound("Archivo no encontrado.");
+        }
+
+        // Acción para obtener los archivos (usada por AJAX)
+        [HttpGet]
+        public async Task<IActionResult> ObtenerArchivos()
+        {
+            var archivos = await ObtenerArchivosDesdeDB();
+            return Json(archivos);  // Devolver los archivos en formato JSON para el frontend
         }
 
         // Método privado para obtener la lista de archivos desde la base de datos

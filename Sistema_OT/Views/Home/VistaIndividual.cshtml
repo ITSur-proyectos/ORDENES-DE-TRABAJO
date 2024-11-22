@@ -1,4 +1,4 @@
-@model IEnumerable<ArchivoViewModel>
+@model IEnumerable<Sistema_OT.Models.ArchivoViewModel>
 @{
     ViewData["Title"] = "VistaIndividual";
 
@@ -407,9 +407,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Sección de Archivo Adjunto-->
-
+                                    <!-- VistaIndividual.cshtml -->
                                     <div class="card">
                                         <div class="card-header" id="headingArchivo">
                                             <h5 class="mb-0">
@@ -454,15 +452,15 @@
                                                     // Generar filas dinámicamente
                                                     data.forEach((archivo, index) => {
                                                         const row = `
-                                                                <tr>
-                                                                    <td>${index + 1}</td>
-                                                                    <td>${archivo.nombreArchivo}</td>
-                                                                    <td>${new Date(archivo.fechaSubida).toLocaleString()}</td>
-                                                                    <td>
-                                                                        <a href="/Archivos/DescargarArchivo/${archivo.id}" class="btn btn-primary btn-sm">Descargar</a>
-                                                                    </td>
-                                                                </tr>
-                                                            `;
+                                                            <tr>
+                                                                <td>${index + 1}</td>
+                                                                <td>${archivo.nombreArchivo}</td>
+                                                                <td>${new Date(archivo.fechaSubida).toLocaleString()}</td>
+                                                                <td>
+                                                                    <a href="/Archivos/DescargarArchivo/${archivo.id}" class="btn btn-primary btn-sm">Descargar</a>
+                                                                </td>
+                                                            </tr>
+                                                        `;
                                                         tablaArchivos.append(row);
                                                     });
                                                 },
