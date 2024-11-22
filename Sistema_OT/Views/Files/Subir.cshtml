@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<ArchivoViewModel>
 @{
     ViewData["Title"] = "Subir";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +6,73 @@
 
 <h1>Subir</h1>
 
+<a asp-controller="Archivos" asp-action="Archivos" class="btn btn-primary">Ir a Archivos</a>
+<h2>Gestión de Archivos</h2>
+
+<!-- Formulario para subir archivos -->
+<div>
+    <h3>Subir Archivo</h3>
+    <form asp-action="SubirArchivo" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="archivo">Seleccionar archivo</label>
+            <input type="file" class="form-control" id="archivo" name="archivo" required />
+        </div>
+
+        <div class="form-group">
+            <label for="NroOrdenTrabajo">Número de Orden de Trabajo</label>
+            <input type="number" class="form-control" id="NroOrdenTrabajo" name="nroOrdenTrabajo" required />
+        </div>
+
+        <div class="form-group">
+            <label for="CorrelativoAdjunto">Correlativo Adjunto</label>
+            <input type="number" class="form-control" id="CorrelativoAdjunto" name="correlativoAdjunto" required />
+        </div>
+
+        <div class="form-group">
+            <label for="FechaAlta">Fecha de Alta</label>
+            <input type="datetime-local" class="form-control" id="FechaAlta" name="fechaAlta" required />
+        </div>
+
+        <div class="form-group">
+            <label for="UserID">ID de Usuario</label>
+            <input type="text" class="form-control" id="UserID" name="userID" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Subir</button>
+    </form>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <p class="alert alert-info mt-2">@ViewBag.Message</p>
+}
+
+<hr />
+
+<!-- Tabla para listar archivos -->
+<div>
+    <h3>Lista de Archivos</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre del Archivo</th>
+                <th>Fecha de Subida</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var archivo in Model)
+            {
+                <tr>
+                    <td>@archivo.Id</td>
+                    <td>@archivo.NombreArchivo</td>
+                    <td>@archivo.FechaSubida.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <a asp-action="DescargarArchivo" asp-route-id="@archivo.Id" class="btn btn-primary">Descargar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
