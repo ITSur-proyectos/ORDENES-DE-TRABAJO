@@ -44,6 +44,26 @@
                         </li>
                        
                     </ul>
+
+                                <!-- Alineación a la derecha de los botones de "Buscar" y "Cerrar sesión" -->
+                            <ul class="navbar-nav ms-auto">
+                                @if (Context.Session.GetString("UserId") != null)
+                                {
+                                    <li class="nav-item">
+                                        <span class="nav-link text-dark">Usuario: @Context.Session.GetString("UserId")</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark btn btn-outline-danger" href="@Url.Action("Logout", "Account")">Cerrar sesión</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark btn btn-outline-primary" href="@Url.Action("Login", "Account")">Iniciar sesión</a>
+                                    </li>
+                                }
+                            </ul>
+
                 </div>
             </div>
         </nav>

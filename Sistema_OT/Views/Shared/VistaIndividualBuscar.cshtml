@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
 
 <!-- Contenedor principal para el formulario Individual-->
-<div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
+<div class="container"-fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
     <div class="row">
         <div class="col-12">
             <!-- Tarjeta con el formulario -->
@@ -33,19 +33,13 @@
                             <!-- Primera fila con campos de la orden -->
                             <!-- Campo de Orden -->
 
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
                                     <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@ordentrabajo?.FirstOrDefault()?["NroOrdenTrabajo"]" />
                                 </div>
                             </div>
-                            <!-- Botón búsqueda -->
-                            <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
-
-
-                                <button type="submit"  class="btn boton-busqueda btn-sm">Buscar</button>
-
-                            </div>
+                           
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
                                 <div class="form-group">
@@ -362,22 +356,49 @@
                                     <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" readonly />
                                 </div>
                             </div>
-                            <div class="row mt-5">
-                                <div class="col-md-4 d-flex  align-items-center">
-                                    <div class="form-check me-3">
-                                        <!-- Este div contiene el primer checkbox -->
-                                        <input type="checkbox" class="form-check-input" id="premioAvance" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]" disabled>
-                                        <label class="form-check-label text-nowrap" for="premioAvance">Premio por Avance</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <!-- Este div contiene el segundo checkbox -->
-                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]" disabled>
-                                        <label class="form-check-label text-nowrap" for="alcanceIndefinido">Alcance Indefinido</label>
-                                    </div>
-                                </div>
-                            </div>
+<div class="row mt-5">
+    <div class="col-md-4 d-flex align-items-center">
+        <!-- Primer checkbox -->
+        <div class="form-check me-3 ">
+            <input type="checkbox" class="form-check-input" id="premioAvance" 
+                placeholder="0" 
+                value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]" 
+                disabled>
+            <label class="form-check-label text-nowrap" for="premioAvance">
+                Premio por Avance
+            </label>
+        </div>
+
+        <!-- Segundo checkbox -->
+        <div class="form-check me-3 ">
+            <input type="checkbox" class="form-check-input" id="alcanceIndefinido" 
+                value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]" 
+                disabled>
+            <label class="form-check-label text-nowrap" for="alcanceIndefinido">
+                Alcance Indefinido
+            </label>
+        </div>
+
+        <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
+        <div class="w-100 mb-3">
+            <button type="submit" class="btn boton-busqueda btn-sm w-100">
+                Buscar
+            </button>
+        </div>
+    </div>
+</div>
+
 
                         </div>
+
+                        <div class="row">
+                            <div class="col-10"> </div>
+                            <div class="col-2 d-flex flex-column align-items-end">
+                           
+                                
+                             </div>
+                        </div>
+
                         <!--Sección de descripción y accordion-->
                             <!-- Segunda Tarjeta -->
                             <div class="card shadow-sm mb-3">
@@ -387,13 +408,14 @@
 
                                         <!-- Sección de Descripción -->
                                         <div class="card">
-                                            <div class="card-header" id="headingDescripcion">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
-                                                        Descripción
-                                                    </button>
-                                                </h5>
-                                            </div>
+                                          <div class="card-header py-1" id="headingDescripcion" style="padding: 3px;">
+                                                 <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white; ">
+                                                                      <b>  Descripción </b>
+                                                            </button>
+                                                 </h5>
+                                           </div>
+
                                             <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <!-- Barra de herramientas de formato de texto -->
@@ -424,10 +446,10 @@
 
                                         <!-- Sección de Avances de Trabajo -->
                                         <div class="card">
-                                            <div class="card-header" id="headingAvances">
-                                                <h5 class="mb-0">
+                                            <div class="card-header" id="headingAvances" style="padding: 3px;">
+                                                 <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
-                                                        Avances de Trabajo
+                                                        <b>  Avances de Trabajo </b>
                                                     </button>
                                                 </h5>
                                             </div>
@@ -468,10 +490,10 @@
 
                                         <!-- Sección de Puesta en Producción -->
                                         <div class="card">
-                                            <div class="card-header" id="headingProduccion">
-                                                <h5 class="mb-0">
+                                            <div class="card-header" id="headingProduccion" style="padding: 3px;">
+                                                <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion" style="color:white;">
-                                                        Puesta en Producción
+                                                        <b> Puesta en Producción </b>
                                                     </button>
                                                 </h5>
                                             </div>
@@ -490,10 +512,10 @@
 
                                         <!-- Sección de Archivo Adjunto -->
                                         <div class="card">
-                                            <div class="card-header" id="headingArchivo">
-                                                <h5 class="mb-0">
+                                            <div class="card-header" id="headingArchivo" style="padding: 3px;">
+                                                <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-                                                        Archivo Adjunto
+                                                        <b> Archivo Adjunto </b>
                                                     </button>
                                                 </h5>
                                             </div>
@@ -537,10 +559,10 @@
 
                                         <!-- Sección de Historial de Estado -->
                                         <div class="card">
-                                            <div class="card-header" id="headingHistorial">
-                                                <h5 class="mb-0">
+                                            <div class="card-header" id="headingHistorial" style="padding: 3px;">
+                                                <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial" style="color:white;">
-                                                        Historial de Estado
+                                                        <b> Historial de Estado </b>
                                                     </button>
                                                 </h5>
                                             </div>

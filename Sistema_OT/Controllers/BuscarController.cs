@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sistema_OT.Models;
 using System.Diagnostics;
+
+
 
 namespace Sistema_OT.Controllers
 {
@@ -12,8 +15,22 @@ namespace Sistema_OT.Controllers
         {
             _logger = logger;
         }
+
+        public IActionResult VistaIndividualBusca()
+        {
+            // Aquí puedes hacer cualquier lógica que necesites antes de mostrar la vista
+            return View("~/Views/Shared/VistaIndividualBuscar.cshtml");
+            // Esto buscará la vista VistaIndividualBusca.cshtml en la carpeta Views/Buscar
+        }
+
         public IActionResult Index()
         {
+            // Verificar si el usuario está logueado (por ejemplo, comprobando la sesión)
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account"); // Redirige a la vista de login si no está logueado
+            }
             return View();
         }
         [HttpGet]
