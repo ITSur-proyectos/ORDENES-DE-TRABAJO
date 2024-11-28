@@ -2,27 +2,41 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="d-flex flex-column align-items-center justify-content-center  bg-light">
+    <!-- Logo centrado -->
+    <img src="/images/logo.png" alt="Logo del Sistema" class="mb-4" style="max-width: 200px;" />
 
-<form method="post">
-    <div class="form-group">
-        <label for="userId">Usuario:</label>
-        <input type="text" name="userId" id="userId" class="form-control" required />
+    <!-- Título debajo del logo -->
+    <h2 class="text-center mb-4">Bienvenido al Sistema de Órdenes de Trabajo</h2>
+
+    <!-- Card del formulario -->
+    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+        <h3 class="card-title text-center mb-3">Iniciar Sesión</h3>
+        <form method="post">
+            <!-- Campo Usuario -->
+            <div class="form-group mb-3">
+                <label for="userId">Usuario:</label>
+                <input type="text" name="userId" id="userId" class="form-control" placeholder="Ingrese su usuario" required />
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="form-group mb-3">
+                <label for="contrasenia">Contraseña:</label>
+                <input type="password" name="contrasenia" id="contrasenia" class="form-control" placeholder="Ingrese su contraseña" required />
+            </div>
+
+            <!-- Botón de iniciar sesión -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-warning">Iniciar sesión</button>
+            </div>
+
+            <!-- Mensaje de error si lo hay -->
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger mt-3">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+        </form>
     </div>
-
-    <div class="form-group">
-        <label for="contrasenia">Contraseña:</label>
-        <input type="password" name="contrasenia" id="contrasenia" class="form-control" required />
-    </div>
-
-    <div>
-        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-    </div>
-
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger mt-2">
-            @ViewBag.ErrorMessage
-        </div>
-    }
-</form>
+</div>

@@ -1,6 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Agregar servicios necesarios para manejar las sesiones
 builder.Services.AddDistributedMemoryCache(); // Usar memoria para almacenar sesiones
 builder.Services.AddSession(options =>
@@ -10,8 +9,15 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Necesario para las cookies funcionales
 });
 
+// Agregar servicios para autenticación con cookies
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Redirige al login si no está autenticado
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Página de acceso denegado
+    });
 
-// Add services to the container.
+// Agregar servicios para MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -29,8 +35,12 @@ app.UseSession(); // Habilitar sesiones
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 
+// Habilitar la autenticación y autorización
+app.UseAuthentication(); // Para manejar la autenticación
+app.UseAuthorization();  // Para manejar la autorización
+
+// Rutas
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}"); // Redirige al login por defecto
