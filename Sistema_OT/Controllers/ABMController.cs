@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sistema_OT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sistema_OT.Controllers
 {

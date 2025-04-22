@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <img src="/images/logo.png" alt="Logo del Sistema" style="max-width: 200px; margin: 0; padding: 0;" />
+    <h4 class="text-center mb-4 padding: 0;">Bienvenido al Sistema de Órdenes de Trabajo</h4>
+
+    <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
+        <h3 class="card-title text-center mb-3">Iniciar Sesión</h3>
+        <form method="post">
+            <div class="form-group mb-3">
+                <label for="userId">Usuario:</label>
+                <input type="text" name="userId" id="userId" class="form-control" placeholder="Ingrese su usuario" required />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="contrasenia">Contraseña:</label>
+                <input type="password" name="contrasenia" id="contrasenia" class="form-control" placeholder="Ingrese su contraseña" required />
+            </div>
+
+            <div class="mb-3 text-end">
+                <a href="#" class="text-decoration-none small text-primary">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div class="d-grid"> 
+                <button type="submit" class="btn btn-warning" style="background-color: #ff6a00; color: #fff; border-color: #ff6a00;"><b>Iniciar sesión<b></button>
+            </div>
+
+
+            <!-- Mensaje de error -->
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger mt-3">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+        </form>
+    </div>
+</div>

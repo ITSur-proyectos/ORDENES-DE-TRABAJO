@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Account\Login.cshtml" />
     <Content Remove="Views\Buscar\Fechasolicitud_venc.cshtml" />
+    <Content Remove="wwwroot\css\StyleSheet.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,10 @@
 
   <ItemGroup>
     <EditorConfigFiles Remove="C:\Users\fanti\Source\Repos\ORDENES-DE-TRABAJO\Sistema_OT\Views\Home\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Account\Login.cshtml" />
   </ItemGroup>
 
 </Project>
