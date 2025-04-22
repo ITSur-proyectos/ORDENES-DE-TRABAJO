@@ -16,6 +16,7 @@
   <ItemGroup>
     <Content Remove="Views\Account\Login.cshtml" />
     <Content Remove="Views\Buscar\Fechasolicitud_venc.cshtml" />
+    <Content Remove="wwwroot\css\StyleSheet.css" />
   </ItemGroup>
 
   <ItemGroup>

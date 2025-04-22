@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Sistema_OT.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" />
+
 
     <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -26,26 +28,20 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                      @*   <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="Privacy">Privacy</a>
-                        </li> *@
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="Vistas">Ordenes de Trabajo</a>
-
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar">Vista Individual</a>
-
-                       @*  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="PruebaBD">PruebaBD</a>
-                        </li> *@
+                        @if (Context.Session.GetString("UserId") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="Vistas">Ã“rdenes de Trabajo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar">Individual</a>
+                            </li>
+                        }
                        
                     </ul>
 
-                                <!-- Alineación a la derecha de los botones de "Buscar" y "Cerrar sesión" -->
+                                <!-- AlineaciÃ³n a la derecha de los botones de "Buscar" y "Cerrar sesiÃ³n" -->
                             <ul class="navbar-nav ms-auto">
                                 @if (Context.Session.GetString("UserId") != null)
                                 {
@@ -53,13 +49,13 @@
                                         <span class="nav-link text-dark">Usuario: @Context.Session.GetString("UserId")</span>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark btn btn-outline-danger" href="@Url.Action("Logout", "Account")">Cerrar sesión</a>
+                                        <a class="nav-link text-dark btn btn-outline-danger" href="@Url.Action("Logout", "Account")">Cerrar sesiÃ³n</a>
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark btn btn-outline-primary" href="@Url.Action("Login", "Account")">Iniciar sesión</a>
+                                        <a href="@Url.Action("Login", "Account")"></a>
                                     </li>
                                 }
                             </ul>

@@ -4,7 +4,6 @@ using Sistema_OT.Models;
 using System.Diagnostics;
 
 
-
 namespace Sistema_OT.Controllers
 {
     public class BuscarController : Controller

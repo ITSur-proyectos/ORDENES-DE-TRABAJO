@@ -1,0 +1,30 @@
+﻿.login-container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.login-logo {
+    max-height: 60px;
+}
+
+.login-button {
+    background-color: #ff7300;
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+    .login-button:hover {
+        background-color: #e66200;
+    }
