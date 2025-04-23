@@ -25,6 +25,7 @@ namespace Sistema_OT.Models
         public DateTime FechaFinalizacion { get; set; }
         public int CantidadHorasEstimadas { get; set; }
         public int CantidadHorasConsumidas { get; set; }
+        //public int HorasInsumidas { get; set; }
         public int Estado { get; set; }
         public int PorcentajeAvance { get; set; }
         public int UsuarioSolicitante { get; set; }
