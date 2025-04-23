@@ -41,8 +41,9 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
+
         [HttpPost]
-        
+       
          public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitudDesde, DateTime? fechaSolicitudHasta, DateTime? fechaVencimientoDesde, DateTime? fechaVencimientoHasta)
          {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
@@ -117,6 +118,7 @@ namespace Sistema_OT.Controllers
             {
                 Console.WriteLine("No llenaste los formularios.");
             }
+
 
             return View();
          }
