@@ -9,6 +9,8 @@
 
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
 
+    var SistemasPorCliente = ViewData["SistemasPorCliente"] as Dictionary<int, string>;
+
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
@@ -38,15 +40,13 @@
                             <div class="col-md-12">
 
                                 <div class="row row-cols-6">
-                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
+                                  <div class="col-md-2" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="cliente">Cliente</label>
                                             <select class="form-control " style="font-size:12px; height: 38px;" id="Cliente" name="Cliente">
                                                 <option value="-1">...</option>
                                                 @if (nombresClientes != null)
-
                                                 {
-
                                                     foreach (var cliente in nombresClientes)
 
                                                     {
@@ -57,6 +57,7 @@
                                             </select>
                                         </div>
                                     </div>
+
 
                                     <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
@@ -78,6 +79,47 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        // Generar el objeto sistemasPorCliente en JavaScript desde el ViewData
+                                        var sistemasPorCliente = {};
+                                        @if (ViewData["SistemasPorCliente"] is Dictionary<int, List<int>> sistemas)
+                                        {
+                                            foreach (var cliente in sistemas)
+                                            {
+                                                <text>
+                                                            sistemasPorCliente['@cliente.Key'] = [@string.Join(",", cliente.Value)];
+                                                </text>
+                                            }
+                                        }
+
+                                        console.log(sistemasPorCliente); // Verifica si los datos se pasaron correctamente
+
+                                        // Función que maneja el cambio de selección del cliente
+                                        document.getElementById('Cliente').addEventListener('change', function () {
+                                            var clienteSeleccionado = this.value;
+                                            console.log("Cliente seleccionado:", clienteSeleccionado); // Verifica que el cliente seleccionado es correcto
+
+                                            var sistemaSelect = document.getElementById('Sistema');
+                                            sistemaSelect.innerHTML = '<option value="-1">...</option>'; // Limpiar las opciones previas
+
+                                            // Verificar si existen sistemas para el cliente seleccionado
+                                            if (sistemasPorCliente[clienteSeleccionado]) {
+                                                sistemasPorCliente[clienteSeleccionado].forEach(function (sistemaId) {
+                                                    var option = document.createElement('option');
+                                                    option.value = sistemaId;
+                                                    option.text = nombresSistemas[sistemaId]; // Mostrar el nombre del sistema correspondiente
+                                                    sistemaSelect.appendChild(option);
+                                                });
+                                            } else {
+                                                console.log("No hay sistemas asociados a este cliente");
+                                            }
+                                        });
+                                    </script>
+
+
+
+
 
                                     <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
