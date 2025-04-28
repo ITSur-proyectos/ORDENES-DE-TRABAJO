@@ -14,6 +14,11 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
+<!-- Incluir el archivo RTFJS desde un CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rtfjs/1.0.0/rtf.min.js"></script>
+
+<!-- Incluir tu archivo site.js -->
+<script src="~/js/site.js"></script>
 
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container"-fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
@@ -22,7 +27,7 @@
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
+                    <h5 class="mb-0">Individual   </h5>
                 </div>
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
@@ -438,7 +443,19 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                    <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                                    <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
+
+                                                      @* <div id="descripcionTexto" class="form-control" rows="3" placeholder="Escribe la descripción aquí..."> *@
+                                                        @if (ordentrabajo != null && ordentrabajo.Any())
+                                                        {
+                                                             @foreach (var item in ordentrabajo)
+                                                             {
+                                                               @item["Descripcion"]                                                           
+                                                             }
+                                                        }
+                                                        @* </div> *@
+                                                      
+                                                    </textarea>
                                                     <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>

@@ -41,9 +41,8 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
-
         [HttpPost]
-       
+        
          public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitudDesde, DateTime? fechaSolicitudHasta, DateTime? fechaVencimientoDesde, DateTime? fechaVencimientoHasta)
          {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
@@ -119,7 +118,6 @@ namespace Sistema_OT.Controllers
                 Console.WriteLine("No llenaste los formularios.");
             }
 
-
             return View();
          }
     
@@ -166,6 +164,24 @@ namespace Sistema_OT.Controllers
             }
             return View();
         }
+
+        public static string ConvertirRtfATextoPlano(string rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return string.Empty;
+
+            // Reemplazar etiquetas RTF básicas con texto plano
+            var cleanText = rtf;
+            cleanText = cleanText.Replace(@"{\rtf1", string.Empty);  // Eliminar el encabezado RTF
+            cleanText = cleanText.Replace(@"\par", Environment.NewLine);  // Reemplazar saltos de línea
+            cleanText = cleanText.Replace(@"\fs24", string.Empty);  // Eliminar tamaño de fuente
+            cleanText = cleanText.Replace(@"\ansi", string.Empty);  // Eliminar configuraciones de fuente
+
+            // Si hay más patrones que quieras eliminar, puedes agregar más reemplazos aquí
+
+            return cleanText;
+        }
+
 
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {

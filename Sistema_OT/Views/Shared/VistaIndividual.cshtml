@@ -36,7 +36,7 @@
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual  | Ordenes de trabajo </h5>
+                    <h5 class="mb-0">Individual  | GRABAR </h5>
                 </div>
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "ABM")">
                 <div class="card-body">
@@ -323,7 +323,6 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0" required/>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -389,7 +388,7 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                    <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..."></textarea>
+                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..." value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]">solo to no veo ??</textarea>
                                                     <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
