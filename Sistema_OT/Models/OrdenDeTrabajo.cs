@@ -114,40 +114,40 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
-        public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
-        {
-            Dictionary<int, List<int>> sistemasPorCliente = new Dictionary<int, List<int>>();
-            ConexionDB conexionDB = new ConexionDB();
-            conexionDB.AbrirConexion();
-            string consulta = "SELECT Cliente, Sistema FROM Sistemas_Clientes"; // Relación entre sistema y cliente
+        //public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
+        //{
+        //    Dictionary<int, List<int>> sistemasPorCliente = new Dictionary<int, List<int>>();
+        //    ConexionDB conexionDB = new ConexionDB();
+        //    conexionDB.AbrirConexion();
+        //    string consulta = "SELECT Cliente, Sistema FROM Sistemas_Clientes"; // Relación entre sistema y cliente
 
-            using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
-            {
-                try
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
-                            int sistemaId = reader.GetInt32(reader.GetOrdinal("Sistema"));
+        //    using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+        //    {
+        //        try
+        //        {
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
+        //                    int sistemaId = reader.GetInt32(reader.GetOrdinal("Sistema"));
 
-                            // Verifica si el cliente ya existe en el diccionario
-                            if (!sistemasPorCliente.ContainsKey(clienteId))
-                            {
-                                sistemasPorCliente[clienteId] = new List<int>();
-                            }
-                            sistemasPorCliente[clienteId].Add(sistemaId); // Agrega el sistema asociado al cliente
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-            return sistemasPorCliente;
-        }
+        //                    // Verifica si el cliente ya existe en el diccionario
+        //                    if (!sistemasPorCliente.ContainsKey(clienteId))
+        //                    {
+        //                        sistemasPorCliente[clienteId] = new List<int>();
+        //                    }
+        //                    sistemasPorCliente[clienteId].Add(sistemaId); // Agrega el sistema asociado al cliente
+        //                }
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //        }
+        //    }
+        //    return sistemasPorCliente;
+        //}
 
 
 

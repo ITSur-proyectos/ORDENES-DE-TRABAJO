@@ -9,38 +9,19 @@ namespace Sistema_OT.Controllers
     {
 
         [HttpGet]
-        //public ActionResult VistaIndividual()
-        //{
-        //    ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-        //    ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-        //    ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-        //    ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-        //    //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
-        //    ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
-
-        //    return View();
-        //}
-
         public ActionResult VistaIndividual()
         {
-            var sistemasPorCliente = OrdenDeTrabajo.ConseguirSistemasPorCliente();
-
-            // Depuración en el servidor: Verifica los datos antes de pasarlos a la vista
-            Console.WriteLine("SistemasPorCliente en el servidor:");
-            foreach (var entry in sistemasPorCliente)
-            {
-                Console.WriteLine($"Cliente {entry.Key}: Sistemas [{string.Join(", ", entry.Value)}]");
-            }
-
-            ViewData["SistemasPorCliente"] = sistemasPorCliente;
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
+            ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
 
             return View();
         }
 
+    
 
         [HttpPost]
         public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido)

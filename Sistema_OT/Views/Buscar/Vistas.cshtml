@@ -14,6 +14,10 @@
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
+<script src="~/js/site.js"></script>
+
+
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
 
 
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1900px; margin: 0 auto;">
@@ -27,9 +31,7 @@
                 <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px; padding-left: 22px">
                     <ul class="nav-tabs">
                         <li><button class="tab-btn active">Cliente - Sistema - Fecha Solicitud y Vencimiento</button></li>
-                      @*   <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
-                        <li><button class="tab-btn">Orden</button></li>
-                        <li><button class="tab-btn">Cambio de Estado</button></li> *@
+                   
                     </ul>
                 </div>
 
@@ -80,42 +82,9 @@
                                         </div>
                                     </div>
 
-                                    <script>
-                                        // Generar el objeto sistemasPorCliente en JavaScript desde el ViewData
-                                        var sistemasPorCliente = {};
-                                        @if (ViewData["SistemasPorCliente"] is Dictionary<int, List<int>> sistemas)
-                                        {
-                                            foreach (var cliente in sistemas)
-                                            {
-                                                <text>
-                                                            sistemasPorCliente['@cliente.Key'] = [@string.Join(",", cliente.Value)];
-                                                </text>
-                                            }
-                                        }
 
-                                        console.log(sistemasPorCliente); // Verifica si los datos se pasaron correctamente
 
-                                        // Función que maneja el cambio de selección del cliente
-                                        document.getElementById('Cliente').addEventListener('change', function () {
-                                            var clienteSeleccionado = this.value;
-                                            console.log("Cliente seleccionado:", clienteSeleccionado); // Verifica que el cliente seleccionado es correcto
 
-                                            var sistemaSelect = document.getElementById('Sistema');
-                                            sistemaSelect.innerHTML = '<option value="-1">...</option>'; // Limpiar las opciones previas
-
-                                            // Verificar si existen sistemas para el cliente seleccionado
-                                            if (sistemasPorCliente[clienteSeleccionado]) {
-                                                sistemasPorCliente[clienteSeleccionado].forEach(function (sistemaId) {
-                                                    var option = document.createElement('option');
-                                                    option.value = sistemaId;
-                                                    option.text = nombresSistemas[sistemaId]; // Mostrar el nombre del sistema correspondiente
-                                                    sistemaSelect.appendChild(option);
-                                                });
-                                            } else {
-                                                console.log("No hay sistemas asociados a este cliente");
-                                            }
-                                        });
-                                    </script>
 
 
 
@@ -287,10 +256,7 @@
                                         <label for="fechaVencimientoHasta">Hasta</label>
                                         <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">                                    
                                 </div>
-
                             </div>
-
-
                         </div>
                     
 
