@@ -16,7 +16,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
-            ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
+            //ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
 
             return View();
         }

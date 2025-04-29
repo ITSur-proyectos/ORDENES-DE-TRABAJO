@@ -114,6 +114,8 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
+        
+
         //public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
         //{
         //    Dictionary<int, List<int>> sistemasPorCliente = new Dictionary<int, List<int>>();

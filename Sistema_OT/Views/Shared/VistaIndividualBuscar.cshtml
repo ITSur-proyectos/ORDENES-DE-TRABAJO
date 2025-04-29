@@ -6,6 +6,7 @@
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
+    var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
 }
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -445,16 +446,17 @@
                                                     </div>
                                                     <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
 
-                                                    
+                                                      <div id="descripcionTexto" class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
                                                         {
-                                                             @foreach (var item in ordentrabajo)
-                                                             {
-                                                               @item["Descripcion"]                                                           
-                                                             }
+                                                            @foreach (var item in ordentrabajo)
+                                                            {
+                                                        <p>@item["Descripcion"]</p> 
+                                                            }
                                                         }
+                                                        </div>
                                                       
-                                                      
+
                                                     </textarea>
                                                     <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
@@ -472,6 +474,7 @@
                                             </div>
                                             <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                                 <div class="card-body">
+                                                <div style="max-height: 250px; overflow-y: auto;">
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered">
                                                             <thead>
@@ -484,18 +487,31 @@
                                                                     <th>Tiempo Insumido(hs)</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                        <tbody>
+                                                            @if (avancesTrabajo != null && avancesTrabajo.Any())
+                                                            {
+                                                                foreach (var avance in avancesTrabajo)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@avance.AvanceTrabajoId</td>
+                                                                        <td>@avance.Descripcion</td>
+                                                                        <td>Desarrollo</td> <!-- Suponiendo que "Tipo Avance" no está en el modelo -->
+                                                                        <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@avance.UserIDAlta</td>
+                                                                        <td>@avance.HorasInsumidas</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
                                                                 <tr>
-                                                                    <td>1</td>
-                                                                    <td>Completado el análisis inicial</td>
-                                                                    <td>Desarrollo</td>
-                                                                    <td>6/11/2024 </td>
-                                                                    <td>ERUIZ</td>
-                                                                    <td>4,0</td>
+                                                                    <td colspan="6">No hay avances registrados para esta orden de trabajo.</td>
                                                                 </tr>
-                                                               
-                                                            </tbody>
+                                                            }
+                                                        </tbody>
+
                                                         </table>
+                                                    </div>
                                                     </div>
                                                     <button class="btn boton btn-sm">Agregar</button>
                                                     <button class="btn boton btn-sm">Modificar</button>
@@ -516,13 +532,39 @@
                                             </div>
                                             <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
                                                 <div class="card-body">
-                                                    <select class="form-select mb-3">
-                                                        <option>Seleccionar tipo de modificación...</option>
-                                                        <option value="formulario">Formulario</option>
-                                                        <option value="baseDatos">Base de Datos</option>
-                                                    </select>
-                                                    <textarea class="form-control" rows="3" placeholder="..."></textarea>
+                                                <select class="form-select mb-3" id="tipoModificacion">
+                                                    <option value="">Seleccionar tipo de modificación...</option>
+                                                    <option value="formulario">Formulario</option>
+                                                    <option value="baseDatos">Base de Datos</option>
+                                                </select>
+                                                <textarea class="form-control" id="modificacionDetalle" rows="3" placeholder="..."></textarea>
+
+                                                       
+                                                    </textarea>
+                                                <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificados"]" />
+                                                <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatos"]" />
+
                                                     <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        const tipoSelect = document.getElementById("tipoModificacion");
+                                                        const detalleTextArea = document.getElementById("modificacionDetalle");
+
+                                                        const formularioTexto = document.getElementById("formularioData").value;
+                                                        const baseDatosTexto = document.getElementById("baseDatosData").value;
+
+                                                        tipoSelect.addEventListener("change", function () {
+                                                            if (this.value === "formulario") {
+                                                                detalleTextArea.value = formularioTexto;
+                                                            } else if (this.value === "baseDatos") {
+                                                                detalleTextArea.value = baseDatosTexto;
+                                                            } else {
+                                                                detalleTextArea.value = "";
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+
                                                 </div>
                                             </div>
                                         </div>
