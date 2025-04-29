@@ -145,6 +145,11 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
+            ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+            ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
+
+
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros["@NroOrdenTrabajo"] = orden;
             // Hacer la consulta si se ingresó parametro
@@ -164,6 +169,24 @@ namespace Sistema_OT.Controllers
             }
             return View();
         }
+
+        public static string ConvertirRtfATextoPlano(string rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return string.Empty;
+
+            // Reemplazar etiquetas RTF básicas con texto plano
+            var cleanText = rtf;
+            cleanText = cleanText.Replace(@"{\rtf1", string.Empty);  // Eliminar el encabezado RTF
+            cleanText = cleanText.Replace(@"\par", Environment.NewLine);  // Reemplazar saltos de línea
+            cleanText = cleanText.Replace(@"\fs24", string.Empty);  // Eliminar tamaño de fuente
+            cleanText = cleanText.Replace(@"\ansi", string.Empty);  // Eliminar configuraciones de fuente
+
+            // Si hay más patrones que quieras eliminar, puedes agregar más reemplazos aquí
+
+            return cleanText;
+        }
+
 
         public IActionResult PruebaBD(string nroOTD, string nroOTH)
         {

@@ -25,6 +25,7 @@ namespace Sistema_OT.Models
         public DateTime FechaFinalizacion { get; set; }
         public int CantidadHorasEstimadas { get; set; }
         public int CantidadHorasConsumidas { get; set; }
+        //public int HorasInsumidas { get; set; }
         public int Estado { get; set; }
         public int PorcentajeAvance { get; set; }
         public int UsuarioSolicitante { get; set; }
@@ -87,7 +88,7 @@ namespace Sistema_OT.Models
             Dictionary<int, string> nombres = new Dictionary<int, string>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
-            string consulta = "Select Descripcion, " + Tabla +" From " + Tabla + "s"; // +s porque menos mal que las tablas estan en plural
+            string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s"; // +s porque menos mal que las tablas estan en plural
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
@@ -100,7 +101,7 @@ namespace Sistema_OT.Models
                             int id = reader.GetInt32(reader.GetOrdinal(Tabla));
                             string nombre = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion"));
                             nombres[id] = nombre;
-                            
+
 
                         }
                     }
@@ -113,8 +114,104 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
-     
         
-    
+
+        //public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
+        //{
+        //    Dictionary<int, List<int>> sistemasPorCliente = new Dictionary<int, List<int>>();
+        //    ConexionDB conexionDB = new ConexionDB();
+        //    conexionDB.AbrirConexion();
+        //    string consulta = "SELECT Cliente, Sistema FROM Sistemas_Clientes"; // Relación entre sistema y cliente
+
+        //    using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+        //    {
+        //        try
+        //        {
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
+        //                    int sistemaId = reader.GetInt32(reader.GetOrdinal("Sistema"));
+
+        //                    // Verifica si el cliente ya existe en el diccionario
+        //                    if (!sistemasPorCliente.ContainsKey(clienteId))
+        //                    {
+        //                        sistemasPorCliente[clienteId] = new List<int>();
+        //                    }
+        //                    sistemasPorCliente[clienteId].Add(sistemaId); // Agrega el sistema asociado al cliente
+        //                }
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //        }
+        //    }
+        //    return sistemasPorCliente;
+        //}
+
+
+
+        //public static Dictionary<int, string> ConseguirNombres(string Tabla)
+        //{
+        //    Dictionary<int, string> nombres = new Dictionary<int, string>();
+        //    ConexionDB conexionDB = new ConexionDB();
+        //    conexionDB.AbrirConexion();
+
+        //    string consulta;
+        //    bool tieneDescripcion = true;
+
+        //    // Excepción especial: para Sistemas_Clientes no hay descripción
+        //    if (Tabla == "Sistemas_Cliente")
+        //    {
+        //        consulta = "SELECT Sistema, Cliente FROM Sistemas_Clientes";
+        //        tieneDescripcion = false;
+        //    }
+        //    else
+        //    {
+        //        consulta = "SELECT Descripcion, " + Tabla + " FROM " + Tabla + "s"; // Otras tablas sí
+        //    }
+
+        //    using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+        //    {
+        //        try
+        //        {
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    int id = reader.GetInt32(reader.GetOrdinal(tieneDescripcion ? Tabla : "Sistema"));
+
+        //                    string nombre;
+        //                    if (tieneDescripcion)
+        //                    {
+        //                        nombre = reader.IsDBNull(reader.GetOrdinal("Descripcion"))
+        //                            ? string.Empty
+        //                            : reader.GetString(reader.GetOrdinal("Descripcion"));
+        //                    }
+        //                    else
+        //                    {
+        //                        // Si NO hay descripción, ponemos el ID del cliente como string
+        //                        int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
+        //                        nombre = clienteId.ToString();
+        //                    }
+
+        //                    nombres[id] = nombre;
+        //                }
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //        }
+        //    }
+
+        //    return nombres;
+        //}
+
+
+
+
     }
 }

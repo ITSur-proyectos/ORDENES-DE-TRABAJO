@@ -9,25 +9,30 @@
 
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
 
+    var SistemasPorCliente = ViewData["SistemasPorCliente"] as Dictionary<int, string>;
+
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
 <link href="~/css/VistaOrden.css" rel="stylesheet" />
+<script src="~/js/site.js"></script>
 
 
-<div class="container-fluid mt-3" style="width: 100% ; max-width: 1900px; margin: 0 auto;">
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+
+
+<div class="container-fluid mt-3" style=" margin: 0 auto;">
     <div class="row" style="padding-top: 10px ">
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual | Órdenes de Trabajo</h5>
+                    <h5 class="mb-0">Órdenes de Trabajo</h5>
                 </div>
 
-                <div class="card-body" style="font-size: 12px; padding: 0;  padding-top: 15px; padding-left: 22px">
+              <div class="card-body px-3 pt-3" style="font-size: 12px;">
+
                     <ul class="nav-tabs">
-                        <li><button class="tab-btn active">Cliente/Sistema</button></li>
-                        <li><button class="tab-btn">Fecha Solicitud y Vencimiento</button></li>
-                        <li><button class="tab-btn">Orden</button></li>
-                        <li><button class="tab-btn">Cambio de Estado</button></li>
+                        <li><button class="tab-btn active">Cliente - Sistema - Fecha Solicitud y Vencimiento</button></li>
+                   
                     </ul>
                 </div>
 
@@ -38,15 +43,13 @@
                             <div class="col-md-12">
 
                                 <div class="row row-cols-6">
-                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
+                                  <div class="col-md-2" style="font-size: 13px; padding-top: 10px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="cliente">Cliente</label>
                                             <select class="form-control " style="font-size:12px; height: 38px;" id="Cliente" name="Cliente">
                                                 <option value="-1">...</option>
                                                 @if (nombresClientes != null)
-
                                                 {
-
                                                     foreach (var cliente in nombresClientes)
 
                                                     {
@@ -57,6 +60,7 @@
                                             </select>
                                         </div>
                                     </div>
+
 
                                     <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
@@ -78,6 +82,14 @@
                                             </select>
                                         </div>
                                     </div>
+
+
+
+
+
+
+
+
 
                                     <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
@@ -245,10 +257,7 @@
                                         <label for="fechaVencimientoHasta">Hasta</label>
                                         <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">                                    
                                 </div>
-
                             </div>
-
-
                         </div>
                     
 
@@ -259,11 +268,12 @@
                     </form>
 
                     <div class="container mt-3">
-                        <div class="table-responsive" style="max-height: 180px; overflow-y: auto; border: 1px solid #dee2e6; ">
+                        <div class="table-responsive" style="max-height: 330px; overflow-y: auto; border: 1px solid #dee2e6; ">
                             <table class="table table-bordered table-striped mb-0">
                                 <thead class="table-primary" style="border-collapse: collapse; position: sticky; top: 0; z-index: 1;">
                                     <tr class="text-nowrap text-center">
-                                        <th scope="col">N°</th>
+                                        <th scope="col"></th>
+                                        @*  <th scope="col">N°</th> *@
                                         <th scope="col">OT N°</th>
                                         <th scope="col">Depende De</th>
                                         <th scope="col">Ot Impl.</th>
@@ -287,7 +297,7 @@
                                         <th scope="col">Clientes y Usuarios</th>
                                     </tr>
                                 </thead>
-                                <tbody class="table-grid" style="height: 220px;">
+                                <tbody class="table-grid" style="height: 400px;">
                                     @if (OrdenesBuscadas != null && OrdenesBuscadas.Any())
 
                                     {
@@ -297,9 +307,26 @@
                                         foreach (var orden in OrdenesBuscadas)
 
                                         {
-                                    <tr style="font-size: 11px;">
-                                        <td>@num</td>
+                                    <tr style="font-size: 14px;">
+                                         <td>
+                                                <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
+                                                    <input type="hidden" name="orden" value="@orden["NroOrdenTrabajo"]" />
+                                                    <button type="submit" style="background: none; border: none; padding: 0;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75
+                                                                     2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0
+                                                                      .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0
+                                                                         1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0
+                                                                         1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0
+                                                                         0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                         </td>
                                         <td>@orden["NroOrdenTrabajo"]</td>
+                                        
                                         <td>@orden["DependeDe"]</td>
                                         <td>@orden["NroOtImplementacion"]</td>
                                         <td>@orden["FechaSolicitud"]</td>
