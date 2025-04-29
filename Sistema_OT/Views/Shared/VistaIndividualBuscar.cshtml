@@ -7,6 +7,8 @@
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
+    var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
 }
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -570,93 +572,121 @@
                                         </div>
 
                                         <!-- Sección de Archivo Adjunto -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingArchivo" style="padding: 3px;">
-                                                <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                    <div class="card">
+                                        <div class="card-header" id="headingArchivo" style="padding: 3px;">
+                                            <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-                                                        <b> Archivo Adjunto </b>
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Número</th>
-                                                            <th>Nombre</th>
-                                                            <th>Fecha de Alta</th>
-                                                            <th>Usuario Alta</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>17658.docx</td>
-                                                            <td>6/11/2024 </td>
-                                                            <td>ERUIZ</td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                                <div class="card-body">
-                                                    
-                                                    <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                        <div>
-                                                            <label for="files">Selecciona archivos:</label>
-                                                            <input type="file" id="files" name="files" multiple />
-                                                        </div>
-                                                        <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
-                                                    </form>
-                                                    <button class="btn boton btn-sm">Copiar</button>
-                                                    <button class="btn btn-danger btn-sm">Quitar</button>
-                                                    <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                                    <b> Archivo Adjunto </b>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Nombre</th>
+                                                                <th>Fecha de Alta</th>
+                                                                <th>Usuario Alta</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (adjuntos != null && adjuntos.Any())
+                                                            {
+                                                                foreach (var item in adjuntos)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.CorrelativoAdjunto</td>
+                                                                        <td>@item.NombreArchivo</td>
+                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@item.UserID</td>
+                                                                    </tr>
+                                                                  
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="4">No hay archivos adjuntos para esta orden.</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+
+                                                <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+                                                    <div>
+                                                        <label for="files">Selecciona archivos:</label>
+                                                        <input type="file" id="files" name="files" multiple />
+                                                    </div>
+                                                    <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
+                                                </form>
+
+                                                <button class="btn boton btn-sm">Copiar</button>
+                                                <button class="btn btn-danger btn-sm">Quitar</button>
+                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
                                             </div>
                                         </div>
+                                    </div>
 
                                         <!-- Sección de Historial de Estado -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingHistorial" style="padding: 3px;">
-                                                <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                    <div class="card">
+                                        <div class="card-header" id="headingHistorial" style="padding: 3px;">
+                                            <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial" style="color:white;">
-                                                        <b> Historial de Estado </b>
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Secuencia</th>
-                                                            <th>Estado del Trabajo</th>
-                                                            <th>Fecha</th>
-                                                            <th>Hora</th>
-                                                            <th>Usuario</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>En desarrollo</td>
-                                                            <td>6/11/2024 </td>
-                                                            <td>10:07</td>
-                                                            <td>ERUIZ</td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                                <div class="card-body">
-                                                   
-                                                    <button class="btn boton btn-sm">Agregar Estado</button>
-                                                    <button class="btn boton btn-sm">Modificar Estado</button>
-                                                    <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                                    <b> Historial de Estado </b>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Secuencia</th>
+                                                                <th>Estado del Trabajo</th>
+                                                                <th>Fecha</th>
+                                                                <th>Hora</th>
+                                                                <th>Usuario</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> historial && historial.Any())
+                                                            {
+                                                                int secuencia = 1;
+                                                                foreach (var item in historial)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@secuencia</td>
+                                                                        <td>@item.Descripcion</td>
+                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@item.FechaAlta.ToString("HH:mm")</td>
+                                                                        <td>@item.UserID</td>
+                                                                    </tr>
+                                                                    secuencia++;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="5">No hay historial para esta orden.</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
+                                            <div class="card-body">
+                                                <button class="btn boton btn-sm">Agregar Estado</button>
+                                                <button class="btn boton btn-sm">Modificar Estado</button>
+                                                <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                            </div>
                                         </div>
+                                    </div>
+
                                     </div>
                                 </div>
                             </div>

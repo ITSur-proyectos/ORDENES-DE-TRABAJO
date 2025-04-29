@@ -146,6 +146,9 @@ namespace Sistema_OT.Controllers
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
+            ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+            ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
+
 
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros["@NroOrdenTrabajo"] = orden;
