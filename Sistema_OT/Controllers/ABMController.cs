@@ -18,6 +18,14 @@ namespace Sistema_OT.Controllers
             //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
             //ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
 
+            //string usuarioLogueado = HttpContext.Session.GetString("UserId") ?? "";
+
+            //var nombresUsuarios = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            //ViewBag.NombresUsuarios = nombresUsuarios;
+            //ViewBag.UsuarioLogueado = usuarioLogueado;
+
+          
+
             return View();
         }
 
@@ -31,7 +39,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
 
-            if (accion == "Agregar")
+            if (accion == "Grabar")
             {
                 Dictionary<string, object> parametros = new Dictionary<string, object>();
 
@@ -81,12 +89,24 @@ namespace Sistema_OT.Controllers
                     parametros["@PremioPorAvance"] = premioAvance;
                     parametros["@AlcanceIndefinido"] = alcanceIndefinido;
                     string consulta = "Ordenes_Trabajo_INSERT";
-                    List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+                    //List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
-                    if (ordenes.Count > 0)
+                    //if (ordenes.Count > 0)
+                    //{
+                    //    ViewData["Orden"] = ordenes;
+                    //}
+
+                    int resultado = OrdenDeTrabajo.EjecutarInsert(consulta, parametros);
+
+                    if (resultado > 0)
                     {
-                        ViewData["Orden"] = ordenes;
+                        ViewBag.Mensaje = "Orden insertada correctamente.";
                     }
+                    else
+                    {
+                        ViewBag.Error = "No se pudo insertar la orden.";
+                    }
+
                 }
                 else
                 {

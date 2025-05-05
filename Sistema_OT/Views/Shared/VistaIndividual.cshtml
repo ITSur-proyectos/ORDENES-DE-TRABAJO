@@ -36,7 +36,7 @@
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual  | GRABAR </h5>
+                    <h5 class="mb-0">Individual | NUEVA ORDEN DE TRABAJO </h5>
                 </div>
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "ABM")">
                 <div class="card-body">
@@ -50,18 +50,18 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="" name="orden" disabled />
                                 </div>
                             </div>
                             <!-- Botón búsqueda -->
-                            <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
+                           <!--  <div style="font-size: 6px; padding-bottom: 10px;" class="col-md-1 d-flex align-items-end ">
 
 
-                                <a class="btn boton-busqueda btn-sm" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar">Buscar</a>
+                                <a class="btn boton-busqueda btn-sm" asp-area="" asp-controller="Buscar" asp-action="VistaIndividualBuscar" disabled>Buscar</a>
 
-                            </div>
+                            </div> -->
                             <!-- Campo de Dependencia -->
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="dependencia" class="text-nowrap">Depende</label>
                                     <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
@@ -72,8 +72,10 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                    
-                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaInput" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaInput" name="fechaSolicitud"
+                                           value="@(ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]?.ToString() ?? DateTime.Today.ToString("yyyy-MM-dd"))" />
+
                                 </div>
                             </div>
                             <!-- Campo Fecha de Vencimiento -->
@@ -88,25 +90,7 @@
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
                                     <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo">
-                                        <option value="0">...</option>
                                         <option value="1">Pendiente</option>
-                                        <option value="2">Entregado</option>
-                                        <option value="3">En desarrollo</option>
-                                        <option value="4">Terminado</option>
-                                        <option value="5">En produccion</option>
-                                        <option value="6">Anulada</option>
-                                        <option value="7">Facturada</option>
-                                        <option value="8">Bonificada</option>
-                                        <option value="9">Presupuesto enviado al cliente</option>
-                                        <option value="10">Prueba realizada OK</option>
-                                        <option value="11">Para revisar problemas en las pruebas</option>
-                                        <option value="12">Presupuesto aprobado</option>
-                                        <option value="13">Presupuesto asignado</option>
-                                        <option value="14">Presupuesto no aprobado</option>
-                                        <option value="15">Facturada(incluida abono)</option>
-                                        <option value="16">En proceso de presupuesto</option>
-                                        <option value="17">Presupuesto facturado</option>
-                                        <option value="18">Incluida en version</option>
                                     </select>
                                 </div>
                             </div>
@@ -221,7 +205,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="moduloPantalla">Módulo/Pantalla</label>
-                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla" required name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla"  name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                 </div>
                             </div>
                             @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
@@ -311,13 +295,13 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" required value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0"  value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]" />
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -328,7 +312,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
-                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" required value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -388,7 +372,7 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..." value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]">solo to no veo ??</textarea>
+                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..." value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]"></textarea>
                                                     <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
@@ -419,12 +403,12 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>1</td>
+                                                                   @*  <td>1</td>
                                                                     <td>Completado el análisis inicial</td>
                                                                     <td>Desarrollo</td>
                                                                     <td>6/11/2024 </td>
                                                                     <td>ERUIZ</td>
-                                                                    <td>4,0</td>
+                                                                    <td>4,0</td> *@
                                                                 </tr>
                                                                
                                                             </tbody>
@@ -482,10 +466,10 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>1</td>
+                                                           @*  <td>1</td>
                                                             <td>17658.docx</td>
                                                             <td>6/11/2024 </td>
-                                                            <td>ERUIZ</td>
+                                                            <td>ERUIZ</td> *@
                                                         </tr>
 
                                                     </tbody>
@@ -557,17 +541,19 @@
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
 
-                                <button class="btn  boton ">Imprimir</button>
-                                <button class="btn boton">Ver Documentación Digital</button>
+                                <button class="btn  boton" disabled>Imprimir</button>
+                                <button class="btn boton" disabled>Ver Documentación Digital</button>
 
                                 <!-- Agrupación de otros botones -->
                                 <div class="grupo-botones" style="font-size:12px;">
-                                    <button class="btn boton">Copiar Orden</button>
-                                    <button class="btn boton">Enviar Orden</button>
-                                    <button type="submit" name="accion" value="Agregar" class="btn boton">Agregar</button>
-                                    <button class="btn boton">Modificar</button>
-                                    <button class="btn boton">Grabar</button>
-                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
+                                    <button class="btn boton" disabled>Copiar Orden</button>
+                                    <button class="btn boton" disabled>Enviar Orden</button>
+                                    <button type="submit" name="accion" value="Agregar" class="btn boton" disabled>Agregar</button>
+                                    <button class="btn boton" disabled>Modificar</button>
+                                    <button class="btn boton" name="accion" value="Grabar">Grabar</button>
+                                    <a href="@Url.Action("VistaIndividualBuscar", "Buscar")" class="btn boton-cancelar">Cancelar</a>
+
+                                    <!-- Estilo diferente para cancelar -->
                                 </div>
                             </div>
                         </div>

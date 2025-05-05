@@ -10,6 +10,7 @@
     var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
 }
+
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -446,17 +447,17 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                    <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
+                                                  <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
 
-                                                      <div id="descripcionTexto" class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
+                                                  
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
                                                         {
                                                             @foreach (var item in ordentrabajo)
                                                             {
-                                                        <p>@item["Descripcion"]</p> 
+                                                                @item["DescripcionPlano"]
                                                             }
                                                         }
-                                                        </div>
+                                                     
                                                       
 
                                                     </textarea>
@@ -543,8 +544,9 @@
 
                                                        
                                                     </textarea>
-                                                <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificados"]" />
-                                                <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatos"]" />
+                                               <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
+                                                <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" /> 
+                                              
 
                                                     <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
                                                 <script>
@@ -696,17 +698,17 @@
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
 
-                                <button class="btn  boton ">Imprimir</button>
-                                <button class="btn boton">Ver Documentación Digital</button>
+                                <button class="btn  boton " disabled>Imprimir</button>
+                                <button class="btn boton" disabled>Ver Documentación Digital</button>
 
                                 <!-- Agrupación de otros botones -->
                                 <div class="grupo-botones" style="font-size:12px;">
-                                    <button class="btn boton">Copiar Orden</button>
-                                    <button class="btn boton">Enviar Orden</button>
+                                    <button class="btn boton" disabled>Copiar Orden</button>
+                                    <button class="btn boton" disabled>Enviar Orden</button>
                                     <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                     <button class="btn boton">Modificar</button>
-                                    <button class="btn boton">Grabar</button>
-                                    <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar -->
+                                   @*  <button class="btn boton" disabled>Grabar</button> *@
+                                    @* <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar --> *@
                                 </div>
                             </div>
                         </div>
