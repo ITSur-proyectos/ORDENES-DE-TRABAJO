@@ -14,6 +14,8 @@ namespace Sistema_OT.Models
         public decimal HorasInsumidas { get; set; }
         public string UserIDAlta { get; set; }
 
+
+
         public static List<AvancesTrabajoModel> ConseguirAvances(int nroOrden)
 
         {
@@ -59,6 +61,9 @@ namespace Sistema_OT.Models
 
             return listaAvances;
         }
+
+
+
 
     }
 }

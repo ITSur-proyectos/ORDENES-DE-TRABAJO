@@ -3,6 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Reflection.PortableExecutable;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Sistema_OT.Models
 {
@@ -68,8 +70,13 @@ namespace Sistema_OT.Models
                                 object value = reader.IsDBNull(i) ? "" : reader.GetValue(i);
                                 orden[columnName] = value;
                             }
-                          
-                            OrdenesTrabajo.Add(orden);
+                                OrdenDeTrabajo ordenTrabajo = new OrdenDeTrabajo();
+                                orden["DescripcionPlano"] = LimpiarRTF(orden.ContainsKey("Descripcion") ? orden["Descripcion"].ToString() : string.Empty);
+                                orden["FormulariosModificadosPlano"] = LimpiarRTF(orden.ContainsKey("FormulariosModificados") ? orden["FormulariosModificados"].ToString() : string.Empty);
+                                orden["ModificacionesBaseDatosPlano"] = LimpiarRTF(orden.ContainsKey("ModificacionesBaseDatos") ? orden["ModificacionesBaseDatos"].ToString() : string.Empty);
+
+
+                                OrdenesTrabajo.Add(orden);
                         };
                         
                             
@@ -114,101 +121,93 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
-        
+        public string DescripcionPlano
+        {
+            get
+            {
+                return LimpiarRTF(Descripcion);
+            }
+        }
 
-        //public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
-        //{
-        //    Dictionary<int, List<int>> sistemasPorCliente = new Dictionary<int, List<int>>();
-        //    ConexionDB conexionDB = new ConexionDB();
-        //    conexionDB.AbrirConexion();
-        //    string consulta = "SELECT Cliente, Sistema FROM Sistemas_Clientes"; // Relación entre sistema y cliente
+        public string FormulariosModificadosPlano
+        {
+            get
+            {
+                return LimpiarRTF(FormulariosModificados);
+            }
+        }
 
-        //    using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
-        //    {
-        //        try
-        //        {
-        //            using (SqlDataReader reader = command.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
-        //                    int sistemaId = reader.GetInt32(reader.GetOrdinal("Sistema"));
+        public string ModificacionesBaseDatosPlano
+        {
+            get
+            {
+                return LimpiarRTF(ModificacionesBaseDatos);
+            }
+        }
 
-        //                    // Verifica si el cliente ya existe en el diccionario
-        //                    if (!sistemasPorCliente.ContainsKey(clienteId))
-        //                    {
-        //                        sistemasPorCliente[clienteId] = new List<int>();
-        //                    }
-        //                    sistemasPorCliente[clienteId].Add(sistemaId); // Agrega el sistema asociado al cliente
-        //                }
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e);
-        //        }
-        //    }
-        //    return sistemasPorCliente;
-        //}
+        public static string LimpiarRTF(string rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return string.Empty;
+
+            try
+            {
+                // 1. Decodifica los caracteres hexadecimales RTF: \'f3 => ó
+                string texto = Regex.Replace(rtf, @"\\'([0-9a-fA-F]{2})", match =>
+                {
+                    var hex = match.Groups[1].Value;
+                    byte b = Convert.ToByte(hex, 16);
+                    return Encoding.GetEncoding(1252).GetString(new byte[] { b });
+                });
+
+                // 2. Reemplaza \par (fin de párrafo RTF) con salto de línea
+                texto = texto.Replace(@"\par", "\n");
+
+                // 3. Elimina comandos RTF comunes como \fs24, \b0, \f0, etc.
+                texto = Regex.Replace(texto, @"\\[a-z]+\d*", "");
+
+                // 4. Elimina llaves {, } y barras \ sobrantes
+                texto = texto.Replace("{", "").Replace("}", "").Replace("\\", "");
+
+                // 5. Normaliza saltos de línea y espacios
+                texto = Regex.Replace(texto, @"\n{3,}", "\n\n");  // máximo 2 saltos seguidos
+                texto = Regex.Replace(texto, @"[ \t]{2,}", " ");  // espacios excesivos
+                texto = texto.Trim();
+
+                return texto;
+            }
+            catch
+            {
+                return rtf;
+            }
+        }
 
 
+        public static int EjecutarInsert(string consulta, Dictionary<string, object> parametrosSP)
+        {
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
+            using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+            {
+                command.CommandType = CommandType.StoredProcedure;
 
-        //public static Dictionary<int, string> ConseguirNombres(string Tabla)
-        //{
-        //    Dictionary<int, string> nombres = new Dictionary<int, string>();
-        //    ConexionDB conexionDB = new ConexionDB();
-        //    conexionDB.AbrirConexion();
+                foreach (var param in parametrosSP)
+                {
+                    command.Parameters.AddWithValue(param.Key, param.Value);
+                }
 
-        //    string consulta;
-        //    bool tieneDescripcion = true;
-
-        //    // Excepción especial: para Sistemas_Clientes no hay descripción
-        //    if (Tabla == "Sistemas_Cliente")
-        //    {
-        //        consulta = "SELECT Sistema, Cliente FROM Sistemas_Clientes";
-        //        tieneDescripcion = false;
-        //    }
-        //    else
-        //    {
-        //        consulta = "SELECT Descripcion, " + Tabla + " FROM " + Tabla + "s"; // Otras tablas sí
-        //    }
-
-        //    using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
-        //    {
-        //        try
-        //        {
-        //            using (SqlDataReader reader = command.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    int id = reader.GetInt32(reader.GetOrdinal(tieneDescripcion ? Tabla : "Sistema"));
-
-        //                    string nombre;
-        //                    if (tieneDescripcion)
-        //                    {
-        //                        nombre = reader.IsDBNull(reader.GetOrdinal("Descripcion"))
-        //                            ? string.Empty
-        //                            : reader.GetString(reader.GetOrdinal("Descripcion"));
-        //                    }
-        //                    else
-        //                    {
-        //                        // Si NO hay descripción, ponemos el ID del cliente como string
-        //                        int clienteId = reader.GetInt32(reader.GetOrdinal("Cliente"));
-        //                        nombre = clienteId.ToString();
-        //                    }
-
-        //                    nombres[id] = nombre;
-        //                }
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e);
-        //        }
-        //    }
-
-        //    return nombres;
-        //}
+                try
+                {
+                    int filasAfectadas = command.ExecuteNonQuery();
+                    return filasAfectadas;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error al ejecutar INSERT: " + e.ToString());
+                    return 0;
+                }
+            }
+        }
 
 
 

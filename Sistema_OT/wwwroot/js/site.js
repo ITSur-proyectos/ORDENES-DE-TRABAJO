@@ -164,24 +164,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //---------------------------------FormulariosModificados Y ModificacionesBaseDatos
 
-//document.addEventListener("DOMContentLoaded", function () {
-//    const tipoSelect = document.getElementById("tipoModificacion");
-//    const detalleTextArea = document.getElementById("modificacionDetalle");
+document.addEventListener("DOMContentLoaded", function () {
+    const tipoSelect = document.getElementById("tipoModificacion");
+    const detalleTextArea = document.getElementById("modificacionDetalle");
 
-//    const formularioTexto = document.getElementById("formularioData")?.value || "";
-//    const baseDatosTexto = document.getElementById("baseDatosData")?.value || "";
+    const formularioTexto = document.getElementById("formularioData")?.value || "";
+    const baseDatosTexto = document.getElementById("baseDatosData")?.value || "";
 
-//    if (tipoSelect && detalleTextArea) {
-//        tipoSelect.addEventListener("change", function () {
-//            if (this.value === "formulario") {
-//                detalleTextArea.value = formularioTexto;
-//            } else if (this.value === "baseDatos") {
-//                detalleTextArea.value = baseDatosTexto;
-//            } else {
-//                detalleTextArea.value = "";
-//            }
-//        });
-//    }
-//});
+    if (tipoSelect && detalleTextArea) {
+        tipoSelect.addEventListener("change", function () {
+            if (this.value === "formulario") {
+                detalleTextArea.value = formularioTexto;
+            } else if (this.value === "baseDatos") {
+                detalleTextArea.value = baseDatosTexto;
+            } else {
+                detalleTextArea.value = "";
+            }
+        });
+    }
+});
 
 
