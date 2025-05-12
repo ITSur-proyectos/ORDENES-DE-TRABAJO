@@ -129,9 +129,22 @@ const sistemasPorCliente = {
 //order by C.Cliente asc
 
 document.addEventListener("DOMContentLoaded", function () {
-    const nombresSistemas = JSON.parse(document.getElementById("nombresSistemas").value); // Tomamos los nombres desde el HTML
+    //const nombresSistemas = JSON.parse(document.getElementById("nombresSistemas").value); // Tomamos los nombres desde el HTML
+    //const clienteSelect = document.getElementById("Cliente");
+    //const sistemaSelect = document.getElementById("Sistema");
+
+    const nombresSistemasElement = document.getElementById("nombresSistemas");
+
+    // Verificar que el elemento existe
+    if (nombresSistemasElement) {
+        const nombresSistemas = JSON.parse(nombresSistemasElement.value); // Tomamos los nombres desde el HTML
+    } else {
+        console.error("Elemento con id 'nombresSistemas' no encontrado.");
+    }
+
     const clienteSelect = document.getElementById("Cliente");
     const sistemaSelect = document.getElementById("Sistema");
+});
 
     clienteSelect.addEventListener("change", function () {
         const clienteId = parseInt(this.value);
@@ -164,24 +177,88 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //---------------------------------FormulariosModificados Y ModificacionesBaseDatos
 
-document.addEventListener("DOMContentLoaded", function () {
-    const tipoSelect = document.getElementById("tipoModificacion");
-    const detalleTextArea = document.getElementById("modificacionDetalle");
+//document.addEventListener("DOMContentLoaded", function () {
+//    const tipoSelect = document.getElementById("tipoModificacion");
+//    const detalleTextArea = document.getElementById("modificacionDetalle");
 
-    const formularioTexto = document.getElementById("formularioData")?.value || "";
-    const baseDatosTexto = document.getElementById("baseDatosData")?.value || "";
+//    const formularioTexto = document.getElementById("formularioData")?.value || "";
+//    const baseDatosTexto = document.getElementById("baseDatosData")?.value || "";
 
-    if (tipoSelect && detalleTextArea) {
-        tipoSelect.addEventListener("change", function () {
-            if (this.value === "formulario") {
-                detalleTextArea.value = formularioTexto;
-            } else if (this.value === "baseDatos") {
-                detalleTextArea.value = baseDatosTexto;
-            } else {
-                detalleTextArea.value = "";
-            }
-        });
-    }
-});
+//    if (tipoSelect && detalleTextArea) {
+//        tipoSelect.addEventListener("change", function () {
+//            if (this.value === "formulario") {
+//                detalleTextArea.value = formularioTexto;
+//            } else if (this.value === "baseDatos") {
+//                detalleTextArea.value = baseDatosTexto;
+//            } else {
+//                detalleTextArea.value = "";
+//            }
+//        });
+//    }
+//});
+
+
+
+//Aquí está tu código base, con la tabla para mostrar los avances de trabajo.
+//Los botones como "Agregar", "Modificar", "Grabar" y "Cancelar" están listos para ser manejados por JavaScript:
+
+
+
+//$(document).ready(function () {
+//    // Función para cargar los avances dinámicamente
+//    function cargarAvances() {
+//        $.ajax({
+//            url: '/Avances/ObtenerAvances',  // Asegúrate de que la URL esté correcta
+//            type: 'GET',
+//            success: function (data) {
+//                // Limpiar la tabla antes de cargar los nuevos datos
+//                $('#tablaAvances tbody').empty();
+
+//                // Iterar sobre los datos obtenidos y agregar las filas
+//                data.forEach(function (avance) {
+//                    var fila = '<tr>' +
+//                        '<td>' + avance.AvanceTrabajoId + '</td>' +
+//                        '<td>' + avance.Descripcion + '</td>' +
+//                        '<td>' + avance.Fecha + '</td>' +
+//                        '<td>' + avance.HorasInsumidas + '</td>' +
+//                        '<td>' + avance.UserIDAlta + '</td>' +
+//                        '</tr>';
+//                    $('#tablaAvances tbody').append(fila);
+//                });
+//            },
+//            error: function (error) {
+//                console.log('Error al cargar los avances:', error);
+//            }
+//        });
+//    }
+
+//    // Llamar a la función para cargar los avances cuando la página se carga
+//    cargarAvances();
+
+//    // Si es necesario actualizar la tabla al hacer clic en "Agregar" u otros botones:
+//    $('#btnAgregar').click(function () {
+//        // Lógica para agregar un nuevo avance (puede abrir un modal o formulario)
+//        // Después de agregar, volver a cargar la tabla:
+//        cargarAvances();
+//    });
+
+//    $('#btnModificar').click(function () {
+//        // Lógica para modificar
+//        cargarAvances();  // Recargar la tabla si es necesario
+//    });
+
+//    $('#btnGrabar').click(function () {
+//        // Lógica para grabar los cambios
+//        cargarAvances();  // Recargar la tabla si es necesario
+//    });
+
+//    $('#btnCancelar').click(function () {
+//        // Lógica para cancelar
+//        cargarAvances();  // Recargar la tabla si es necesario
+//    });
+//});
+
+
+
 
 

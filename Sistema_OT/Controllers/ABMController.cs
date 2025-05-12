@@ -89,25 +89,24 @@ namespace Sistema_OT.Controllers
                     parametros["@PremioPorAvance"] = premioAvance;
                     parametros["@AlcanceIndefinido"] = alcanceIndefinido;
                     string consulta = "Ordenes_Trabajo_INSERT";
-                    //List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
-                    //if (ordenes.Count > 0)
-                    //{
-                    //    ViewData["Orden"] = ordenes;
-                    //}
+                    int nroOrden;
 
-                    int resultado = OrdenDeTrabajo.EjecutarInsert(consulta, parametros);
+                    int resultado = OrdenDeTrabajo.EjecutarInsert(consulta, parametros, out nroOrden);
 
-                    if (resultado > 0)
+                    if (resultado > 0 && nroOrden > 0)
                     {
-                        ViewBag.Mensaje = "Orden insertada correctamente.";
+                        return RedirectToAction("VistaIndividualBuscar", "Buscar", new { orden = resultado });
+
                     }
                     else
                     {
                         ViewBag.Error = "No se pudo insertar la orden.";
                     }
 
+
                 }
+
                 else
                 {
                     Console.WriteLine("No llenaste los formularios.");
@@ -117,6 +116,14 @@ namespace Sistema_OT.Controllers
 
             return View();
         }
+
+
+
+
+
+
+
+
 
     }
 

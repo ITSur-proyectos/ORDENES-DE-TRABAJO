@@ -160,6 +160,10 @@ namespace Sistema_OT.Models
                     return Encoding.GetEncoding(1252).GetString(new byte[] { b });
                 });
 
+                // Opción robusta con Replace (solo si sabés que siempre vendrá igual)
+                texto = texto.Replace("Arial;\r\n Symbol;\r\n;;;\r\n [Normal];* Default Paragraph Font;\r\n TX_RTF32 9.0.310.500", "");
+                texto = texto.Replace("Arial;\n Symbol;\n;;;\n [Normal];* Default Paragraph Font;\n TX_RTF32 9.0.310.500", "");
+
                 // 2. Reemplaza \par (fin de párrafo RTF) con salto de línea
                 texto = texto.Replace(@"\par", "\n");
 
@@ -172,6 +176,23 @@ namespace Sistema_OT.Models
                 // 5. Normaliza saltos de línea y espacios
                 texto = Regex.Replace(texto, @"\n{3,}", "\n\n");  // máximo 2 saltos seguidos
                 texto = Regex.Replace(texto, @"[ \t]{2,}", " ");  // espacios excesivos
+
+
+                // Opción: quitar encabezado literal si está presente
+                string cabecera = "Arial; Symbol; ;;; [Normal];* Default Paragraph Font; TX_RTF32 9.0.310.500";
+                texto = texto.Replace(cabecera, "").Trim();
+
+                // Eliminar la "d" al principio si está presente
+                texto = Regex.Replace(texto, @"^d\s*", "");  // Quita "d" y los espacios después de ella
+
+
+                // Si querés limpiar el encabezado con Regex para mayor flexibilidad, reemplázalo por esto:
+                texto = Regex.Replace(
+                    texto,
+                    @"Arial;\s*Symbol;\s*;;;\s*\[Normal\];\* Default Paragraph Font;\s*TX_RTF32 9\.0\.310\.500",
+                    "",
+                    RegexOptions.IgnoreCase);
+
                 texto = texto.Trim();
 
                 return texto;
@@ -183,31 +204,49 @@ namespace Sistema_OT.Models
         }
 
 
-        public static int EjecutarInsert(string consulta, Dictionary<string, object> parametrosSP)
+        public static int EjecutarInsert(string consulta, Dictionary<string, object> parametrosSP, out int nroOrdenGenerado)
         {
+            nroOrdenGenerado = 0;  // Inicializamos en 0 para evitar null
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
+
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
             {
                 command.CommandType = CommandType.StoredProcedure;
 
+                // Añadir parámetros de entrada
                 foreach (var param in parametrosSP)
                 {
-                    command.Parameters.AddWithValue(param.Key, param.Value);
+                    command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
                 }
+
+                // Agregar parámetro de salida para el número de orden
+                SqlParameter outputParam = new SqlParameter("@NroOrdenGenerado", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(outputParam);
 
                 try
                 {
-                    int filasAfectadas = command.ExecuteNonQuery();
-                    return filasAfectadas;
+                    // Ejecutar la consulta
+                    command.ExecuteNonQuery();
+
+                    // Obtener el valor del parámetro de salida
+                    nroOrdenGenerado = outputParam.Value != DBNull.Value ? (int)outputParam.Value : 0;
+
+                    return 1;  // Si no hubo errores
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Error al ejecutar INSERT: " + e.ToString());
-                    return 0;
+                    return 0;  // Si ocurrió un error
                 }
             }
         }
+
+
+
 
 
 

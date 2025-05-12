@@ -128,16 +128,6 @@ namespace Sistema_OT.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
-        {
-            ViewBag.ActiveSection = activeSection;
-            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-            return View();
-        }
         [HttpPost]
         public IActionResult VistaIndividualBuscar(int orden)
         {
@@ -167,6 +157,18 @@ namespace Sistema_OT.Controllers
             {
                 Console.WriteLine("No llenaste los formularios.");
             }
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
+        {
+            ViewBag.ActiveSection = activeSection;
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
 

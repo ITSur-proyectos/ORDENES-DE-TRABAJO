@@ -449,11 +449,12 @@
                                                     </div>
                                                   <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
 
-                                                  
+                                                 
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
                                                         {
                                                             @foreach (var item in ordentrabajo)
                                                             {
+
                                                                 @item["DescripcionPlano"]
                                                             }
                                                         }
