@@ -7,7 +7,7 @@
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
-    var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
 }
 
@@ -663,6 +663,30 @@
                                                                 <th>Usuario</th>
                                                             </tr>
                                                         </thead>
+                                                        <tbody>
+                                                        @if (historial != null && historial.Any())
+                                                        {
+                                                            int secuencia = 1;
+                                                            foreach (var estado in historial)
+                                                            {
+                                                                <tr>
+                                                                    <td>@secuencia</td>
+                                                                    <td>@estado.Descripcion</td>
+                                                                    <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@estado.FechaAlta.ToString("HH:mm")</td>
+                                                                    <td>@estado.UserID</td>
+                                                                </tr>
+                                                                  secuencia++;
+                                                             }
+                                                         }
+                                                        else
+                                                        {
+                                                        <tr>
+                                                            <td colspan="5">No hay historial para esta orden.</td>
+                                                        </tr>
+                                                         }
+
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
