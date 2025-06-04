@@ -48,7 +48,18 @@
                                     <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@ordentrabajo?.FirstOrDefault()?["NroOrdenTrabajo"]" />
                                 </div>
                             </div>
-                           
+
+                            <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
+                            <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="busuqeda">Buscar OT</label>
+                                    <button type="submit" class="btn boton-busqueda btn-sm w-100">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
                                 <div class="form-group">
@@ -72,7 +83,7 @@
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
                                     <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo" disabled>
@@ -388,11 +399,7 @@
             </label>
         </div>
 
-        <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
-        <div class="w-100 mb-3">
-            <button type="submit" class="btn boton-busqueda btn-sm w-100">
-                Buscar
-            </button>
+
         </div>
     </div>
 </div>
@@ -413,7 +420,7 @@
                             <div class="card shadow-sm mb-3">
                                 <div class="card-body">
                                     <!-- Acordeón de Secciones -->
-                                    <div id="accordion" class="mt-1">
+                                    <div id="accordion" class="mt-1" >
 
                                         <!-- Sección de Descripción -->
                                         <div class="card">
@@ -425,8 +432,8 @@
                                                  </h5>
                                            </div>
 
-                                            <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
-                                                <div class="card-body">
+                                        <div id="collapseDescripcion" class="collapse show"  aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                            <div class="card-body" >
                                                     <!-- Barra de herramientas de formato de texto -->
                                                     <div id="descripcion" class="tab-pane fade show active">
                                                         <div class="toolbar">
@@ -447,7 +454,7 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                  <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
+                                                <textarea class="form-control descripcion-textarea" rows="3" style="height: 450px; " readonly placeholder="Escribe la descripción aquí...">
 
                                                  
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
@@ -462,7 +469,7 @@
                                                       
 
                                                     </textarea>
-                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                                                    <small class="form-text text-muted"> ACA - Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -478,8 +485,8 @@
                                             </div>
                                             <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                                 <div class="card-body">
-                                                <div style="max-height: 250px; overflow-y: auto;">
-                                                    <div class="table-responsive">
+                                                <div overflow-y: auto;">
+                                                    <div class="table-responsive" style="height: 450px; ">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
@@ -541,7 +548,7 @@
                                                     <option value="formulario">Formulario</option>
                                                     <option value="baseDatos">Base de Datos</option>
                                                 </select>
-                                                <textarea class="form-control" id="modificacionDetalle" rows="3" placeholder="..."></textarea>
+                                                <textarea class="form-control" id="modificacionDetalle" style="height: 450px; " rows="3" placeholder="..."></textarea>
 
                                                        
                                                     </textarea>
@@ -585,7 +592,7 @@
                                         </div>
                                         <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="height: 450px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -645,7 +652,7 @@
                                         </div>
                                         <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="height: 450px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -656,29 +663,29 @@
                                                                 <th>Usuario</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                            @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> historial && historial.Any())
-                                                            {
-                                                                int secuencia = 1;
-                                                                foreach (var item in historial)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@secuencia</td>
-                                                                        <td>@item.Descripcion</td>
-                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                        <td>@item.FechaAlta.ToString("HH:mm")</td>
-                                                                        <td>@item.UserID</td>
-                                                                    </tr>
-                                                                    secuencia++;
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <tr>
-                                                                    <td colspan="5">No hay historial para esta orden.</td>
-                                                                </tr>
-                                                            }
-                                                        </tbody>
+                                                    @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> listaHistorial && listaHistorial.Any())
+                                                    {
+                                                        int secuencia = 1;
+                                                        foreach (var itemHistorial in listaHistorial)
+                                                        {
+                                                            <tr>
+                                                                <td>@secuencia</td>
+                                                                <td>@itemHistorial.Descripcion</td>
+                                                                <td>@itemHistorial.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                <td>@itemHistorial.FechaAlta.ToString("HH:mm")</td>
+                                                                <td>@itemHistorial.UserID</td>
+                                                            </tr>
+                                                            secuencia++;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="5">No hay historial para esta orden.</td>
+                                                        </tr>
+                                                    }
+
+
                                                     </table>
                                                 </div>
                                             </div>

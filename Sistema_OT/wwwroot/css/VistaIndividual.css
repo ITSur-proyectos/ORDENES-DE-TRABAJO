@@ -64,6 +64,11 @@ input[type="number"] {
         color: white;
     }
 
+.descripcion-textarea {
+    height: 300px; /* tamaño fijo */
+    resize: none; /* evita que el usuario lo agrande (opcional) */
+}
+
 /* Estilos generales para la barra de herramientas */
 .toolbar {
     display: flex !important;
@@ -112,5 +117,32 @@ input[type="number"] {
     pointer-events: none !important; /* Para evitar que los íconos afecten los clics */
 }
 
+#collapseDescripcion .toolbar {
+    font-size: 10px;
+}
+
+#collapseDescripcion .toolbar .toolbar-btn {
+        font-size:10px;
+        padding: 2px 4px; /* más compacto */
+        line-height: 1;
+        height: auto;
+    }
+
+#collapseDescripcion .toolbar .toolbar-btn i {
+            font-size:10px;
+        }
+
+#collapseDescripcion .toolbar .toolbar-select {
+        font-size: 10px;
+         padding: 2px 4px;
+        height: auto;
+        line-height: 1;
+    }
+
+#collapseDescripcion.collapsing,
+#collapseDescripcion.show {
+    height: 500px !important;
+   
+}
 
 

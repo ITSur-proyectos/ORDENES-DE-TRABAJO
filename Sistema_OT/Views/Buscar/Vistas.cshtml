@@ -307,7 +307,7 @@
                                         foreach (var orden in OrdenesBuscadas)
 
                                         {
-                                    <tr style="font-size: 14px;">
+                                      <tr style="font-size: 14px;">
                                          <td>
                                                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                                                     <input type="hidden" name="orden" value="@orden["NroOrdenTrabajo"]" />
@@ -347,13 +347,21 @@
                                         <td>@orden["AlcanceIndefinido"]</td>
                                         <td>@orden["FechaVencimiento"]</td>
                                         <td>@orden["Clientes_Usuarios"]</td>
-                                    </tr>
+                                      </tr>
                                             num++;
 
                                         }
 
                                     }
-
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="22" class=" text-danger">
+                                                No existe una OT con esos criterios de búsqueda.
+                                            </td>
+                                        </tr>
+                                    } *@
+                             
                                 </tbody>
                             </table>
                         </div>
@@ -388,12 +396,35 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:14px;">
                                     <div class="grupo-botones d-flex" style="font-size:14px; padding-left:740px;">
-                                        <button class="btn boton me-2" style="width: 130px; font-size: 15px;">Buscar</button>
-                                        <button class="btn boton" style="width: 130px; font-size: 15px;">Limpiar</button>
+                                        <button id="btnBuscar" type="submit" class="btn boton me-2" style="width: 130px; font-size: 15px;">
+                                                <span id="spinnerBuscar" class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                                                    Buscar
+                                        </button>
+                                       <button type="button" id="btnLimpiar" class="btn boton" style="width: 130px; font-size: 15px;">
+                                                         Limpiar
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
 
+                            <script>
+                                     document.getElementById("btnBuscar").addEventListener("click", function () {
+                                     const spinner = document.getElementById("spinnerBuscar");
+                                      spinner.classList.remove("d-none");
+                                        });
+
+                                   document.getElementById("btnLimpiar").addEventListener("click", function () {
+                                    const form = document.querySelector("form");
+                                    if (form) {
+                                        form.reset(); // Limpia todos los campos del formulario
+                                    }
+
+                                    // Si usás selects con valores dinámicos, podés limpiar así también:
+                                    const selects = form.querySelectorAll("select");
+                                    selects.forEach(select => select.selectedIndex = 0);
+                                });
+</script>
 
                         </div>
                     </div>

@@ -44,6 +44,7 @@ public class AccountController : Controller
             }
             else
             {
+                // modal
                 ViewBag.ErrorMessage = "Usuario o contraseña incorrectos";
                 return View(); // Retorna a la vista de login con el mensaje de error
             }
