@@ -96,6 +96,7 @@ namespace Sistema_OT.Controllers
 
                     if (resultado > 0 && nroOrden > 0)
                     {
+                        TempData["Mensaje"] = "¡Registro creado con éxito!";
                         return RedirectToAction("VistaIndividualBuscar", "Buscar", new { orden = resultado });
 
                     }

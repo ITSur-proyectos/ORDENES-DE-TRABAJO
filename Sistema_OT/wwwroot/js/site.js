@@ -131,40 +131,47 @@ const sistemasPorCliente = {
 //inner join Clientes C on SC.Cliente = C.Cliente 
 //order by C.Cliente asc
 
+// ... sistemasPorCliente definido aquí ...
+
 document.addEventListener("DOMContentLoaded", function () {
-    //const nombresSistemas = JSON.parse(document.getElementById("nombresSistemas").value); // Tomamos los nombres desde el HTML
-    //const clienteSelect = document.getElementById("Cliente");
-    //const sistemaSelect = document.getElementById("Sistema");
+    const nombresSistemasInput = document.getElementById("nombresSistemas");
 
-    const nombresSistemasElement = document.getElementById("nombresSistemas");
+    let nombresSistemas = {};
 
-    // Verificar que el elemento existe
-    if (nombresSistemasElement) {
-        const nombresSistemas = JSON.parse(nombresSistemasElement.value); // Tomamos los nombres desde el HTML
+    if (nombresSistemasInput && nombresSistemasInput.value) {
+        try {
+            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+        } catch (e) {
+            console.error("Error al parsear nombresSistemas:", e);
+        }
     } else {
-        console.error("Elemento con id 'nombresSistemas' no encontrado.");
+        console.warn("Input 'nombresSistemas' no encontrado o vacío");
     }
 
     const clienteSelect = document.getElementById("Cliente");
     const sistemaSelect = document.getElementById("Sistema");
-});
+
+    if (!clienteSelect || !sistemaSelect || typeof nombresSistemas === "undefined") {
+        console.error("Faltan elementos o datos para el filtrado.");
+        return;
+    }
 
     clienteSelect.addEventListener("change", function () {
-        const clienteId = parseInt(this.value);
+        const clienteId = this.value;
         sistemaSelect.innerHTML = "";
-
-        let sistemaIds = [];
-
-        if (!isNaN(clienteId) && clienteId !== -1 && sistemasPorCliente.hasOwnProperty(clienteId)) {
-            sistemaIds = sistemasPorCliente[clienteId];
-        } else {
-            sistemaIds = Object.keys(nombresSistemas).map(Number); // Todos
-        }
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "-1";
         defaultOption.text = "...";
         sistemaSelect.appendChild(defaultOption);
+
+        let sistemaIds = [];
+
+        if (sistemasPorCliente.hasOwnProperty(clienteId)) {
+            sistemaIds = sistemasPorCliente[clienteId];
+        } else {
+            sistemaIds = Object.keys(nombresSistemas).map(Number);
+        }
 
         sistemaIds.forEach(sid => {
             if (nombresSistemas[sid]) {
@@ -176,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
 
 
 //---------------------------------FormulariosModificados Y ModificacionesBaseDatos

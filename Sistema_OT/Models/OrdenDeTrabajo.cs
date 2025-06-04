@@ -95,7 +95,19 @@ namespace Sistema_OT.Models
             Dictionary<int, string> nombres = new Dictionary<int, string>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
-            string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s"; // +s porque menos mal que las tablas estan en plural
+
+
+            // Preparar campos a consultar según la tabla
+            string campos = Tabla;
+            if (Tabla == "Proyecto")
+            {
+                campos = $"{Tabla}, Nombre, Descripcion";
+            }
+            else
+            {
+                campos = $"{Tabla}, Descripcion";
+            }
+            string consulta = "Select " + campos +  Tabla + " From " + Tabla + "s" + " ORDER BY Descripcion ASC"; // +s porque menos mal que las tablas estan en plural
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {

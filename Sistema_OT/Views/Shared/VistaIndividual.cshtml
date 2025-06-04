@@ -538,6 +538,12 @@
                                 </div>
                             </div>
 
+                        @if (TempData["Mensaje"] != null)
+                        {
+                            <script>
+                                alert("@TempData["Mensaje"]");
+                            </script>
+                        }
                         
                         <!-- Botones de acciones -->
                         <div class="row mt-2">

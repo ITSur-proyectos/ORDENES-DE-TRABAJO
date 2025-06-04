@@ -36,7 +36,12 @@
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
-                    
+                        @if (TempData["Mensaje"] != null)
+                        {
+                            <script>
+                                alert("@TempData["Mensaje"]");
+                            </script>
+                        }
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -663,7 +668,7 @@
                                                                 <th>Usuario</th>
                                                             </tr>
                                                         </thead>
-                                                    @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> listaHistorial && listaHistorial.Any())
+                                                    @* @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> listaHistorial && listaHistorial.Any())
                                                     {
                                                         int secuencia = 1;
                                                         foreach (var itemHistorial in listaHistorial)
@@ -684,8 +689,7 @@
                                                             <td colspan="5">No hay historial para esta orden.</td>
                                                         </tr>
                                                     }
-
-
+ *@
                                                     </table>
                                                 </div>
                                             </div>
