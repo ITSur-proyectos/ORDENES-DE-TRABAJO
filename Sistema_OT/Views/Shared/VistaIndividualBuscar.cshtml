@@ -31,17 +31,12 @@
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual   </h5>
+                    <h5 class="mb-0">Individual  </h5>
                 </div>
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
-                    <!-- Inicio del formulario-->
-                        @if (TempData["Mensaje"] != null)
-                        {
-                            <script>
-                                alert("@TempData["Mensaje"]");
-                            </script>
-                        }
+
+
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -459,7 +454,7 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                <textarea class="form-control descripcion-textarea" rows="3" style="height: 450px; " readonly placeholder="Escribe la descripción aquí...">
+                                                <textarea class="form-control descripcion-textarea" rows="3" style="height:300px; " readonly placeholder="Escribe la descripción aquí...">
 
                                                  
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
@@ -668,28 +663,6 @@
                                                                 <th>Usuario</th>
                                                             </tr>
                                                         </thead>
-                                                    @* @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> listaHistorial && listaHistorial.Any())
-                                                    {
-                                                        int secuencia = 1;
-                                                        foreach (var itemHistorial in listaHistorial)
-                                                        {
-                                                            <tr>
-                                                                <td>@secuencia</td>
-                                                                <td>@itemHistorial.Descripcion</td>
-                                                                <td>@itemHistorial.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                <td>@itemHistorial.FechaAlta.ToString("HH:mm")</td>
-                                                                <td>@itemHistorial.UserID</td>
-                                                            </tr>
-                                                            secuencia++;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <tr>
-                                                            <td colspan="5">No hay historial para esta orden.</td>
-                                                        </tr>
-                                                    }
- *@
                                                     </table>
                                                 </div>
                                             </div>

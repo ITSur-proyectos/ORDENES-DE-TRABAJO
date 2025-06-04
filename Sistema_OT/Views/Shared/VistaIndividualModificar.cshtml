@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Editar Orden";
+    var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
+    var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
+    var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
+    var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
+    var orden = ViewData["Orden"] as Dictionary<string, object>;
+}
+
+<form method="post" action="@Url.Action("GuardarCambios", "Buscar")">
+    <div class="container mt-3">
+        <h3>Modificar Orden de Trabajo</h3>
+
+        <!-- Inicio del formulario-->
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            @TempData["Mensaje"]
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-2">
+                <label for="NroOrdenTrabajo">Nro Orden</label>
+                <input type="number" class="form-control" name="NroOrdenTrabajo" readonly value="@orden?["NroOrdenTrabajo"]" />
+            </div>
+
+            <div class="col-md-4">
+                <label for="Cliente">Cliente</label>
+                <select class="form-control" name="Cliente">
+                    @foreach (var c in nombresClientes)
+                    {
+                        <option value="@c.Key" @(orden?["ClienteID"].ToString() == c.Key.ToString() ? "selected" : "")>@c.Value</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Sistema">Sistema</label>
+                <select class="form-control" name="Sistema">
+                    @foreach (var s in nombresSistemas)
+                    {
+                        <option value="@s.Key" @(orden?["SistemaID"].ToString() == s.Key.ToString() ? "selected" : "")>@s.Value</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="Proyecto">Proyecto</label>
+                <select class="form-control" name="Proyecto">
+                    @foreach (var p in nombresProyectos)
+                    {
+                        <option value="@p.Key" @(orden?["ProyectoID"].ToString() == p.Key.ToString() ? "selected" : "")>@p.Value</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Asunto">Asunto</label>
+                <input type="text" class="form-control" name="Asunto" value="@orden?["Asunto"]" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="Modulo">Módulo</label>
+                <input type="text" class="form-control" name="Modulo" value="@orden?["Modulo"]" />
+            </div>
+
+            <div class="col-md-3">
+                <label for="FechaSolicitud">Fecha Solicitud</label>
+                <input type="date" class="form-control" name="FechaSolicitud" value="@Convert.ToDateTime(orden?["FechaSolicitud"]).ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="col-md-3">
+                <label for="FechaVencimiento">Fecha Vencimiento</label>
+                <input type="date" class="form-control" name="FechaVencimiento" value="@Convert.ToDateTime(orden?["FechaVencimiento"]).ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="@Url.Action("VistaOrdenes", "Buscar")" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
