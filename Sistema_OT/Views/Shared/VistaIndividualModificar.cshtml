@@ -7,238 +7,681 @@
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
-    var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
     var nroOrden = ViewBag.NroOrdenTrabajo;
-
-    // Obtener valores ID actuales convertidos a int para buscar en diccionarios
-    int clienteId = 0;
-    int sistemaId = 0;
-    int solicitanteId = 0;
-    int responsableId = 0;
-
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["Cliente"]?.ToString(), out clienteId);
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString(), out sistemaId);
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["UserIDSolicitante"]?.ToString(), out solicitanteId);
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString(), out responsableId);
-
-    // Preparar listas para dropdowns con selección
-    var clientesSelectList = nombresClientes?.Select(c => new SelectListItem
-    {
-        Value = c.Key.ToString(),
-        Text = c.Value,
-        Selected = c.Key == clienteId
-    }).ToList();
-
-    var sistemasSelectList = nombresSistemas?.Select(s => new SelectListItem
-    {
-        Value = s.Key.ToString(),
-        Text = s.Value,
-        Selected = s.Key == sistemaId
-    }).ToList();
-
-    var usuariosSelectList = nombresUsuarios?.Select(u => new SelectListItem
-    {
-        Value = u.Key.ToString(),
-        Text = u.Value,
-        Selected = u.Key == solicitanteId || u.Key == responsableId // Seleccionás según campo correspondiente más adelante
-    }).ToList();
-
-    // Obtener valores para otros campos directos (string, fechas, etc)
-    string asunto = ordentrabajo?.FirstOrDefault()?["Asunto"]?.ToString() ?? "";
-    string modulo = ordentrabajo?.FirstOrDefault()?["Modulo"]?.ToString() ?? "";
-    int cantidadHorasEstimadas = 0;
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["CantidadHorasEstimadas"]?.ToString(), out cantidadHorasEstimadas);
-    DateTime fechaSolicitud = DateTime.MinValue;
-    DateTime.TryParse(ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]?.ToString(), out fechaSolicitud);
-    DateTime fechaFinalizacion = DateTime.MinValue;
-    DateTime.TryParse(ordentrabajo?.FirstOrDefault()?["FechaFinalizacion"]?.ToString(), out fechaFinalizacion);
-    int estado = 0;
-    int.TryParse(ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString(), out estado);
 }
-<div class="container-fluid mt-3" style="max-width: 2600px; margin: 0 auto;">
+
+
+<!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="~/css/VistaIndividual.css" />
+<!-- Incluir el archivo RTFJS desde un CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rtfjs/1.0.0/rtf.min.js"></script>
+
+<!-- Incluir tu archivo site.js -->
+<script src="~/js/site.js"></script>
+
+<!-- Contenedor principal para el formulario Individual-->
+<div class="container" -fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
     <div class="row">
         <div class="col-12">
+            <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Modificar Orden de Trabajo</h5>
+                <div class="btn btn secondary; card-header bg-info text-white">
+                    <h5 class="mb-0">Individual - MODIFICACION OT N°  @nroOrden </h5>
                 </div>
-                <form method="post" action="@Url.Action("VistaIndividualModificar", "ABM")">
+                <form method="post" action="">
                     <div class="card-body">
+
+
+
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
-                            <!-- Nro Orden -->
+                            <!-- Primera fila con campos de la orden -->
+                            <!-- Campo de Orden -->
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="orden">Orden</label>
-                                    <input type="number" class="form-control" id="orden" name="NroOrdenTrabajo" readonly 
-                                           value="@nroOrden" />
+                                    <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@nroOrden" />
                                 </div>
                             </div>
 
-                            <!-- Cliente -->
+                            <!-- Campo de Dependencia -->
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="dependencia" class="text-nowrap">Depende</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="depende"  value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
+                                </div>
+                            </div>
+
+                            <!-- Campo Fecha de Solicitud -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="fechaSolicitud">Fecha de Solicitud</label>
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                </div>
+                            </div>
+                            <!-- Campo Fecha de Vencimiento -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="fechaVencimiento">Fecha de Vencimiento</label>
+                                    <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento"  name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
+                                </div>
+                            </div>
+                            <!-- Campo Estado del Trabajo -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="estadoTrabajo">Estado del Trabajo</label>
+                                    <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo" >
+                                        <option value="0">...</option>
+                                        @if (ordentrabajo != null)
+                                        {
+                                            <option selected>@ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString()?.Trim()</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="cliente">Cliente</label>
-                                    <select class="form-control" id="cliente" name="Cliente">
-                                        <option value="">--Seleccione Cliente--</option>
-                                        @foreach (var cliente in clientesSelectList)
+                                    <select class="form-select" style="font-size:12px;" id="cliente" name="cliente" >
+
+
+                                        <option value="-1">...</option>
+
+                                        @if (nombresClientes != null)
                                         {
-                                            if (cliente.Selected)
+                                            foreach (var cliente in nombresClientes)
                                             {
-                                                <option value="@cliente.Value" selected="selected">@cliente.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@cliente.Value">@cliente.Text</option>
+
+                                                bool isSelected = cliente.Value == ordentrabajo?.FirstOrDefault()?["Cliente"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@cliente.Value" selected="selected">@cliente.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@cliente.Value">@cliente.Value</option>
+                                                }
+
                                             }
                                         }
 
                                     </select>
                                 </div>
                             </div>
-
-                            <!-- Sistema -->
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="sistema">Sistema</label>
-                                    <select class="form-control" id="sistema" name="Sistema">
-                                        <option value="">--Seleccione Sistema--</option>
-                                        @foreach (var sistema in sistemasSelectList)
+                                    <select class="form-select" style="font-size:12px;" id="sistema" name="sistema" d>
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option value="-1">...</option>
+
+                                        @if (nombresSistemas != null)
                                         {
-                                            if (sistema.Selected)
+                                            foreach (var sistema in nombresSistemas)
                                             {
-                                                <option value="@sistema.Value" selected="selected">@sistema.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@sistema.Value">@sistema.Text</option>
+
+
+                                                bool isSelected = sistema.Value == ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@sistema.Value" selected="selected">@sistema.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@sistema.Value">@sistema.Value</option>
+                                                }
+
                                             }
                                         }
-                                    </select>
 
+                                    </select>
                                 </div>
                             </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="proyecto">Proyecto</label>
+                                    <select class="form-select" style="font-size:12px;" id="Proyecto" name="Proyecto" >
 
-                            <!-- Asunto -->
+                                        @if (nombresProyectos != null)
+
+                                        {
+                                            <option value="-1">...</option>
+
+                                            foreach (var proyecto in nombresProyectos)
+                                            {
+                                                var proyectoValue = ordentrabajo?.FirstOrDefault()?["Proyecto"];
+                                                int proyectoId = -1; // Valor por defecto
+
+                                                if (proyectoValue != null && int.TryParse(proyectoValue.ToString(), out int result))
+                                                {
+                                                    proyectoId = result;
+                                                }
+
+                                                bool isSelected = proyecto.Key == proyectoId;
+
+                                                if (isSelected)
+                                                {
+                                                    <option value="@proyecto.Key" selected="selected">@proyecto.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@proyecto.Key">@proyecto.Value</option>
+                                                }
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            @* <div style="font-size: 8px" class="col-md-1 d-flex align-items-end">
+
+                            <label>@* &nbsp; </label>
+                            <button type="button" class="btn boton">🔍</button>  *@
+                        </div>
+
+                        <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="usuarioResp">Usuario Responsable</label>
+                                    <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable">
+                                        <option value="">...</option>
+
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@usuario.Value" selected="selected">@usuario.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@usuario.Value">@usuario.Value</option>
+                                                }
+                                            }
+
+                                        }
+
+
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="usuarioSoli">Usuario Solicitante</label>
+                                    <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante" >
+                                        <!-- Opciones(se hace con la db) -->
+
+                                        <option>...</option>
+
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                Console.WriteLine(isSelected);
+                                                if (isSelected)
+                                                {
+                                                    <option value="@usuario.Value" selected="selected">@usuario.Value</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@usuario.Value">@usuario.Value</option>
+                                                }
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="moduloPantalla">Módulo/Pantalla</label>
+                                    <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla"  name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Cuarta fila con Asunto y Solicitado Por -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="asunto">Asunto</label>
-                                    <input type="text" class="form-control" id="asunto" name="Asunto" value="@asunto" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="asunto" name="asunto"  placeholder="Ingrese el asunto" value="@ordentrabajo?.FirstOrDefault()?["Asunto"]" />
                                 </div>
                             </div>
-
-                            <!-- Módulo -->
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="modulo">Módulo</label>
-                                    <input type="text" class="form-control" id="modulo" name="Modulo" value="@modulo" />
+                                    <label for="solicitadoPor">Solicitado Por</label>
+                                    <select class="form-select" style="font-size:12px;" id="Solicitante" >
+                                        <!-- Opciones(se hace con la db) -->
+                                        <option>...</option>
+                                        @if (nombresUsuarios != null)
+                                        {
+                                            foreach (var usuario in nombresUsuarios)
+                                            {
+                                                <option value="@usuario.Value">@usuario.Value</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Cantidad Horas Estimadas -->
+                        <!-- Quinta fila con Horas Facturables, % de Avance, Horas Consumidas, Horas Avances, Nro Implementación y Checkboxes -->
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="horasEstimadas">Horas Estimadas</label>
-                                    <input type="number" min="0" class="form-control" id="horasEstimadas" name="CantidadHorasEstimadas" value="@cantidadHorasEstimadas" />
+                                    <label for="horasFacturables" class="text-nowrap">Hs. Facturables</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasFacturables" placeholder="0"  />
                                 </div>
                             </div>
-
-                            <!-- Fecha Solicitud -->
-                            <div class="col-md-3">
+                            <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="fechaSolicitud">Fecha Solicitud</label>
-                                    <input type="date" class="form-control" id="fechaSolicitud" name="FechaSolicitud" value="@(fechaSolicitud == DateTime.MinValue ? "" : fechaSolicitud.ToString("yyyy-MM-dd"))" />
+                                    <label for="porcentajeAvance" class="text-nowrap">% Avance</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="porcentajeAvance" placeholder="0" min="0" max="100" value="@ordentrabajo?.FirstOrDefault()?["PorcentajeAvance"]"  />
                                 </div>
                             </div>
-
-                            <!-- Fecha Finalización -->
-                            <div class="col-md-3">
+                            <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="fechaFinalizacion">Fecha Finalización</label>
-                                    <input type="date" class="form-control" id="fechaFinalizacion" name="FechaFinalizacion" value="@(fechaFinalizacion == DateTime.MinValue ? "" : fechaFinalizacion.ToString("yyyy-MM-dd"))" />
+                                    <label for="horasConsumidas" class="text-nowrap">Hs. Consumo</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasConsumidas" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["CantidadHorasConsumidas"]"  />
                                 </div>
                             </div>
-
-                            <!-- Estado -->
-                            <div class="col-md-3">
+                            <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="estado">Estado</label>
-                                    <select class="form-control" id="estado" name="Estado">
-                                        <  @if (estado == 1)
-                                        {
-                                            <option value="1" selected="selected">Pendiente</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="1">Pendiente</option>
-                                        }
-
-                                        @if (estado == 2)
-                                        {
-                                            <option value="2" selected="selected">En Progreso</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="2">En Progreso</option>
-                                        }
-
-                                        @if (estado == 3)
-                                        {
-                                            <option value="3" selected="selected">Finalizado</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="3">Finalizado</option>
-                                        }
-                                    </select>
+                                    <label for="horasAvances" class="text-nowrap">Hs. Avances</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="horasAvances" placeholder="0"  />
                                 </div>
                             </div>
-
-                            <!-- Usuario Solicitante -->
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="solicitante">Solicitante</label>
-                                    <select class="form-control" id="solicitante" name="UserIDSolicitante">
-                                        <option value="">--Seleccione Solicitante--</option>
-                                        @foreach (var usuario in nombresUsuarios)
-                                        {
-                                            if (usuario.Key == solicitanteId)
-                                            {
-                                                <option value="@usuario.Key" selected="selected">@usuario.Value</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@usuario.Key">@usuario.Value</option>
-                                            }
-                                        }
-                                    </select>
+                                    <label for="NroOtImp" class="text-nowrap">Nro Implementación</label>
+                                    <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" />
                                 </div>
                             </div>
+                            <div class="row mt-5">
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <!-- Primer checkbox -->
+                                    <div class="form-check me-3 ">
+                                        <input type="checkbox" class="form-check-input" id="premioAvance"
+                                               placeholder="0"
+                                               value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]"
+                                               >
+                                        <label class="form-check-label text-nowrap" for="premioAvance">
+                                            Premio por Avance
+                                        </label>
+                                    </div>
 
-                            <!-- Usuario Responsable -->
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="responsable">Responsable</label>
-                                    <select class="form-control" id="responsable" name="UserIDResponsable">
-                                        <option value="">--Seleccione Responsable--</option>
-                                        @foreach (var usuario in nombresUsuarios)
-                                        {
-                                            if (usuario.Key == responsableId)
-                                            {
-                                                <option value="@usuario.Key" selected="selected">@usuario.Value</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@usuario.Key">@usuario.Value</option>
-                                            }
-                                        }
-                                    </select>
+                                    <!-- Segundo checkbox -->
+                                    <div class="form-check me-3 ">
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido"
+                                               value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]"
+                                              >
+                                        <label class="form-check-label text-nowrap" for="alcanceIndefinido">
+                                            Alcance Indefinido
+                                        </label>
+                                    </div>
+
+
                                 </div>
                             </div>
-
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-10"> </div>
+                        <div class="col-2 d-flex flex-column align-items-end">
+                        </div>
+                    </div>
+
+
+                    @* SEGUNDA PARTE  *@
+                    <!--Sección de descripción y accordion-->
+                    <!-- Segunda Tarjeta -->
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <!-- Acordeón de Secciones -->
+                            <div id="accordion" class="mt-1">
+
+                                <!-- Sección de Descripción -->
+                                <div class="card">
+                                    <div class="card-header py-1" id="headingDescripcion" style="padding: 3px;">
+                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white; ">
+                                                <b>  Descripción </b>
+                                            </button>
+                                        </h5>
+                                    </div>
+
+                                    <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <!-- Barra de herramientas de formato de texto -->
+                                            <div id="descripcion" class="tab-pane fade show active">
+                                                <div class="toolbar">
+                                                    <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
+                                                    <select class="toolbar-select">
+                                                        <option value="sans-serif">Sans Serif</option>
+                                                        <option value="serif">Serif</option>
+                                                        <option value="monospace">Monospace</option>
+                                                    </select>
+                                                    <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
+                                                    <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
+                                                </div>
+                                            </div>
+                                            <textarea class="form-control descripcion-textarea" rows="3" style="height:180px; " readonly placeholder="Escribe la descripción aquí...">
+
+
+                                                @if (ordentrabajo != null && ordentrabajo.Any())
+                                                {
+                                                    @foreach (var item in ordentrabajo)
+                                                    {
+
+                                                        @item["DescripcionPlano"]
+                                                    }
+                                                }
+
+
+
+                                                    </textarea>
+                                            <small class="form-text text-muted"> ACA - Incluye una descripción general del trabajo o la tarea.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de Avances de Trabajo -->
+                                <div class="card">
+                                    <div class="card-header" id="headingAvances" style="padding: 3px;">
+                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
+                                                <b>  Avances de Trabajo </b>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div overflow-y: auto;">
+                                                <div class="table-responsive" style="height: 450px; ">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Avance Trabajo</th>
+                                                                <th>Descripción</th>
+                                                                <th>Tipo Avance</th>
+                                                                <th>Fecha</th>
+                                                                <th>Usuario</th>
+                                                                <th>Tiempo Insumido(hs)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (avancesTrabajo != null && avancesTrabajo.Any())
+                                                            {
+                                                                foreach (var avance in avancesTrabajo)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@avance.AvanceTrabajoId</td>
+                                                                        <td>@avance.Descripcion</td>
+                                                                        <td>Desarrollo</td> <!-- Suponiendo que "Tipo Avance" no está en el modelo -->
+                                                                        <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@avance.UserIDAlta</td>
+                                                                        <td>@avance.HorasInsumidas</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="6">No hay avances registrados para esta orden de trabajo.</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <button class="btn boton btn-sm">Agregar</button>
+                                            <button class="btn boton btn-sm">Modificar</button>
+                                            <button class="btn btn-secondary btn-sm">Grabar</button>
+                                            <button class="btn btn-danger btn-sm">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de Puesta en Producción -->
+                                <div class="card">
+                                    <div class="card-header" id="headingProduccion" style="padding: 3px;">
+                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion" style="color:white;">
+                                                <b> Puesta en Producción </b>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <select class="form-select mb-3" id="tipoModificacion">
+                                                <option value="">Seleccionar tipo de modificación...</option>
+                                                <option value="formulario">Formulario</option>
+                                                <option value="baseDatos">Base de Datos</option>
+                                            </select>
+                                            <textarea class="form-control" id="modificacionDetalle" style="height: 450px; " rows="3" placeholder="..."></textarea>
+
+
+                                            </textarea>
+                                            <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
+                                            <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" />
+
+
+                                            <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
+                                            <script>
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    const tipoSelect = document.getElementById("tipoModificacion");
+                                                    const detalleTextArea = document.getElementById("modificacionDetalle");
+
+                                                    const formularioTexto = document.getElementById("formularioData").value;
+                                                    const baseDatosTexto = document.getElementById("baseDatosData").value;
+
+                                                    tipoSelect.addEventListener("change", function () {
+                                                        if (this.value === "formulario") {
+                                                            detalleTextArea.value = formularioTexto;
+                                                        } else if (this.value === "baseDatos") {
+                                                            detalleTextArea.value = baseDatosTexto;
+                                                        } else {
+                                                            detalleTextArea.value = "";
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de Archivo Adjunto -->
+                                <div class="card">
+                                    <div class="card-header" id="headingArchivo" style="padding: 3px;">
+                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
+                                                <b> Archivo Adjunto </b>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                            <div class="table-responsive" style="height: 450px; ">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Número</th>
+                                                            <th>Nombre</th>
+                                                            <th>Fecha de Alta</th>
+                                                            <th>Usuario Alta</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (adjuntos != null && adjuntos.Any())
+                                                        {
+                                                            foreach (var item in adjuntos)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.CorrelativoAdjunto</td>
+                                                                    <td>@item.NombreArchivo</td>
+                                                                    <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@item.UserID</td>
+                                                                </tr>
+
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td colspan="4">No hay archivos adjuntos para esta orden.</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
+                                                <div>
+                                                    <label for="files">Selecciona archivos:</label>
+                                                    <input type="file" id="files" name="files" multiple />
+                                                </div>
+                                                <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
+                                            </form>
+
+                                            <button class="btn boton btn-sm">Copiar</button>
+                                            <button class="btn btn-danger btn-sm">Quitar</button>
+                                            <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de Historial de Estado -->
+                                <div class="card">
+                                    <div class="card-header" id="headingHistorial" style="padding: 3px;">
+                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial" style="color:white;">
+                                                <b> Historial de Estado </b>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                            <div class="table-responsive" style="height: 450px; ">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Secuencia</th>
+                                                            <th>Estado del Trabajo</th>
+                                                            <th>Fecha</th>
+                                                            <th>Hora</th>
+                                                            <th>Usuario</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (historial != null && historial.Any())
+                                                        {
+                                                            int secuencia = 1;
+                                                            foreach (var estado in historial)
+                                                            {
+                                                                <tr>
+                                                                    <td>@secuencia</td>
+                                                                    <td>@estado.Descripcion</td>
+                                                                    <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@estado.FechaAlta.ToString("HH:mm")</td>
+                                                                    <td>@estado.UserID</td>
+                                                                </tr>
+                                                                secuencia++;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td colspan="5">No hay historial para esta orden.</td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <button class="btn boton btn-sm">Agregar Estado</button>
+                                            <button class="btn boton btn-sm">Modificar Estado</button>
+                                            <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Botones de acciones -->
+                    <div class="row mt-2">
+                        <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
+@* 
+                            <button class="btn  boton " disabled>Imprimir</button>
+                            <button class="btn boton" disabled>Ver Documentación Digital</button> *@
+
+                            <!-- Agrupación de otros botones -->
+                            <div class="grupo-botones" style="font-size:12px;">
+                                @* <button class="btn boton" disabled>Copiar Orden</button>
+                                <button class="btn boton" disabled>Enviar Orden</button>
+                                <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
+                                <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button> *@
+                                <button class="btn boton" >Grabar</button> 
+                                 <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar --> 
+                            </div>
+                        </div>
                     </div>
                 </form>
+
+                <script>
+                    function modificarOrden() {
+                      const nroOrden = document.getElementById('orden').value;
+                      if (nroOrden) {
+                        // Redirige a la acción pasando el nro de orden
+                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
+                      } else {
+                        alert('Por favor ingrese un número de orden válido');
+                      }
+                    }
+                </script>
+
             </div>
         </div>
+    </div>
+</div>
+</div>

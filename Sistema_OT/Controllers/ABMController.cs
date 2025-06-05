@@ -115,8 +115,6 @@ namespace Sistema_OT.Controllers
         }
 
 
-
-        [HttpGet]
         public IActionResult VistaIndividualModificar(int orden)
         {
             // Cargar catálogos para selects y listas auxiliares
@@ -130,11 +128,26 @@ namespace Sistema_OT.Controllers
             ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
             ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
 
-            // Pasar solo el número de orden a la vista
+            // Cargar la orden de trabajo individual con todos los datos (igual que en Buscar)
+            Dictionary<string, object> parametros = new Dictionary<string, object>();
+            parametros["@NroOrdenTrabajo"] = orden;
+
+            if (parametros.Count > 0)
+            {
+                string consulta = "sp_ConsultarOrdenTrabajoIndividual";
+                List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+
+                if (ordenes.Count > 0)
+                {
+                    ViewData["Orden"] = ordenes;
+                }
+            }
+
             ViewBag.NroOrdenTrabajo = orden;
 
             return View();
         }
+
 
 
         //[HttpGet]
@@ -151,26 +164,14 @@ namespace Sistema_OT.Controllers
         //    ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
         //    ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
 
-        //    // Buscar la OT como un diccionario (igual que en alta)
-        //    Dictionary<string, object> parametros = new Dictionary<string, object>
-        //    {
-        //        ["@NroOrdenTrabajo"] = orden
-        //    };
-
-        //    string consulta = "sp_ConsultarOrdenTrabajoIndividual";
-        //    List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
-
-        //    if (ordenes != null && ordenes.Count > 0)
-        //    {
-        //        ViewData["Orden"] = ordenes;
-        //    }
-        //    else
-        //    {
-        //        ViewBag.Error = "No se encontró la orden solicitada.";
-        //    }
+        //    // Pasar solo el número de orden a la vista
+        //    ViewBag.NroOrdenTrabajo = orden;
 
         //    return View();
         //}
+
+
+
 
 
         [HttpGet]
