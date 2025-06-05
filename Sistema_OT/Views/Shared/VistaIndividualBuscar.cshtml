@@ -716,13 +716,26 @@
                                     <button class="btn boton" disabled>Copiar Orden</button>
                                     <button class="btn boton" disabled>Enviar Orden</button>
                                     <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
-                                    <button class="btn boton">Modificar</button>
+                                <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button>
                                    @*  <button class="btn boton" disabled>Grabar</button> *@
                                     @* <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar --> *@
                                 </div>
                             </div>
                         </div>
                     </form>
+
+                <script>
+                    function modificarOrden() {
+                      const nroOrden = document.getElementById('orden').value;
+                      if (nroOrden) {
+                        // Redirige a la acción pasando el nro de orden
+                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
+                      } else {
+                        alert('Por favor ingrese un número de orden válido');
+                      }
+                    }
+                </script>
+
                 </div>
             </div>
         </div>
