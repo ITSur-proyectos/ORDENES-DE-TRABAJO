@@ -98,83 +98,91 @@ namespace Sistema_OT.Controllers
                     {
                         TempData["Mensaje"] = "¡Registro creado con éxito!";
                         // REDIRECCIÓN A OTRA ACCIÓN EN OTRO CONTROLADOR:
-                        return RedirectToAction("EditarOrden", "Buscar", new { orden = nroOrden });
+                        return RedirectToAction("VistaIndividualModificar", new { orden = nroOrden });
+
                     }
                     else
                     {
                         ViewBag.Error = "No se pudo insertar la orden.";
                     }
-
-
                 }
-
                 else
                 {
                     Console.WriteLine("No llenaste los formularios.");
                 }
             }
-
-
             return View();
         }
 
 
 
-
-
-        /**************************EDICION**********************************/
-
-
         [HttpGet]
-        public IActionResult EditarOrden(int orden)
+        public IActionResult VistaIndividualModificar(int orden)
         {
-            // Cargar datos auxiliares
+            // Cargar catálogos para selects y listas auxiliares
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
 
-            // Cargar la OT específica
-            Dictionary<string, object> parametros = new Dictionary<string, object>();
-            parametros["@NroOrdenTrabajo"] = orden;
+            // Cargar las secciones relacionadas con la OT
+            ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
+            ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+            ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
 
-            string consulta = "sp_ConsultarOrdenTrabajoIndividual";
-            var ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
+            // Pasar solo el número de orden a la vista
+            ViewBag.NroOrdenTrabajo = orden;
 
-            if (ordenes.Count > 0)
-            {
-                ViewData["Orden"] = ordenes[0]; // o pasalo como modelo si querés strongly typed
-                return View();
-            }
-
-            TempData["Error"] = "No se encontró la orden.";
-            return RedirectToAction("VistaOrdenes"); // o la que uses como listado general
+            return View();
         }
 
-        //[HttpPost]
-        //public IActionResult EditarOrden(int NroOrdenTrabajo, string Asunto, string Modulo /* + otros campos */)
+
+        //[HttpGet]
+        //public IActionResult VistaIndividualModificar(int orden)
         //{
+        //    // Cargar catálogos para selects y listas auxiliares
+        //    ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+        //    ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+        //    ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+        //    ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+
+        //    // Cargar las secciones relacionadas con la OT
+        //    ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
+        //    ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+        //    ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
+
+        //    // Buscar la OT como un diccionario (igual que en alta)
         //    Dictionary<string, object> parametros = new Dictionary<string, object>
         //    {
-        //        ["@NroOrdenTrabajo"] = NroOrdenTrabajo,
-        //        ["@Asunto"] = Asunto,
-        //        ["@Modulo"] = Modulo
-        //        // + otros campos
+        //        ["@NroOrdenTrabajo"] = orden
         //    };
 
-        //    string sp = "Ordenes_Trabajo_UPDATE";
-        //  //  int resultado = OrdenDeTrabajo.EjecutarUpdate(sp, parametros);
+        //    string consulta = "sp_ConsultarOrdenTrabajoIndividual";
+        //    List<Dictionary<string, object>> ordenes = OrdenDeTrabajo.ObtenerLista(consulta, parametros);
 
-        //    //if (resultado > 0)
-        //    //{
-        //    //    TempData["Mensaje"] = "Orden actualizada correctamente.";
-        //    //    return RedirectToAction("VistaIndividualBuscar", new { orden = NroOrdenTrabajo });
-        //    //}
+        //    if (ordenes != null && ordenes.Count > 0)
+        //    {
+        //        ViewData["Orden"] = ordenes;
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Error = "No se encontró la orden solicitada.";
+        //    }
 
-        //    TempData["Error"] = "Error al actualizar la orden.";
-        //    return RedirectToAction("EditarOrden", new { orden = NroOrdenTrabajo });
+        //    return View();
         //}
 
+
+        [HttpGet]
+        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
+        {
+            ViewBag.ActiveSection = activeSection;
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            return View();
+        }
 
     }
 

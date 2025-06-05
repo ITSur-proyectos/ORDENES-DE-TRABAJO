@@ -1,91 +1,244 @@
 ﻿@{
-    ViewData["Title"] = "Editar Orden";
+    ViewData["Title"] = "VistaIndividual";
+    var activeSection = ViewBag.ActiveSection;
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
-    var orden = ViewData["Orden"] as Dictionary<string, object>;
+    var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
+    var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
+    var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
+    var nroOrden = ViewBag.NroOrdenTrabajo;
+
+    // Obtener valores ID actuales convertidos a int para buscar en diccionarios
+    int clienteId = 0;
+    int sistemaId = 0;
+    int solicitanteId = 0;
+    int responsableId = 0;
+
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["Cliente"]?.ToString(), out clienteId);
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString(), out sistemaId);
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["UserIDSolicitante"]?.ToString(), out solicitanteId);
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString(), out responsableId);
+
+    // Preparar listas para dropdowns con selección
+    var clientesSelectList = nombresClientes?.Select(c => new SelectListItem
+    {
+        Value = c.Key.ToString(),
+        Text = c.Value,
+        Selected = c.Key == clienteId
+    }).ToList();
+
+    var sistemasSelectList = nombresSistemas?.Select(s => new SelectListItem
+    {
+        Value = s.Key.ToString(),
+        Text = s.Value,
+        Selected = s.Key == sistemaId
+    }).ToList();
+
+    var usuariosSelectList = nombresUsuarios?.Select(u => new SelectListItem
+    {
+        Value = u.Key.ToString(),
+        Text = u.Value,
+        Selected = u.Key == solicitanteId || u.Key == responsableId // Seleccionás según campo correspondiente más adelante
+    }).ToList();
+
+    // Obtener valores para otros campos directos (string, fechas, etc)
+    string asunto = ordentrabajo?.FirstOrDefault()?["Asunto"]?.ToString() ?? "";
+    string modulo = ordentrabajo?.FirstOrDefault()?["Modulo"]?.ToString() ?? "";
+    int cantidadHorasEstimadas = 0;
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["CantidadHorasEstimadas"]?.ToString(), out cantidadHorasEstimadas);
+    DateTime fechaSolicitud = DateTime.MinValue;
+    DateTime.TryParse(ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]?.ToString(), out fechaSolicitud);
+    DateTime fechaFinalizacion = DateTime.MinValue;
+    DateTime.TryParse(ordentrabajo?.FirstOrDefault()?["FechaFinalizacion"]?.ToString(), out fechaFinalizacion);
+    int estado = 0;
+    int.TryParse(ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString(), out estado);
 }
-
-<form method="post" action="@Url.Action("GuardarCambios", "Buscar")">
-    <div class="container mt-3">
-        <h3>Modificar Orden de Trabajo</h3>
-
-        <!-- Inicio del formulario-->
-        @if (TempData["Mensaje"] != null)
-        {
-            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            @TempData["Mensaje"]
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
+<div class="container-fluid mt-3" style="max-width: 2600px; margin: 0 auto;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Modificar Orden de Trabajo</h5>
                 </div>
-            </div>
-        }
+                <form method="post" action="@Url.Action("VistaIndividualModificar", "ABM")">
+                    <div class="card-body">
+                        <div style="font-size: 12px" class="row row-cols-3 g-3">
+                            <!-- Nro Orden -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="orden">Orden</label>
+                                    <input type="number" class="form-control" id="orden" name="NroOrdenTrabajo" readonly 
+                                           value="@nroOrden" />
+                                </div>
+                            </div>
 
-        <div class="row">
-            <div class="col-md-2">
-                <label for="NroOrdenTrabajo">Nro Orden</label>
-                <input type="number" class="form-control" name="NroOrdenTrabajo" readonly value="@orden?["NroOrdenTrabajo"]" />
-            </div>
+                            <!-- Cliente -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="cliente">Cliente</label>
+                                    <select class="form-control" id="cliente" name="Cliente">
+                                        <option value="">--Seleccione Cliente--</option>
+                                        @foreach (var cliente in clientesSelectList)
+                                        {
+                                            if (cliente.Selected)
+                                            {
+                                                <option value="@cliente.Value" selected="selected">@cliente.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@cliente.Value">@cliente.Text</option>
+                                            }
+                                        }
 
-            <div class="col-md-4">
-                <label for="Cliente">Cliente</label>
-                <select class="form-control" name="Cliente">
-                    @foreach (var c in nombresClientes)
-                    {
-                        <option value="@c.Key" @(orden?["ClienteID"].ToString() == c.Key.ToString() ? "selected" : "")>@c.Value</option>
-                    }
-                </select>
-            </div>
+                                    </select>
+                                </div>
+                            </div>
 
-            <div class="col-md-4">
-                <label for="Sistema">Sistema</label>
-                <select class="form-control" name="Sistema">
-                    @foreach (var s in nombresSistemas)
-                    {
-                        <option value="@s.Key" @(orden?["SistemaID"].ToString() == s.Key.ToString() ? "selected" : "")>@s.Value</option>
-                    }
-                </select>
-            </div>
+                            <!-- Sistema -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sistema">Sistema</label>
+                                    <select class="form-control" id="sistema" name="Sistema">
+                                        <option value="">--Seleccione Sistema--</option>
+                                        @foreach (var sistema in sistemasSelectList)
+                                        {
+                                            if (sistema.Selected)
+                                            {
+                                                <option value="@sistema.Value" selected="selected">@sistema.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@sistema.Value">@sistema.Text</option>
+                                            }
+                                        }
+                                    </select>
 
-            <div class="col-md-4">
-                <label for="Proyecto">Proyecto</label>
-                <select class="form-control" name="Proyecto">
-                    @foreach (var p in nombresProyectos)
-                    {
-                        <option value="@p.Key" @(orden?["ProyectoID"].ToString() == p.Key.ToString() ? "selected" : "")>@p.Value</option>
-                    }
-                </select>
-            </div>
+                                </div>
+                            </div>
 
-            <div class="col-md-6">
-                <label for="Asunto">Asunto</label>
-                <input type="text" class="form-control" name="Asunto" value="@orden?["Asunto"]" />
-            </div>
+                            <!-- Asunto -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="asunto">Asunto</label>
+                                    <input type="text" class="form-control" id="asunto" name="Asunto" value="@asunto" />
+                                </div>
+                            </div>
 
-            <div class="col-md-6">
-                <label for="Modulo">Módulo</label>
-                <input type="text" class="form-control" name="Modulo" value="@orden?["Modulo"]" />
-            </div>
+                            <!-- Módulo -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="modulo">Módulo</label>
+                                    <input type="text" class="form-control" id="modulo" name="Modulo" value="@modulo" />
+                                </div>
+                            </div>
 
-            <div class="col-md-3">
-                <label for="FechaSolicitud">Fecha Solicitud</label>
-                <input type="date" class="form-control" name="FechaSolicitud" value="@Convert.ToDateTime(orden?["FechaSolicitud"]).ToString("yyyy-MM-dd")" />
-            </div>
+                            <!-- Cantidad Horas Estimadas -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="horasEstimadas">Horas Estimadas</label>
+                                    <input type="number" min="0" class="form-control" id="horasEstimadas" name="CantidadHorasEstimadas" value="@cantidadHorasEstimadas" />
+                                </div>
+                            </div>
 
-            <div class="col-md-3">
-                <label for="FechaVencimiento">Fecha Vencimiento</label>
-                <input type="date" class="form-control" name="FechaVencimiento" value="@Convert.ToDateTime(orden?["FechaVencimiento"]).ToString("yyyy-MM-dd")" />
-            </div>
+                            <!-- Fecha Solicitud -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fechaSolicitud">Fecha Solicitud</label>
+                                    <input type="date" class="form-control" id="fechaSolicitud" name="FechaSolicitud" value="@(fechaSolicitud == DateTime.MinValue ? "" : fechaSolicitud.ToString("yyyy-MM-dd"))" />
+                                </div>
+                            </div>
 
-            <div class="col-md-12 mt-3">
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                <a href="@Url.Action("VistaOrdenes", "Buscar")" class="btn btn-secondary">Cancelar</a>
+                            <!-- Fecha Finalización -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fechaFinalizacion">Fecha Finalización</label>
+                                    <input type="date" class="form-control" id="fechaFinalizacion" name="FechaFinalizacion" value="@(fechaFinalizacion == DateTime.MinValue ? "" : fechaFinalizacion.ToString("yyyy-MM-dd"))" />
+                                </div>
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="estado">Estado</label>
+                                    <select class="form-control" id="estado" name="Estado">
+                                        <  @if (estado == 1)
+                                        {
+                                            <option value="1" selected="selected">Pendiente</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">Pendiente</option>
+                                        }
+
+                                        @if (estado == 2)
+                                        {
+                                            <option value="2" selected="selected">En Progreso</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="2">En Progreso</option>
+                                        }
+
+                                        @if (estado == 3)
+                                        {
+                                            <option value="3" selected="selected">Finalizado</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="3">Finalizado</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Usuario Solicitante -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="solicitante">Solicitante</label>
+                                    <select class="form-control" id="solicitante" name="UserIDSolicitante">
+                                        <option value="">--Seleccione Solicitante--</option>
+                                        @foreach (var usuario in nombresUsuarios)
+                                        {
+                                            if (usuario.Key == solicitanteId)
+                                            {
+                                                <option value="@usuario.Key" selected="selected">@usuario.Value</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Usuario Responsable -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="responsable">Responsable</label>
+                                    <select class="form-control" id="responsable" name="UserIDResponsable">
+                                        <option value="">--Seleccione Responsable--</option>
+                                        @foreach (var usuario in nombresUsuarios)
+                                        {
+                                            if (usuario.Key == responsableId)
+                                            {
+                                                <option value="@usuario.Key" selected="selected">@usuario.Value</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@usuario.Key">@usuario.Value</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</form>
