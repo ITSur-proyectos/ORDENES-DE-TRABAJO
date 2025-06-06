@@ -121,6 +121,48 @@ namespace Sistema_OT.Models
             return nombres;
         }
 
+
+        //MODIFICAR: ORDEN
+        public static void Actualizar(OrdenDeTrabajo orden)
+        {
+            ConexionDB conexion = new ConexionDB();
+            conexion.AbrirConexion();
+
+            using (SqlCommand cmd = new SqlCommand("sp_Actualizar_OrdenDeTrabajoConDescripciones", conexion.con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Parámetros obligatorios
+                cmd.Parameters.AddWithValue("@NroOrdenTrabajo", orden.NroOrdenTrabajo);
+               // cmd.Parameters.AddWithValue("@ClienteNombre", orden.Cliente);  // obligatorio
+               // cmd.Parameters.AddWithValue("@SistemaNombre", orden.Sistema);  // obligatorio
+
+                // Parámetros opcionales, pasalos o DBNull.Value si son null
+               // cmd.Parameters.AddWithValue("@DependeDe", (object)orden.DependeDe ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@FechaSolicitud", (object)orden.FechaSolicitud ?? DBNull.Value);
+               // cmd.Parameters.AddWithValue("@FechaVencimiento", (object)orden.FechaVencimiento ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@EstadoDescripcion", (object)orden.Estado ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@ProyectoNombre", (object)orden.Proyecto ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@ResponsableNombre", (object)orden.Responsable ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@SolicitanteNombre", (object)orden.Solicitante ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@SolicitadoPorNombre", (object)orden.SolicitadoPor ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@Modulo", (object)orden.Modulo ?? DBNull.Value);
+               cmd.Parameters.AddWithValue("@Asunto", (object)orden.Asunto ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@PorcentajeAvance", (object)orden.PorcentajeAvance ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@CantidadHorasConsumidas", (object)orden.CantidadHorasConsumidas ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@NroOtImplementacion", (object)orden.NroOtImplementacion ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@PremioPorAvance", (object)orden.PremioPorAvance ?? DBNull.Value);
+              //  cmd.Parameters.AddWithValue("@AlcanceIndefinido", (object)orden.AlcanceIndefinido ?? DBNull.Value);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+
+
+
+
         public string DescripcionPlano
         {
             get

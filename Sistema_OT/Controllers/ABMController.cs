@@ -148,18 +148,27 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
-
-
-        [HttpGet]
-        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
+        // Accion para actualizar orden 
+        [HttpPost]
+        public ActionResult ActualizarOrden(OrdenDeTrabajo orden)
         {
-            ViewBag.ActiveSection = activeSection;
-            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-            return View();
+            
+            try
+            {
+                OrdenDeTrabajo.Actualizar(orden);
+                TempData["MensajeExito"] = "La orden se actualizó correctamente.";
+            }
+            catch (Exception ex)
+            {
+                TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
+            }
+
+            // Redirige a VistaIndividualModificar recargando todos los datos
+            return RedirectToAction("VistaIndividualModificar", new { orden = orden.NroOrdenTrabajo });
         }
+
+
+   
 
         [HttpPost]
         public ActionResult GrabarOrden(OrdenConAvancesViewModel model)
@@ -179,6 +188,20 @@ namespace Sistema_OT.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
+        {
+            ViewBag.ActiveSection = activeSection;
+            ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+            ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+            ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+            ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            return View();
+        }
+
+
 
 
 
