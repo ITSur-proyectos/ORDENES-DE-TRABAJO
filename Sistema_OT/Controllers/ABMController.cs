@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data.SqlClient;
 using static Sistema_OT.Models.AvancesTrabajoModel;
 using Sistema_OT.ViewModels;
+using RtfPipe.Tokens;
+using System.Diagnostics;
 
 namespace Sistema_OT.Controllers
 {
@@ -33,7 +35,7 @@ namespace Sistema_OT.Controllers
 
 
         [HttpPost]
-        public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido , string descripcion)
+        public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido, string descripcion)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
@@ -155,12 +157,77 @@ namespace Sistema_OT.Controllers
         }
 
         // Accion para actualizar orden 
+        //[HttpPost]
+        //public ActionResult ActualizarOrden(OrdenDeTrabajo orden)
+        //{
+
+        //    try
+        //    {
+        //        OrdenDeTrabajo.Actualizar(orden);
+        //        TempData["MensajeExito"] = "La orden se actualizó correctamente.";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
+        //    }
+
+        //    // Redirige a VistaIndividualModificar recargando todos los datos
+        //    return RedirectToAction("VistaIndividualModificar", new { orden = orden.NroOrdenTrabajo });
+        //}
+
         [HttpPost]
-        public ActionResult ActualizarOrden(OrdenDeTrabajo orden)
+        public ActionResult ActualizarOrden(
+    int NroOrdenTrabajo,
+    string depende = null,
+    DateTime? FechaSolicitud = null,
+    DateTime? FechaVencimiento = null,
+    string EstadoDescripcion = null,
+    string ClienteNombre = null,
+    string SistemaNombre = null,
+    string ProyectoNombre = null,
+    string ResponsableNombre = null,
+    string SolicitanteNombre = null,
+    string SolicitadoPorNombre = null,
+    string Modulo = null,
+    string Asunto = null,
+    string Descripcion = null,
+    int? PorcentajeAvance = null,
+    int? CantidadHorasConsumidas = null,
+    int? NroOtImplementacion = null,
+    char PremioPorAvance = 'N',
+    char AlcanceIndefinido = 'N'
+)
         {
-            
             try
             {
+                var orden = new OrdenDeTrabajo
+                {
+                    NroOrdenTrabajo = NroOrdenTrabajo,
+                    //DependeDe = depende,
+                    //FechaSolicitud = FechaSolicitud,
+                    //FechaFinalizacion = FechaVencimiento,
+                    //EstadoDescripcion = EstadoDescripcion,
+                    Cliente = ClienteNombre,
+                    Sistema = SistemaNombre,
+                    Proyecto = ProyectoNombre,
+                    UsuarioResponsable = ResponsableNombre,
+                    UsuarioSolicitante = SolicitanteNombre,
+                    //SolicitadoPorNombre = SolicitadoPorNombre,
+                    Modulo = Modulo,
+                    Asunto = Asunto,
+                    Descripcion = Descripcion,
+                    //PorcentajeAvance = PorcentajeAvance,
+                    //CantidadHorasConsumidas = CantidadHorasConsumidas,
+                    //NroOtImplementacion = NroOtImplementacion,
+                    //PremioPorAvance = PremioPorAvance,
+                    //AlcanceIndefinido = AlcanceIndefinido
+                };
+
+                //Debug.WriteLine($"ClienteNombre recibido: {ClienteNombre}");
+                //Debug.WriteLine($"SistemaNombre recibido: {SistemaNombre}");
+                //Debug.WriteLine($"ProyectoNombre recibido: {ProyectoNombre}");
+
+
                 OrdenDeTrabajo.Actualizar(orden);
                 TempData["MensajeExito"] = "La orden se actualizó correctamente.";
             }
@@ -169,12 +236,97 @@ namespace Sistema_OT.Controllers
                 TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
             }
 
-            // Redirige a VistaIndividualModificar recargando todos los datos
-            return RedirectToAction("VistaIndividualModificar", new { orden = orden.NroOrdenTrabajo });
+            return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
         }
 
 
-   
+
+        //[HttpPost] --- anteultima 
+        //public ActionResult ActualizarOrden(int NroOrdenTrabajo, string depende = null, DateTime? FechaSolicitud = null, DateTime? FechaVencimiento = null, string EstadoDescripcion = null, string ClienteNombre = null, string SistemaNombre = null, string ProyectoNombre = null, string ResponsableNombre = null, string SolicitanteNombre = null, string SolicitadoPorNombre = null, string Modulo = null, string Asunto = null, string Descripcion = null, int? PorcentajeAvance = null, int? CantidadHorasConsumidas = null, int? NroOtImplementacion = null, char PremioPorAvance = 'N', char AlcanceIndefinido = 'N')
+        //{
+        //    ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
+        //    ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
+        //    ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
+        //    ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+
+        //    try
+        //    {
+        //        var orden = new OrdenDeTrabajo();
+        //        orden.NroOrdenTrabajo = NroOrdenTrabajo;
+
+        //        //if (!string.IsNullOrEmpty(depende)) orden.DependeDe = depende;
+        //        //if (FechaSolicitud.HasValue) orden.FechaSolicitud = FechaSolicitud.Value;
+        //        //if (FechaVencimiento.HasValue) orden.FechaFinalizacion = FechaVencimiento.Value;
+
+        //        if (!string.IsNullOrEmpty(ClienteNombre))
+        //        {
+        //            var clientes = (Dictionary<int, string>)ViewData["NombresClientes"];
+        //            var clienteId = clientes.FirstOrDefault(c => c.Value == ClienteNombre).Key;
+        //            if (clienteId != 0) orden.Cliente = clienteId;
+        //        }
+
+        //        if (!string.IsNullOrEmpty(SistemaNombre))
+        //        {
+        //            var sistemas = (Dictionary<int, string>)ViewData["NombresSistemas"];
+        //            var sistemaId = sistemas.FirstOrDefault(s => s.Value == SistemaNombre).Key;
+        //            if (sistemaId != 0) orden.Sistema = sistemaId;
+        //        }
+
+        //        if (!string.IsNullOrEmpty(ProyectoNombre))
+        //        {
+        //            var proyectos = (Dictionary<int, string>)ViewData["NombresProyectos"];
+        //            var proyectoId = proyectos.FirstOrDefault(p => p.Value == ProyectoNombre).Key;
+        //            if (proyectoId != 0) orden.Proyecto = proyectoId;
+        //        }
+
+        //        if (!string.IsNullOrEmpty(ResponsableNombre))
+        //        {
+        //            var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
+        //            var respId = usuarios.FirstOrDefault(u => u.Value == ResponsableNombre).Key;
+        //            if (respId != 0) orden.UserIDResponsable = respId.ToString();
+        //        }
+
+        //        if (!string.IsNullOrEmpty(SolicitanteNombre))
+        //        {
+        //            var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
+        //            var solId = usuarios.FirstOrDefault(u => u.Value == SolicitanteNombre).Key;
+        //            if (solId != 0) orden.UserIDSolicitante = solId.ToString();
+        //        }
+
+        //        //if (!string.IsNullOrEmpty(SolicitadoPorNombre))
+        //        //{
+        //        //    var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
+        //        //    var solPorId = usuarios.FirstOrDefault(u => u.Value == SolicitadoPorNombre).Key;
+        //        //    if (solPorId != 0) orden.UsuarioSolicitadoPor = solPorId;
+        //        //}
+
+        //        if (!string.IsNullOrEmpty(Modulo)) orden.Modulo = Modulo;
+        //        if (!string.IsNullOrEmpty(Asunto)) orden.Asunto = Asunto;
+        //        if (!string.IsNullOrEmpty(Descripcion)) orden.Descripcion = Descripcion;
+        //        //if (PorcentajeAvance.HasValue) orden.PorcentajeAvance = PorcentajeAvance.Value;
+        //        //if (CantidadHorasConsumidas.HasValue) orden.CantidadHorasConsumidas = CantidadHorasConsumidas.Value;
+        //        //if (NroOtImplementacion.HasValue) orden.NroOtImplementacion = NroOtImplementacion.Value;
+
+        //        //orden.PremioPorAvance = PremioPorAvance;
+        //        //orden.AlcanceIndefinido = AlcanceIndefinido;
+
+        //        OrdenDeTrabajo.Actualizar(orden);
+
+        //        TempData["MensajeExito"] = "La orden se actualizó correctamente.";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
+        //    }
+
+        //    return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
+        //    //return RedirectToAction("VistaIndividualBuscar", "Buscar", new { orden = NroOrdenTrabajo });
+
+        //}
+
+
+
+
 
         [HttpPost]
         public ActionResult GrabarOrden(OrdenConAvancesViewModel model)
