@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Sistema_OT.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data.SqlClient;
+using static Sistema_OT.Models.AvancesTrabajoModel;
+using Sistema_OT.ViewModels;
 
 namespace Sistema_OT.Controllers
 {
@@ -23,8 +26,6 @@ namespace Sistema_OT.Controllers
             //var nombresUsuarios = OrdenDeTrabajo.ConseguirNombres("Usuario");
             //ViewBag.NombresUsuarios = nombresUsuarios;
             //ViewBag.UsuarioLogueado = usuarioLogueado;
-
-
 
             return View();
         }
@@ -122,7 +123,6 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-
             // Cargar las secciones relacionadas con la OT
             ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
             ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
@@ -150,30 +150,6 @@ namespace Sistema_OT.Controllers
 
 
 
-        //[HttpGet]
-        //public IActionResult VistaIndividualModificar(int orden)
-        //{
-        //    // Cargar catálogos para selects y listas auxiliares
-        //    ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-        //    ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-        //    ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-        //    ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-
-        //    // Cargar las secciones relacionadas con la OT
-        //    ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
-        //    ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
-        //    ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
-
-        //    // Pasar solo el número de orden a la vista
-        //    ViewBag.NroOrdenTrabajo = orden;
-
-        //    return View();
-        //}
-
-
-
-
-
         [HttpGet]
         public IActionResult VistaIndividualBuscar(string activeSection = "descripcion")
         {
@@ -184,6 +160,30 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
+
+        [HttpPost]
+        public ActionResult GrabarOrden(OrdenConAvancesViewModel model)
+        {
+            // Guardar orden principal
+            //OrdenDeTrabajo.Guardar(model.Orden); // ← corregido: modelo es OrdenDeTrabajo
+
+            foreach (var avance in model.Avances)
+            {
+                avance.NroOrdenTrabajo = (int)model.Orden.NroOrdenTrabajo;
+
+                avance.UserIDAlta ??= User.Identity.Name;
+                avance.Fecha = avance.Fecha == default ? DateTime.Now : avance.Fecha;
+
+                AvancesTrabajoModel.Guardar(avance); // ← método dentro del modelo
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
 
     }
 

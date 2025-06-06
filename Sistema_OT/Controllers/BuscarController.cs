@@ -49,6 +49,20 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+
+            ViewBag.Cliente = Cliente;
+            ViewBag.Sistema = Sistema;
+            ViewBag.Proyecto = Proyecto;
+            ViewBag.EstadoTrabajo = estadoTrabajo;
+            ViewBag.UsuarioSolicitante = usuarioSolicitante;
+            ViewBag.Responsable = Responsable;
+            ViewBag.Asunto = asunto;
+            ViewBag.Modulo = modulo;
+            ViewBag.FechaSolicitudDesde = fechaSolicitudDesde;
+            ViewBag.FechaSolicitudHasta = fechaSolicitudHasta;
+            ViewBag.FechaVencimientoDesde = fechaVencimientoDesde;
+            ViewBag.FechaVencimientoHasta = fechaVencimientoHasta;
+
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
             // Añade el valor a los parámetros de la sp si se ingresó

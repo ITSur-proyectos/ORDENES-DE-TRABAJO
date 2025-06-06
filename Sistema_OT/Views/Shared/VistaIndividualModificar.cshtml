@@ -10,7 +10,10 @@
     var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
     var nroOrden = ViewBag.NroOrdenTrabajo;
+
 }
+@model Sistema_OT.ViewModels.OrdenConAvancesViewModel
+
 
 
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
@@ -423,59 +426,100 @@
                                 <div class="card">
                                     <div class="card-header" id="headingAvances" style="padding: 3px;">
                                         <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
-                                                <b>  Avances de Trabajo </b>
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                    data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances"
+                                                    style="color:white;">
+                                                <b>Avances de Trabajo</b>
                                             </button>
                                         </h5>
                                     </div>
                                     <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                         <div class="card-body">
-                                            <div overflow-y: auto;">
-                                                <div class="table-responsive" style="height: 300px; ">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Avance Trabajo</th>
-                                                                <th>Descripción</th>
-                                                                <th>Tipo Avance</th>
-                                                                <th>Fecha</th>
-                                                                <th>Usuario</th>
-                                                                <th>Tiempo Insumido(hs)</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @if (avancesTrabajo != null && avancesTrabajo.Any())
-                                                            {
-                                                                foreach (var avance in avancesTrabajo)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@avance.AvanceTrabajoId</td>
-                                                                        <td>@avance.Descripcion</td>
-                                                                        <td>Desarrollo</td> <!-- Suponiendo que "Tipo Avance" no está en el modelo -->
-                                                                        <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
-                                                                        <td>@avance.UserIDAlta</td>
-                                                                        <td>@avance.HorasInsumidas</td>
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                            else
+                                            <div class="table-responsive" style="height: 300px;">
+                                                <table class="table table-bordered" id="tablaAvances">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Descripción</th>
+                                                            <th>Tipo Avance</th>
+                                                            <th>Fecha</th>
+                                                            <th>Horas (hs)</th>
+                                                            <th>Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (avancesTrabajo != null && avancesTrabajo.Any())
+                                                        {
+                                                            foreach (var avance in avancesTrabajo)
                                                             {
                                                                 <tr>
-                                                                    <td colspan="6">No hay avances registrados para esta orden de trabajo.</td>
+                                                                    <td>@avance.Descripcion</td>
+                                                                    <td>@avance.TipoAvance</td>
+                                                                    <td>@avance.Fecha.ToString("yyyy-MM-dd")</td>
+                                                                    <td>@avance.HorasInsumidas</td>
+                                                                    <td></td>
                                                                 </tr>
                                                             }
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr><td colspan="5">No hay avances registrados.</td></tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <button class="btn boton btn-sm">Agregar</button>
-                                            <button class="btn boton btn-sm">Modificar</button>
-                                            <button class="btn btn-secondary btn-sm">Grabar</button>
-                                            <button class="btn btn-danger btn-sm">Cancelar</button>
+
+                                            <button class="btn btn-primary btn-sm" type="button" onclick="agregarAvance()">Agregar</button>
+                                            <button class="btn btn-success btn-sm" type="button" onclick="grabarAvances()">Grabar</button>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Template oculto -->
+                                <script type="text/template" id="avance-template">
+                                    <tr data-index="{i}">
+                                        <td>
+                                            <input type="text" name="Avances[{i}].Descripcion" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <input type="text" name="Avances[{i}].TipoAvance" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input type="date" name="Avances[{i}].Fecha" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <input type="number" name="Avances[{i}].HorasInsumidas" class="form-control" step="0.01" required />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
+
+                                            <input type="hidden" name="Avances[{i}].UserIDAlta" value="@User.Identity.Name" />
+                                            <input type="hidden" name="Avances[{i}].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                        </td>
+                                    </tr>
+                                </script>
+
+
+                                <script>
+                                    let avanceIndex = 0;
+
+                                    function agregarAvance() {
+                                        const template = document.getElementById('avance-template').innerHTML;
+                                        const nuevo = template.replaceAll('{i}', avanceIndex);
+                                        document.querySelector('#tablaAvances tbody').insertAdjacentHTML('beforeend', nuevo);
+                                        avanceIndex++;
+                                    }
+
+                                    function eliminarAvance(btn) {
+                                        const fila = btn.closest('tr');
+                                        fila.remove();
+                                    }
+
+                                    function grabarAvances() {
+                                        // Validaciones si querés...
+                                        alert('Avances listos para enviar al backend. Se capturan al hacer submit del form principal.');
+                                    }
+                                </script>
+
 
                                 <!-- Sección de Puesta en Producción -->
                                 <div class="card">
@@ -536,8 +580,8 @@
                                         </h5>
                                     </div>
                                     <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                            <div class="table-responsive" style="height: 450px; ">
+                                        <div class="card-body" style="max-height: 280px; overflow-y: auto;">
+                                            <div class="table-responsive">
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
