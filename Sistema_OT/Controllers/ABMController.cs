@@ -33,7 +33,7 @@ namespace Sistema_OT.Controllers
 
 
         [HttpPost]
-        public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido)
+        public ActionResult VistaIndividualBuscar(string accion, int Cliente, int Sistema, float cantidadHorasEstimada, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitud, DateTime? fechaVencimiento, char premioAvance, char alcanceIndefinido , string descripcion)
         {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
@@ -85,6 +85,12 @@ namespace Sistema_OT.Controllers
                 {
                     parametros["@FechaVencimiento"] = fechaVencimiento.Value;
                 }
+                // Agregar descripción sin limpieza, solo si tiene texto
+                if (!string.IsNullOrWhiteSpace(descripcion))
+                {
+                    parametros["@Descripcion"] = descripcion;
+                }
+
                 if (parametros.Count > 0)
                 {
                     parametros["@PremioPorAvance"] = premioAvance;

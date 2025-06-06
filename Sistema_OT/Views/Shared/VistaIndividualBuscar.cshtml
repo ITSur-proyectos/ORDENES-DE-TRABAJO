@@ -486,9 +486,9 @@
                                                 </h5>
                                             </div>
                                             <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                                <div class="card-body">
+                                        <div class="card-body" style="height: 250px; ">
                                                 <div overflow-y: auto;">
-                                                    <div class="table-responsive" style="height: 450px; ">
+                                                <div class="table-responsive" style="height: 180px; ">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
@@ -526,10 +526,10 @@
                                                         </table>
                                                     </div>
                                                     </div>
-                                                    <button class="btn boton btn-sm">Agregar</button>
+                                                  @*   <button class="btn boton btn-sm">Agregar</button>
                                                     <button class="btn boton btn-sm">Modificar</button>
                                                     <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                    <button class="btn btn-danger btn-sm">Cancelar</button> *@
                                                 </div>
                                             </div>
                                         </div>
@@ -550,10 +550,9 @@
                                                     <option value="formulario">Formulario</option>
                                                     <option value="baseDatos">Base de Datos</option>
                                                 </select>
-                                                <textarea class="form-control" id="modificacionDetalle" style="height: 450px; " rows="3" placeholder="..."></textarea>
+                                                <textarea class="form-control" id="modificacionDetalle" style="height: 200px; " rows="3" placeholder="..."></textarea>
 
-                                                       
-                                                    </textarea>
+                                                      
                                                <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
                                                 <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" /> 
                                               
@@ -594,7 +593,7 @@
                                         </div>
                                         <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive" style="height: 450px; ">
+                                                <div class="table-responsive" style="height: 200px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -628,17 +627,7 @@
                                                     </table>
                                                 </div>
 
-                                                <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                    <div>
-                                                        <label for="files">Selecciona archivos:</label>
-                                                        <input type="file" id="files" name="files" multiple />
-                                                    </div>
-                                                    <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
-                                                </form>
-
-                                                <button class="btn boton btn-sm">Copiar</button>
-                                                <button class="btn btn-danger btn-sm">Quitar</button>
-                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -654,7 +643,7 @@
                                         </div>
                                         <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive" style="height: 450px; ">
+                                                <div class="table-responsive" style="height: 200px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -693,8 +682,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <button class="btn boton btn-sm">Agregar Estado</button>
-                                                <button class="btn boton btn-sm">Modificar Estado</button>
+                                                
                                                 <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
                                             </div>
                                         </div>

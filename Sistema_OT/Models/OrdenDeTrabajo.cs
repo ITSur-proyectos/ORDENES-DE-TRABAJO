@@ -187,6 +187,97 @@ namespace Sistema_OT.Models
             }
         }
 
+        //public static string LimpiarRTF(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return string.Empty;
+
+        //    try
+        //    {
+        //        string texto = rtf;
+
+        //        // 1. Decodifica caracteres hexadecimales RTF (\'xx)
+        //        texto = Regex.Replace(texto, @"\\'([0-9a-fA-F]{2})", match =>
+        //        {
+        //            var hex = match.Groups[1].Value;
+        //            byte b = Convert.ToByte(hex, 16);
+        //            return Encoding.GetEncoding(1252).GetString(new byte[] { b });
+        //        });
+
+        //        // 1b. Decodifica unicode RTF \u1234?
+        //        texto = Regex.Replace(texto, @"\\u(-?\d+)\?", match =>
+        //        {
+        //            int code = int.Parse(match.Groups[1].Value);
+        //            return char.ConvertFromUtf32(code);
+        //        });
+
+        //        // 2. Reemplaza \par por salto de línea
+        //        texto = texto.Replace(@"\par", "\n");
+
+        //        // 3. Elimina comandos RTF comunes
+        //        texto = Regex.Replace(texto, @"\\[a-zA-Z]+\d* ?", "");
+
+        //        // 4. Elimina llaves y barras sobrantes
+        //        texto = texto.Replace("{", "").Replace("}", "").Replace("\\", "");
+
+        //        // 5. Limpieza línea a línea con filtros para ambas descripciones
+        //        var lineasFiltradas = texto
+        //            .Split('\n')
+        //            .Select(l => l.Trim())
+        //            .Where(l =>
+        //            {
+        //                if (string.IsNullOrWhiteSpace(l))
+        //                    return false;
+
+        //                // Filtrar líneas basura primera descripción (Arial, Symbol, TX_RTF32, fecha ddd-dd-dddd)
+        //                if (Regex.IsMatch(l, @"^(Arial;?|Symbol;?|TX_RTF32\s*\d+(\.\d+)*|d\d{2}-\d{2}-\d{4}:?)$", RegexOptions.IgnoreCase))
+        //                    return false;
+
+        //                // Filtrar líneas basura segunda descripción (Times New Roman, Courier, Calibri, Verdana, Normal, etc.)
+        //                if (Regex.IsMatch(l, @"^(Times New Roman;?|Courier New;?|Calibri;?|Courier;?|Tahoma;?|Verdana;?|Normal;?|heading \d;?|\*Default Paragraph Font;?|\[Normal\];?|Plain Text;?|H\d;?|Body Text;?|Body Text \d;?|Body Text Indent \d;?|header;?|Blockquote;?|Normal \(Web\);?|Address;?|E-mail Signature;?|HTML Address;?|msolistparagraph;?|List Paragraph;?|HTML Preformatted;?|Preformatted;?|Párrafo de lista;?|normal\d?;?|a4;?|J_Titulo \d;?|annotation text;?|x_msonormal;?|x_x_xmsolistparagraph;?|p-mail;?|x_xxxxxmsonormal;?|x_xmsolistparagraph;?|x_xmsonormal;?|x_msolistparagraph;?|contentpasted\d+;?|elementtoproof;?|\*Hyperlink;?|\*Strong;?|\*Emphasis;?|\*HTML Markup;?|\*spelle;?|\*Typewriter;?|\*Título \d Car;?|\*apple-style-span;?|\*apple-tab-span;?|\*CODE;?|\*fontblack;?|\*fontmediumbold\d+;?|\*yui\d+;?|\*HTML Typewriter;?|\*hoenzb;?|Default;?|s\d+;?|\*contentpasted\d+;?|\*x_bx-messenger-message;?|\*x_contentpasted\d+;?|\*x_bx-messenger-content-like-button;?|\*x_bx-messenger-content-item-date;?|\*ui-provider;?|\*Smart Link;?)$", RegexOptions.IgnoreCase))
+        //                    return false;
+
+        //                // Líneas solo con punto y coma
+        //                if (Regex.IsMatch(l, @"^;+$"))
+        //                    return false;
+
+        //                // Líneas muy largas con muchas fuentes o estilos, por ejemplo más de 100 caracteres y más de 10 ';'
+        //                if (l.Length > 100 && l.Count(c => c == ';') > 10)
+        //                    return false;
+
+        //                // Filtrar líneas que sean solo 'd' repetido, o 'd' con espacios o asterisco (ejemplos: "dddddd", "d *", "d*")
+        //                if (Regex.IsMatch(l, @"^d[\s\*]*$", RegexOptions.IgnoreCase))
+        //                    return false;
+
+        //                if (Regex.IsMatch(l, @"^d+$", RegexOptions.IgnoreCase) && l.Length > 10)
+        //                    return false;
+
+        //                // Mantener líneas que son solo "d" + números, ejemplo "d17664"
+        //                if (Regex.IsMatch(l, @"^d\d+$", RegexOptions.IgnoreCase))
+        //                    return true;
+
+        //                // Mantener el resto
+        //                return true;
+        //            });
+
+        //        texto = string.Join("\n", lineasFiltradas);
+
+        //        // 6. Normaliza saltos de línea y espacios excesivos
+        //        texto = Regex.Replace(texto, @"\n{2,}", "\n\n");
+        //        texto = Regex.Replace(texto, @"[ \t]{2,}", " ");
+
+        //        // 7. Trim final
+        //        texto = texto.Trim();
+
+        //        return texto;
+        //    }
+        //    catch
+        //    {
+        //        return rtf;
+        //    }
+        //}
+
+
         public static string LimpiarRTF(string rtf)
         {
             if (string.IsNullOrWhiteSpace(rtf))
@@ -194,47 +285,80 @@ namespace Sistema_OT.Models
 
             try
             {
-                // 1. Decodifica los caracteres hexadecimales RTF: \'f3 => ó
-                string texto = Regex.Replace(rtf, @"\\'([0-9a-fA-F]{2})", match =>
+                string texto = rtf;
+
+                // 1. Decodifica caracteres hexadecimales RTF (\'xx)
+                texto = Regex.Replace(texto, @"\\'([0-9a-fA-F]{2})", match =>
                 {
                     var hex = match.Groups[1].Value;
                     byte b = Convert.ToByte(hex, 16);
                     return Encoding.GetEncoding(1252).GetString(new byte[] { b });
                 });
 
-                // Opción robusta con Replace (solo si sabés que siempre vendrá igual)
-                texto = texto.Replace("Arial;\r\n Symbol;\r\n;;;\r\n [Normal];* Default Paragraph Font;\r\n TX_RTF32 9.0.310.500", "");
-                texto = texto.Replace("Arial;\n Symbol;\n;;;\n [Normal];* Default Paragraph Font;\n TX_RTF32 9.0.310.500", "");
+                // 1b. Decodifica unicode RTF \u1234?
+                texto = Regex.Replace(texto, @"\\u(-?\d+)\?", match =>
+                {
+                    int code = int.Parse(match.Groups[1].Value);
+                    return char.ConvertFromUtf32(code);
+                });
 
-                // 2. Reemplaza \par (fin de párrafo RTF) con salto de línea
+                // 2. Reemplaza \par por salto de línea
                 texto = texto.Replace(@"\par", "\n");
 
-                // 3. Elimina comandos RTF comunes como \fs24, \b0, \f0, etc.
-                texto = Regex.Replace(texto, @"\\[a-z]+\d*", "");
+                // 3. Elimina comandos RTF comunes
+                texto = Regex.Replace(texto, @"\\[a-zA-Z]+\d* ?", "");
 
-                // 4. Elimina llaves {, } y barras \ sobrantes
+                // 4. Elimina llaves y barras sobrantes
                 texto = texto.Replace("{", "").Replace("}", "").Replace("\\", "");
 
-                // 5. Normaliza saltos de línea y espacios
-                texto = Regex.Replace(texto, @"\n{3,}", "\n\n");  // máximo 2 saltos seguidos
-                texto = Regex.Replace(texto, @"[ \t]{2,}", " ");  // espacios excesivos
+                // 5. Limpieza línea a línea con filtros para ambas descripciones
+                var lineasFiltradas = texto
+                    .Split('\n')
+                    .Select(l => l.Trim())
+                    .Where(l =>
+                    {
+                        if (string.IsNullOrWhiteSpace(l))
+                            return false;
 
+                        // Filtrar líneas basura primera descripción (Arial, Symbol, TX_RTF32, fecha ddd-dd-dddd)
+                        if (Regex.IsMatch(l, @"^(Arial;?|Symbol;?|TX_RTF32\s*\d+(\.\d+)*|d\d{2}-\d{2}-\d{4}:?)$", RegexOptions.IgnoreCase))
+                            return false;
 
-                // Opción: quitar encabezado literal si está presente
-                string cabecera = "Arial; Symbol; ;;; [Normal];* Default Paragraph Font; TX_RTF32 9.0.310.500";
-                texto = texto.Replace(cabecera, "").Trim();
+                        // Filtrar líneas basura segunda descripción (fuentes, estilos, etc.)
+                        // Aquí extendemos para filtrar líneas largas con esas palabras clave repetidas
+                        if (Regex.IsMatch(l, @"^(Times New Roman;?|Courier New;?|Calibri;?|Courier;?|Tahoma;?|Verdana;?|Normal;?|heading \d;?|\*Default Paragraph Font;?|\[Normal\];?|Plain Text;?|H\d;?|Body Text;?|Body Text \d;?|Body Text Indent \d;?|header;?|Blockquote;?|Normal \(Web\);?|Address;?|E-mail Signature;?|HTML Address;?|msolistparagraph;?|List Paragraph;?|HTML Preformatted;?|Preformatted;?|Párrafo de lista;?|normal\d?;?|a4;?|J_Titulo \d;?|annotation text;?|x_msonormal;?|x_x_xmsolistparagraph;?|p-mail;?|x_xxxxxmsonormal;?|x_xmsolistparagraph;?|x_xmsonormal;?|x_msolistparagraph;?|contentpasted\d+;?|elementtoproof;?|\*Hyperlink;?|\*Strong;?|\*Emphasis;?|\*HTML Markup;?|\*spelle;?|\*Typewriter;?|\*Título \d Car;?|\*apple-style-span;?|\*apple-tab-span;?|\*CODE;?|\*fontblack;?|\*fontmediumbold\d+;?|\*yui\d+;?|\*HTML Typewriter;?|\*hoenzb;?|Default;?|s\d+;?|\*contentpasted\d+;?|\*x_bx-messenger-message;?|\*x_contentpasted\d+;?|\*x_bx-messenger-content-like-button;?|\*x_bx-messenger-content-item-date;?|\*ui-provider;?|\*Smart Link;?)+$", RegexOptions.IgnoreCase))
+                            return false;
 
-                // Eliminar la "d" al principio si está presente
-                texto = Regex.Replace(texto, @"^d\s*", "");  // Quita "d" y los espacios después de ella
+                        // Líneas solo con punto y coma
+                        if (Regex.IsMatch(l, @"^;+$"))
+                            return false;
 
+                        // Líneas muy largas con muchas fuentes o estilos, por ejemplo más de 100 caracteres y más de 10 ';'
+                        if (l.Length > 100 && l.Count(c => c == ';') > 10)
+                            return false;
 
-                // Si querés limpiar el encabezado con Regex para mayor flexibilidad, reemplázalo por esto:
-                texto = Regex.Replace(
-                    texto,
-                    @"Arial;\s*Symbol;\s*;;;\s*\[Normal\];\* Default Paragraph Font;\s*TX_RTF32 9\.0\.310\.500",
-                    "",
-                    RegexOptions.IgnoreCase);
+                        // Filtrar líneas que sean solo 'd' repetido, o 'd' con espacios o asterisco (ejemplos: "dddddd", "d *", "d*")
+                        if (Regex.IsMatch(l, @"^d[\s\*]*$", RegexOptions.IgnoreCase))
+                            return false;
 
+                        if (Regex.IsMatch(l, @"^d+$", RegexOptions.IgnoreCase) && l.Length > 10)
+                            return false;
+
+                        // Mantener líneas que son solo "d" + números, ejemplo "d17664"
+                        if (Regex.IsMatch(l, @"^d\d+$", RegexOptions.IgnoreCase))
+                            return true;
+
+                        // Mantener el resto
+                        return true;
+                    });
+
+                texto = string.Join("\n", lineasFiltradas);
+
+                // 6. Normaliza saltos de línea y espacios excesivos
+                texto = Regex.Replace(texto, @"\n{2,}", "\n\n");
+                texto = Regex.Replace(texto, @"[ \t]{2,}", " ");
+
+                // 7. Trim final
                 texto = texto.Trim();
 
                 return texto;
@@ -244,6 +368,12 @@ namespace Sistema_OT.Models
                 return rtf;
             }
         }
+
+
+
+
+
+
 
 
         public static int EjecutarInsert(string consulta, Dictionary<string, object> parametrosSP, out int nroOrdenGenerado)

@@ -674,51 +674,109 @@
                                             </button>
                                         </h5>
                                     </div>
-                                    <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
-                                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                            <div class="table-responsive" style="height: 450px; ">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Secuencia</th>
-                                                            <th>Estado del Trabajo</th>
-                                                            <th>Fecha</th>
-                                                            <th>Hora</th>
-                                                            <th>Usuario</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @if (historial != null && historial.Any())
-                                                        {
-                                                            int secuencia = 1;
-                                                            foreach (var estado in historial)
+                                        <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
+                                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                                <div class="table-responsive" style="height: 200px;">
+                                                    <table class="table table-bordered" id="tablaHistorial">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Secuencia</th>
+                                                                <th>Estado del Trabajo</th>
+                                                                <th>Fecha</th>
+                                                                <th>Hora</th>
+                                                                <th>Usuario</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="cuerpoHistorial">
+                                                            @if (historial != null && historial.Any())
+                                                            {
+                                                                int secuencia = 1;
+                                                                foreach (var estado in historial)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@secuencia</td>
+                                                                        <td>@estado.Descripcion</td>
+                                                                        <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@estado.FechaAlta.ToString("HH:mm")</td>
+                                                                        <td>@estado.UserID</td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    secuencia++;
+                                                                }
+                                                            }
+                                                            else
                                                             {
                                                                 <tr>
-                                                                    <td>@secuencia</td>
-                                                                    <td>@estado.Descripcion</td>
-                                                                    <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                    <td>@estado.FechaAlta.ToString("HH:mm")</td>
-                                                                    <td>@estado.UserID</td>
+                                                                    <td colspan="6">No hay historial para esta orden.</td>
                                                                 </tr>
-                                                                secuencia++;
                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            <tr>
-                                                                <td colspan="5">No hay historial para esta orden.</td>
-                                                            </tr>
-                                                        }
-
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="estadosNuevos"></div>
+                                                <button type="button" class="btn btn-sm btn-primary" onclick="agregarEstado()">Agregar Estado</button>
+                                                <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <button class="btn boton btn-sm">Agregar Estado</button>
-                                            <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
-                                        </div>
-                                    </div>
+
+                                        <!-------------------------HISTORIAL ESTADOS----------------------------->
+                                     
+                                            <script>
+                                                let secuencia = @((historial != null && historial.Any()) ? historial.Count + 1 : 1);
+
+                                                const estados = [
+                                                    "PENDIENTE", "ENTREGADO", "EN DESARROLLO", "TERMINADO", "EN PRODUCCION",
+                                                    "FACTURADA", "BONIFICADA", "PRESUPUESTO ENVIADO AL CLIENTE", "PRUEBA REALIZADA OK",
+                                                    "PARA REVISAR PROBLEMAS EN LAS PRUEBAS", "PRESUPUESTO APROBADO",
+                                                    "PRESUPUESTO ASIGNADO", "PRESUPUESTO NO APROBADO", "FACTURADA (INCLUIDA ABONO)",
+                                                    "EN PROCESO DE PRESUPUESTO", "PRESUPUESTO FACTURADO", "INCLUIDA EN VERSION", "ANULADA"
+                                                ];
+
+                                                const usuarios = [
+                                                    "JALMADA", "JGARZA", "ATRONCOSO", "JURIBE", "RHERRERA", "MVERA", "AVICENTE",
+                                                    "FFONTANINI", "SANGELOFF", "JSANDOVAL", "SSORIA", "FBEQUIR", "FFIORE", "ERUIZ",
+                                                    "DDELCOLLAD", "CNAVARRO"
+                                                ];
+
+                                                function agregarEstado() {
+                                                    const tbody = document.getElementById("cuerpoHistorial");
+                                                    const tr = document.createElement("tr");
+
+                                                    const hoy = new Date().toISOString().split("T")[0];
+                                                    const hora = new Date().toTimeString().substring(0, 5);
+
+                                                    tr.innerHTML = `
+                                                        <td>${secuencia}</td>
+                                                        <td>
+                                                            <select name="EstadosNuevos[${secuencia - 1}].Descripcion" class="form-control form-control-sm">
+                                                                ${estados.map(e => `<option value="${e}">${e}</option>`).join('')}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="date" name="EstadosNuevos[${secuencia - 1}].Fecha" class="form-control form-control-sm" value="${hoy}" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="time" name="EstadosNuevos[${secuencia - 1}].Hora" class="form-control form-control-sm" value="${hora}" />
+                                                        </td>
+                                                        <td>
+                                                            <select name="EstadosNuevos[${secuencia - 1}].UserID" class="form-control form-control-sm">
+                                                                ${usuarios.map(u => `<option value="${u}">${u}</option>`).join('')}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('tr').remove();">X</button>
+                                                        </td>
+                                                    `;
+                                                    tbody.appendChild(tr);
+                                                    secuencia++;
+                                                }
+                                            </script>
+                                        
+
+                                        <!-------------------------HISTORIAL ESTADOS----------------------------->
                                 </div>
 
                             </div>
