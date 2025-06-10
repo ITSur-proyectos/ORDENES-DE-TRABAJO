@@ -36,7 +36,6 @@
                     </ul>
                 </div>
 
-
                 <div class="container">
                     <form method="post" action="@Url.Action("Vistas", "Buscar")">
                         <div class="row">
@@ -82,12 +81,6 @@
                                             </select>
                                         </div>
                                     </div>
-
-
-
-
-
-
 
 
 
@@ -268,11 +261,11 @@
                     </form>
 
                     <div class="container mt-3">
-                        <div class="table-responsive" style="max-height: 330px; overflow-y: auto; border: 1px solid #dee2e6; ">
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto; border: 1px solid #dee2e6; ">
                             <table class="table table-bordered table-striped mb-0">
                                 <thead class="table-primary" style="border-collapse: collapse; position: sticky; top: 0; z-index: 1;">
                                     <tr class="text-nowrap text-center">
-                                        <th scope="col"></th>
+                                        <th scope="col">Modificar</th>
                                         @*  <th scope="col">N°</th> *@
                                         <th scope="col">OT N°</th>
                                         <th scope="col">Depende De</th>
@@ -307,24 +300,21 @@
                                         foreach (var orden in OrdenesBuscadas)
 
                                         {
-                                    <tr style="font-size: 14px;">
-                                         <td>
-                                                <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
-                                                    <input type="hidden" name="orden" value="@orden["NroOrdenTrabajo"]" />
-                                                    <button type="submit" style="background: none; border: none; padding: 0;">
+                                      <tr style="font-size: 14px;">
+                                                <td>
+                                                    <a href="@Url.Action("VistaIndividualModificar", "ABM", new { orden = orden["NroOrdenTrabajo"] })" title="Editar">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                              class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75
-                                                                     2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0
-                                                                      .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0
-                                                                         1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0
-                                                                         1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0
-                                                                         0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                                                 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0
+                                                                  .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                                                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0
+                                                                 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0
+                                                                 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0
+                                                                 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                                                         </svg>
-                                                    </button>
-                                                </form>
-                                         </td>
+                                                    </a>
+                                                </td>
                                         <td>@orden["NroOrdenTrabajo"]</td>
                                         
                                         <td>@orden["DependeDe"]</td>
@@ -347,14 +337,22 @@
                                         <td>@orden["AlcanceIndefinido"]</td>
                                         <td>@orden["FechaVencimiento"]</td>
                                         <td>@orden["Clientes_Usuarios"]</td>
-                                    </tr>
+                                      </tr>
                                             num++;
 
                                         }
 
                                     }
-
-                                </tbody>
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="22" class="text-danger ">
+                                                No existe una OT con esos criterios de búsqueda.
+                                            </td>
+                                        </tr>
+                                    }
+                                 
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -388,12 +386,35 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:14px;">
                                     <div class="grupo-botones d-flex" style="font-size:14px; padding-left:740px;">
-                                        <button class="btn boton me-2" style="width: 130px; font-size: 15px;">Buscar</button>
-                                        <button class="btn boton" style="width: 130px; font-size: 15px;">Limpiar</button>
+                                        <button id="btnBuscar" type="submit" class="btn boton me-2" style="width: 130px; font-size: 15px;">
+                                                <span id="spinnerBuscar" class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                                                    Buscar
+                                        </button>
+                                       <button type="button" id="btnLimpiar" class="btn boton" style="width: 130px; font-size: 15px;">
+                                                         Limpiar
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
 
+                            <script>
+                                     document.getElementById("btnBuscar").addEventListener("click", function () {
+                                     const spinner = document.getElementById("spinnerBuscar");
+                                      spinner.classList.remove("d-none");
+                                        });
+
+                                   document.getElementById("btnLimpiar").addEventListener("click", function () {
+                                    const form = document.querySelector("form");
+                                    if (form) {
+                                        form.reset(); // Limpia todos los campos del formulario
+                                    }
+
+                                    // Si usás selects con valores dinámicos, podés limpiar así también:
+                                    const selects = form.querySelectorAll("select");
+                                    selects.forEach(select => select.selectedIndex = 0);
+                                });
+</script>
 
                         </div>
                     </div>

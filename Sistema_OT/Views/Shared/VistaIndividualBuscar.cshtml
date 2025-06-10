@@ -7,12 +7,13 @@
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
-    var historial = ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
 }
 
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+@* <a href="\\saturno\restorebaco\discog\usuarios\eruiz\desarrollo\sist-ot\sistema_ot\views\shared\vistaindividual.cshtml">\\saturno\restorebaco\discog\usuarios\eruiz\desarrollo\sist-ot\sistema_ot\views\shared\vistaindividual.cshtml</a> *@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -24,6 +25,7 @@
 <!-- Incluir tu archivo site.js -->
 <script src="~/js/site.js"></script>
 
+
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container"-fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
     <div class="row">
@@ -31,12 +33,12 @@
             <!-- Tarjeta con el formulario -->
             <div class="card shadow-sm">
                 <div class="btn btn secondary; card-header bg-info text-white">
-                    <h5 class="mb-0">Individual   </h5>
+                    <h5 class="mb-0">Individual  </h5>
                 </div>
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "Buscar")">
                 <div class="card-body">
-                    <!-- Inicio del formulario-->
-                    
+
+
 
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <!-- Primera fila con campos de la orden -->
@@ -48,7 +50,18 @@
                                     <input type="number" class="form-control" style="font-size:12px;" id="orden" placeholder="Ingrese el número" name="orden" value="@ordentrabajo?.FirstOrDefault()?["NroOrdenTrabajo"]" />
                                 </div>
                             </div>
-                           
+
+                            <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
+                            <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="busuqeda">Buscar OT</label>
+                                    <button type="submit" class="btn boton-busqueda btn-sm w-100">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
                                 <div class="form-group">
@@ -72,7 +85,7 @@
                                 </div>
                             </div>
                             <!-- Campo Estado del Trabajo -->
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="estadoTrabajo">Estado del Trabajo</label>
                                     <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo" disabled>
@@ -388,11 +401,7 @@
             </label>
         </div>
 
-        <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
-        <div class="w-100 mb-3">
-            <button type="submit" class="btn boton-busqueda btn-sm w-100">
-                Buscar
-            </button>
+
         </div>
     </div>
 </div>
@@ -413,7 +422,7 @@
                             <div class="card shadow-sm mb-3">
                                 <div class="card-body">
                                     <!-- Acordeón de Secciones -->
-                                    <div id="accordion" class="mt-1">
+                                    <div id="accordion" class="mt-1" >
 
                                         <!-- Sección de Descripción -->
                                         <div class="card">
@@ -425,8 +434,8 @@
                                                  </h5>
                                            </div>
 
-                                            <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
-                                                <div class="card-body">
+                                        <div id="collapseDescripcion" class="collapse show"  aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                            <div class="card-body" >
                                                     <!-- Barra de herramientas de formato de texto -->
                                                     <div id="descripcion" class="tab-pane fade show active">
                                                         <div class="toolbar">
@@ -447,13 +456,14 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                  <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí...">
+                                                <textarea class="form-control descripcion-textarea" rows="3" style="height:180px; " readonly placeholder="Escribe la descripción aquí...">
 
-                                                  
+                                                 
                                                         @if (ordentrabajo != null && ordentrabajo.Any())
                                                         {
                                                             @foreach (var item in ordentrabajo)
                                                             {
+
                                                                 @item["DescripcionPlano"]
                                                             }
                                                         }
@@ -461,7 +471,7 @@
                                                       
 
                                                     </textarea>
-                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                                                    <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -476,9 +486,9 @@
                                                 </h5>
                                             </div>
                                             <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                                <div class="card-body">
-                                                <div style="max-height: 250px; overflow-y: auto;">
-                                                    <div class="table-responsive">
+                                        <div class="card-body" style="height: 250px; ">
+                                                <div overflow-y: auto;">
+                                                <div class="table-responsive" style="height: 180px; ">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
@@ -516,10 +526,10 @@
                                                         </table>
                                                     </div>
                                                     </div>
-                                                    <button class="btn boton btn-sm">Agregar</button>
+                                                  @*   <button class="btn boton btn-sm">Agregar</button>
                                                     <button class="btn boton btn-sm">Modificar</button>
                                                     <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                    <button class="btn btn-danger btn-sm">Cancelar</button> *@
                                                 </div>
                                             </div>
                                         </div>
@@ -540,10 +550,9 @@
                                                     <option value="formulario">Formulario</option>
                                                     <option value="baseDatos">Base de Datos</option>
                                                 </select>
-                                                <textarea class="form-control" id="modificacionDetalle" rows="3" placeholder="..."></textarea>
+                                                <textarea class="form-control" id="modificacionDetalle" style="height: 200px; " rows="3" placeholder="..."></textarea>
 
-                                                       
-                                                    </textarea>
+                                                      
                                                <input type="hidden" id="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
                                                 <input type="hidden" id="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" /> 
                                               
@@ -584,7 +593,7 @@
                                         </div>
                                         <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="height: 200px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -618,17 +627,7 @@
                                                     </table>
                                                 </div>
 
-                                                <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                    <div>
-                                                        <label for="files">Selecciona archivos:</label>
-                                                        <input type="file" id="files" name="files" multiple />
-                                                    </div>
-                                                    <button class="btn boton btn-sm" type="submit">Subir Archivos</button>
-                                                </form>
-
-                                                <button class="btn boton btn-sm">Copiar</button>
-                                                <button class="btn btn-danger btn-sm">Quitar</button>
-                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -644,7 +643,7 @@
                                         </div>
                                         <div id="collapseHistorial" class="collapse" aria-labelledby="headingHistorial" data-parent="#accordion">
                                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="height: 200px; ">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -656,34 +655,34 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @if (ViewData["HistorialEstados"] is List<Sistema_OT.Models.HistorialdeEstadoModel> historial && historial.Any())
-                                                            {
-                                                                int secuencia = 1;
-                                                                foreach (var item in historial)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@secuencia</td>
-                                                                        <td>@item.Descripcion</td>
-                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                        <td>@item.FechaAlta.ToString("HH:mm")</td>
-                                                                        <td>@item.UserID</td>
-                                                                    </tr>
-                                                                    secuencia++;
-                                                                }
-                                                            }
-                                                            else
+                                                        @if (historial != null && historial.Any())
+                                                        {
+                                                            int secuencia = 1;
+                                                            foreach (var estado in historial)
                                                             {
                                                                 <tr>
-                                                                    <td colspan="5">No hay historial para esta orden.</td>
+                                                                    <td>@secuencia</td>
+                                                                    <td>@estado.Descripcion</td>
+                                                                    <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@estado.FechaAlta.ToString("HH:mm")</td>
+                                                                    <td>@estado.UserID</td>
                                                                 </tr>
-                                                            }
+                                                                  secuencia++;
+                                                             }
+                                                         }
+                                                        else
+                                                        {
+                                                        <tr>
+                                                            <td colspan="5">No hay historial para esta orden.</td>
+                                                        </tr>
+                                                         }
+
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <button class="btn boton btn-sm">Agregar Estado</button>
-                                                <button class="btn boton btn-sm">Modificar Estado</button>
+                                                
                                                 <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
                                             </div>
                                         </div>
@@ -706,13 +705,26 @@
                                     <button class="btn boton" disabled>Copiar Orden</button>
                                     <button class="btn boton" disabled>Enviar Orden</button>
                                     <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
-                                    <button class="btn boton">Modificar</button>
+                                <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button>
                                    @*  <button class="btn boton" disabled>Grabar</button> *@
                                     @* <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar --> *@
                                 </div>
                             </div>
                         </div>
                     </form>
+
+                <script>
+                    function modificarOrden() {
+                      const nroOrden = document.getElementById('orden').value;
+                      if (nroOrden) {
+                        // Redirige a la acción pasando el nro de orden
+                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
+                      } else {
+                        alert('Por favor ingrese un número de orden válido');
+                      }
+                    }
+                </script>
+
                 </div>
             </div>
         </div>

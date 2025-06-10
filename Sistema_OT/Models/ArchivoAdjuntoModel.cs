@@ -12,6 +12,8 @@ namespace Sistema_OT.Models
         public DateTime FechaAlta { get; set; }
         public string UserID { get; set; }
 
+
+
         public static List<ArchivoAdjuntoModel> ConseguirAdjuntos(int nroOrden)
         {
             List<ArchivoAdjuntoModel> adjuntos = new List<ArchivoAdjuntoModel>();

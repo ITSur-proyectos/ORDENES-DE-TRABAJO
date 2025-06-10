@@ -7,7 +7,7 @@ using System.Text;
 
 public class AccountController : Controller
 {
-    private readonly string _connectionString = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";// Asegúrate de tener la cadena de conexión correcta
+    private readonly string _connectionString = "Data Source=;Initial Catalog=;User ID=sa;Password=";// Asegúrate de tener la cadena de conexión correcta
 
     // Acción GET para mostrar el formulario de login
     [HttpGet]
@@ -44,6 +44,7 @@ public class AccountController : Controller
             }
             else
             {
+                // modal
                 ViewBag.ErrorMessage = "Usuario o contraseña incorrectos";
                 return View(); // Retorna a la vista de login con el mensaje de error
             }

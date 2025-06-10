@@ -15,6 +15,9 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/site.js"></script>
+
 <script>
     // Establecer la fecha de hoy en formato yyyy-mm-dd
     window.onload = function () {
@@ -38,6 +41,10 @@
                 <div class="btn btn secondary; card-header bg-info text-white">
                     <h5 class="mb-0">Individual | NUEVA ORDEN DE TRABAJO </h5>
                 </div>
+                @* <input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' /> *@
+
+
+
                 <form method="post" action="@Url.Action("VistaIndividualBuscar", "ABM")">
                 <div class="card-body">
                     <!-- Inicio del formulario-->
@@ -350,8 +357,8 @@
                                                     </button>
                                                 </h5>
                                             </div>
-                                            <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
-                                                <div class="card-body">
+                                        <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                            <div class="card-body">
                                                     <!-- Barra de herramientas de formato de texto -->
                                                     <div id="descripcion" class="tab-pane fade show active">
                                                         <div class="toolbar">
@@ -372,14 +379,14 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                <textarea class="form-control" rows="3" placeholder="Escribe la descripción aquí..." value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]"></textarea>
-                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                                                <textarea name="descripcion" class="form-control" rows="3" placeholder="Escribe la descripción aquí..." style="height: 180px;" value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]"></textarea>
+                                                    <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Sección de Avances de Trabajo -->
-                                        <div class="card">
+                                    <div class="card d-none">
                                             <div class="card-header" id="headingAvances">
                                                 <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAvances" aria-expanded="false" aria-controls="collapseAvances" style="color:white;">
@@ -390,7 +397,7 @@
                                             <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered">
+                                                    <table class="table table-bordered" id="tablaAvances">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Avance Trabajo</th>
@@ -414,16 +421,16 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <button class="btn boton btn-sm">Agregar</button>
+                                                @*     <button class="btn boton btn-sm">Agregar</button>
                                                     <button class="btn boton btn-sm">Modificar</button>
                                                     <button class="btn btn-secondary btn-sm">Grabar</button>
-                                                    <button class="btn btn-danger btn-sm">Cancelar</button>
+                                                    <button class="btn btn-danger btn-sm">Cancelar</button> *@
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Sección de Puesta en Producción -->
-                                        <div class="card">
+                                    <div class="card d-none">
                                             <div class="card-header" id="headingProduccion">
                                                 <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseProduccion" aria-expanded="false" aria-controls="collapseProduccion" style="color:white;">
@@ -445,7 +452,7 @@
                                         </div>
 
                                         <!-- Sección de Archivo Adjunto -->
-                                        <div class="card">
+                                    <div class="card d-none">
                                             <div class="card-header" id="headingArchivo">
                                                 <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
@@ -492,7 +499,7 @@
                                         </div>
 
                                         <!-- Sección de Historial de Estado -->
-                                        <div class="card">
+                                    <div class="card d-none">
                                             <div class="card-header" id="headingHistorial">
                                                 <h5 class="mb-0">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial" style="color:white;">
@@ -536,6 +543,12 @@
                                 </div>
                             </div>
 
+                        @if (TempData["Mensaje"] != null)
+                        {
+                            <script>
+                                alert("@TempData["Mensaje"]");
+                            </script>
+                        }
                         
                         <!-- Botones de acciones -->
                         <div class="row mt-2">

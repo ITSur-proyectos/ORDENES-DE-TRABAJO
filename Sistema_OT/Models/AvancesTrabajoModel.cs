@@ -9,10 +9,12 @@ namespace Sistema_OT.Models
     public class AvancesTrabajoModel
     {
         public int AvanceTrabajoId { get; set; }
+        public int NroOrdenTrabajo { get; set; }
         public string Descripcion { get; set; }
         public DateTime Fecha { get; set; }
         public decimal HorasInsumidas { get; set; }
         public string UserIDAlta { get; set; }
+        public string TipoAvance { get; set; }
 
 
 
@@ -62,6 +64,30 @@ namespace Sistema_OT.Models
             return listaAvances;
         }
 
+        //INSERT GUARDA LO NUEVO 
+        public static void Guardar(AvancesTrabajoModel avance)
+        {
+            ConexionDB conexion = new ConexionDB();
+            conexion.AbrirConexion();
+
+            string query = @"
+        INSERT INTO Avances_Trabajo
+        (NroOrdenTrabajo, Descripcion, Fecha, HorasInsumidas, UserIDAlta, TipoAvance)
+        VALUES
+        (@NroOrdenTrabajo, @Descripcion, @Fecha, @HorasInsumidas, @UserIDAlta, @TipoAvance)";
+
+            using (SqlCommand cmd = new SqlCommand(query, conexion.con))
+            {
+                cmd.Parameters.AddWithValue("@NroOrdenTrabajo", avance.NroOrdenTrabajo);
+                cmd.Parameters.AddWithValue("@Descripcion", avance.Descripcion ?? "");
+                cmd.Parameters.AddWithValue("@Fecha", avance.Fecha);
+                cmd.Parameters.AddWithValue("@HorasInsumidas", avance.HorasInsumidas);
+                cmd.Parameters.AddWithValue("@UserIDAlta", avance.UserIDAlta ?? "");
+                cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "");
+
+                cmd.ExecuteNonQuery();
+            }
+        }
 
 
 
