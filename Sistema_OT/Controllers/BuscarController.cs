@@ -131,6 +131,11 @@ namespace Sistema_OT.Controllers
             {
                 Console.WriteLine("No llenaste los formularios.");
             }
+            ViewBag.Asunto = asunto;
+            ViewBag.FechaSolicitudDesde = fechaSolicitudDesde?.ToString("yyyy-MM-dd");
+            ViewBag.FechaSolicitudHasta = fechaSolicitudHasta?.ToString("yyyy-MM-dd");
+            ViewBag.FechaVencimientoDesde = fechaVencimientoDesde?.ToString("yyyy-MM-dd");
+            ViewBag.FechaVencimientoHasta = fechaVencimientoHasta?.ToString("yyyy-MM-dd");
 
             return View();
          }
