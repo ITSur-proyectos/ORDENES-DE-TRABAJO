@@ -52,7 +52,21 @@
                                                     foreach (var cliente in nombresClientes)
 
                                                     {
-                                                <option value="@cliente.Key">@cliente.Value</option>
+                                                        @if (nombresClientes != null)
+                                                        {
+                                                           
+                                                                    var seleccionado = ViewBag.Cliente != null && (int)ViewBag.Cliente == cliente.Key;
+                                                                    if (seleccionado)
+                                                                    {
+                                                                        <option value="@cliente.Key" selected>@cliente.Value</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@cliente.Key">@cliente.Value</option>
+                                                                    }
+                                                              
+                                                        }
+
                                                     }
 
                                                 }
@@ -71,10 +85,17 @@
                                                 {
                                                 <option value="-1">...</option>
 
-                                                    foreach (var sistema in nombresSistemas)
-
+                                                    @foreach (var sistema in nombresSistemas)
                                                     {
-                                                <option value="@sistema.Key">@sistema.Value</option>
+                                                        var seleccionado = ViewBag.Sistema != null && (int)ViewBag.Sistema == sistema.Key;
+                                                        if (seleccionado)
+                                                        {
+                                                            <option value="@sistema.Key" selected>@sistema.Value</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@sistema.Key">@sistema.Value</option>
+                                                        }
                                                     }
 
                                                 }
@@ -97,7 +118,15 @@
                                                     foreach (var proyecto in nombresProyectos)
 
                                                     {
-                                                <option value="@proyecto.Key">@proyecto.Value</option>
+                                                        var seleccionado = ViewBag.Proyecto != null && (int)ViewBag.Proyecto == proyecto.Key;
+                                                        if (seleccionado)
+                                                        {
+                                                            <option value="@proyecto.Key" selected>@proyecto.Value</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proyecto.Key">@proyecto.Value</option>
+                                                        }
                                                     }
 
                                                 }
@@ -105,21 +134,6 @@
                                         </div>
                                     </div>
 
-                                @*     <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
-                                        <div class="form-group">
-                                            <label for="fechaSolicitud" class="d-block mb-1">Fecha</label>
-                                            <label for="fechaSolicitud" class="d-block mt-1">Solicitud</label>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
-                                        <div class="form-group">
-                                            <label for="fechaVencimiento" class="d-block mb-1">Fecha</label>
-                                            <label for="fechaVencimiento" class="d-block mt-1">Vencimiento</label>
-
-                                        </div>
-                                    </div> *@
 
                                     <div class="col-md-2" style="font-size: 13px; padding-top: 10px" ">
                                         <div class="form-group">
@@ -134,7 +148,15 @@
                                                     foreach (var usuario in nombresUsuarios)
 
                                                     {
-                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                            var seleccionado = ViewBag.UsuarioSolicitante != null && ViewBag.UsuarioSolicitante.ToString() == usuario.Value;
+                                                            if (seleccionado)
+                                                            {
+                                                                            <option value="@usuario.Value" selected>@usuario.Value</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                            <option value="@usuario.Value">@usuario.Value</option>
+                                                            }
                                                     }
 
                                                 }
@@ -155,7 +177,15 @@
                                                     foreach (var usuario in nombresUsuarios)
 
                                                     {
-                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                        var seleccionado = ViewBag.Solicitante != null && ViewBag.Solicitante.ToString() == usuario.Value;
+                                                        if (seleccionado)
+                                                        {
+                                                            <option value="@usuario.Value" selected>@usuario.Value</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@usuario.Value">@usuario.Value</option>
+                                                        }
                                                     }
 
                                                 }
@@ -179,13 +209,22 @@
                                                     foreach (var usuario in nombresUsuarios)
 
                                                     {
-                                                <option value="@usuario.Value">@usuario.Value</option>
+                                                        var seleccionado = ViewBag.Responsable != null && ViewBag.Responsable.ToString() == usuario.Value;
+                                                        if (seleccionado)
+                                                        {
+                                                            <option value="@usuario.Value" selected>@usuario.Value</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@usuario.Value">@usuario.Value</option>
+                                                        }
                                                     }
 
                                                 }
                                             </select>
                                         </div>
                                     </div>
+                                   
                                     <div class="col-md-2" style="font-size: 13px; ">
                                         <div class="form-group">
                                             <label for="estado">Estado</label>
@@ -218,14 +257,15 @@
                                   <div class="col-md-2" style="font-size: 13px">
                                         <div class="form-group ">
                                             <label for="moduloPantalla">Módulo / Pantalla</label>
-                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="moduloPantalla" name="modulo" placeholder="Ingrese módulo/pantalla" />
+                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="moduloPantalla" name="modulo" placeholder="Ingrese módulo/pantalla" value="@(ViewBag.Modulo ?? "")" />
+
                                         </div>
                                     </div>
 
                                     <div class="col-md-5" style="font-size: 13px">
                                         <div class="form-group ">
                                             <label for="mod">Mod. a la Base de Datos</label>
-                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="mod" name="mod" placeholder="" />
+                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="mod" name="mod" placeholder="" value="@(ViewBag.Mod ?? "")" />
                                         </div>
                                     </div>
 
@@ -238,32 +278,35 @@
                                     <div class="col-md-3" style="font-size: 13px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="asunto">Asunto</label>
-                                            <input type="text" class="form-control" style="font-size: 12px; height: 38px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
+                                            <input type="text" class="form-control" style="font-size: 12px; height: 38px;"
+                                                   id="asunto" name="asunto" placeholder="Ingrese el asunto" value="@(ViewBag.Asunto ?? "")" />
                                         </div>
                                     </div>
 
 
-                                     @* Fecha solicitud *@
-                                     <div class="col-md-2" style="font-size: 13px">
+                                    <div class="col-md-2" style="font-size: 13px">
                                         <label for="fechaSolicitudDesde"> Fecha solicitud Desde</label>
-                                        <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde">
-                                    </div>
-                                
-                                    <div class="col-sm-2 col-md-2" style="font-size: 13px">
-                                        <label for="fechaSolicitudHasta"> Fecha solicitud Hasta</label>
-                                        <input type="date" class="form-control" id="fechaSolicitudHasta" name="fechaSolicitudHasta">
+                                        <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde"
+                                               value="@(ViewBag.FechaSolicitudDesde ?? "")" />
                                     </div>
 
-                                    @* Fecha vencimiento *@
+                                    <div class="col-sm-2 col-md-2" style="font-size: 13px">
+                                        <label for="fechaSolicitudHasta"> Fecha solicitud Hasta</label>
+                                        <input type="date" class="form-control" id="fechaSolicitudHasta" name="fechaSolicitudHasta"
+                                               value="@(ViewBag.FechaSolicitudHasta ?? "")" />
+                                    </div>
+
                                     <div class="col-md-2" style="font-size: 13px">
                                         <label for="fechaVencimientoDesde"> Fecha vencimiento Desde</label>
-                                        <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
+                                        <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde"
+                                               value="@(ViewBag.FechaVencimientoDesde ?? "")" />
                                     </div>
 
                                     <div class="col-sm-2 col-md-2" style="font-size: 13px">
                                         <label for="fechaVencimientoHasta">Fecha vencimiento Hasta</label>
-                                        <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">                                    
-                                   </div> 
+                                        <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta"
+                                               value="@(ViewBag.FechaVencimientoHasta ?? "")" />
+                                    </div>
 
 
                             </div>
