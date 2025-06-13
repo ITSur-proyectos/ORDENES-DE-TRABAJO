@@ -8,7 +8,7 @@ namespace Sistema_OT.Services
 
         public ConexionDB()
         {
-            con = new SqlConnection("Data Source=;Initial Catalog=;User ID=sa;Password=");
+            con = new SqlConnection("Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5");
         }
 
         public void AbrirConexion()

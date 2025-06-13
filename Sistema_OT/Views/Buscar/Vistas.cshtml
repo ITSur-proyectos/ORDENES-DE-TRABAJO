@@ -84,7 +84,7 @@
 
 
 
-                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px">
+                                    <div class="col-md-3" style="font-size: 13px; padding-top: 10px">
                                         <div class="form-group">
                                             <label for="Proyecto">Proyecto</label>
                                             <select class="form-control" style="font-size:12px; height: 38px;" id="Proyecto" name="Proyecto">
@@ -105,7 +105,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
+                                @*     <div class="col-md-2 text-center" style="font-size: 15px; padding-top: 12px; padding-left: 10px">
                                         <div class="form-group">
                                             <label for="fechaSolicitud" class="d-block mb-1">Fecha</label>
                                             <label for="fechaSolicitud" class="d-block mt-1">Solicitud</label>
@@ -118,6 +118,48 @@
                                             <label for="fechaVencimiento" class="d-block mb-1">Fecha</label>
                                             <label for="fechaVencimiento" class="d-block mt-1">Vencimiento</label>
 
+                                        </div>
+                                    </div> *@
+
+                                    <div class="col-md-2" style="font-size: 13px; padding-top: 10px" ">
+                                        <div class="form-group">
+                                            <label for="usuarioResponsable">Solicitante</label>
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="usuarioSolicitante" name="usuarioSolicitante">
+
+                                                @if (nombresUsuarios != null)
+
+                                                {
+                                                    <option value="">...</option>
+
+                                                    foreach (var usuario in nombresUsuarios)
+
+                                                    {
+                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-2" style="font-size: 13px; height: 38px; padding-top: 10px" ">
+                                        <div class="form-group">
+                                            <label for="solicitadoPor">Solicitado Por</label>
+                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Solicitante" name="Solicitante">
+
+                                                @if (nombresUsuarios != null)
+
+                                                {
+                                                    <option value="">...</option>
+                                                    foreach (var usuario in nombresUsuarios)
+
+                                                    {
+                                                        <option value="@usuario.Value">@usuario.Value</option>
+                                                    }
+
+                                                }
+                                            </select>
                                         </div>
                                     </div>
 
@@ -173,90 +215,60 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-2" style="font-size: 13px">
+                                  <div class="col-md-2" style="font-size: 13px">
                                         <div class="form-group ">
                                             <label for="moduloPantalla">Módulo / Pantalla</label>
                                             <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="moduloPantalla" name="modulo" placeholder="Ingrese módulo/pantalla" />
                                         </div>
                                     </div>
-                                    <div class="col-md-2" style="font-size: 13px">
-                                        <label for="fechaSolicitudDesde">Desde</label>
-                                        <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde">
+
+                                    <div class="col-md-5" style="font-size: 13px">
+                                        <div class="form-group ">
+                                            <label for="mod">Mod. a la Base de Datos</label>
+                                            <input type="text" class="form-control form-control-lg" style="font-size: 12px ;height: 38px;" id="mod" name="mod" placeholder="" />
+                                        </div>
                                     </div>
-                                    <div class="col-md-2" style="font-size: 13px">                                    
-                                    <label for="fechaVencimientoDesde">Desde</label>
-                                    <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
-                                    </div>
+
+                              
                                 </div>
                                 
 
 
                                 <div class="row row-cols-3 g-3">
-                                    <div class="col-md-2" style="font-size: 13px; padding-left: 20px">
+                                    <div class="col-md-3" style="font-size: 13px; padding-left: 20px">
                                         <div class="form-group">
                                             <label for="asunto">Asunto</label>
                                             <input type="text" class="form-control" style="font-size: 12px; height: 38px;" id="asunto" name="asunto" placeholder="Ingrese el asunto" />
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2" style="font-size: 13px">
-                                        <div class="form-group">
-                                            <label for="usuarioResponsable">Solicitante</label>
-                                            <select class="form-control" style="font-size:12px; height: 38px;" id="usuarioSolicitante" name="usuarioSolicitante">
 
-                                                @if (nombresUsuarios != null)
-
-                                                {
-                                                <option value="">...</option>
-
-                                                    foreach (var usuario in nombresUsuarios)
-
-                                                    {
-                                                <option value="@usuario.Value">@usuario.Value</option>
-                                                    }
-
-                                                }
-                                            </select>
-                                        </div>
+                                     @* Fecha solicitud *@
+                                     <div class="col-md-2" style="font-size: 13px">
+                                        <label for="fechaSolicitudDesde"> Fecha solicitud Desde</label>
+                                        <input type="date" class="form-control" id="fechaSolicitudDesde" name="fechaSolicitudDesde">
                                     </div>
-
-
-                                    <div class="col-md-2" style="font-size: 13px; height: 38px;">
-                                        <div class="form-group">
-                                            <label for="solicitadoPor">Solicitado Por</label>
-                                            <select class="form-control" style="font-size:12px; height: 38px;" id="Solicitante" name="Solicitante">
-
-                                                @if (nombresUsuarios != null)
-
-                                                {
-                                                <option value="">...</option>
-                                                    foreach (var usuario in nombresUsuarios)
-
-                                                    {
-                                                <option value="@usuario.Value">@usuario.Value</option>
-                                                    }
-
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-
+                                
                                     <div class="col-sm-2 col-md-2" style="font-size: 13px">
-                                        <label for="fechaSolicitudHasta">Hasta</label>
+                                        <label for="fechaSolicitudHasta"> Fecha solicitud Hasta</label>
                                         <input type="date" class="form-control" id="fechaSolicitudHasta" name="fechaSolicitudHasta">
                                     </div>
 
+                                    @* Fecha vencimiento *@
+                                    <div class="col-md-2" style="font-size: 13px">
+                                        <label for="fechaVencimientoDesde"> Fecha vencimiento Desde</label>
+                                        <input type="date" class="form-control" id="fechaVencimientoDesde" name="fechaVencimientoDesde">
+                                    </div>
+
                                     <div class="col-sm-2 col-md-2" style="font-size: 13px">
-                                        <label for="fechaVencimientoHasta">Hasta</label>
+                                        <label for="fechaVencimientoHasta">Fecha vencimiento Hasta</label>
                                         <input type="date" class="form-control" id="fechaVencimientoHasta" name="fechaVencimientoHasta">                                    
-                                </div>
+                                   </div> 
+
+
                             </div>
                         </div>
                     
-
-
-
-                  
 
                     </form>
 
@@ -365,21 +377,21 @@
                             <div class="" style="width:33%">
                                 <div class="form-group" style="padding-left: 0px">
                                     <label for="cantidadOT">Cantidad OT</label>
-                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="Ingrese cantidad OT" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
+                                    <input type="number" class="form-control" style="font-size: 12px" id="cantidadOT" placeholder="" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["CantidadOrdenesTrabajo"]" />
                                 </div>
                             </div>
 
                             <div class="" style="width:33%">
                                 <div class="form-group">
                                     <label for="totalHorasEstimadas">Total de horas estimadas</label>
-                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="Ingrese horas estimadas" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
+                                    <input type="number" class="form-control " style="font-size: 12px" id="totalHorasEstimadas" placeholder="" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasEstimadas"]" />
                                 </div>
                             </div>
 
                             <div class="" style="width: 33%; ">
                                 <div class="form-group" style="padding-right: 5px">
                                     <label for="totalHorasAvances">Total de horas avances</label>
-                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="Ingrese horas avances" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
+                                    <input type="text" class="form-control" style="font-size: 12px" id="totalHorasAvances" placeholder="" readonly value="@OrdenesBuscadas?.FirstOrDefault()?["TotalHorasAvanzadas"]" />
                                 </div>
                             </div>
 
