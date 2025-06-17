@@ -203,30 +203,9 @@ namespace Sistema_OT.Controllers
                 var orden = new OrdenDeTrabajo
                 {
                     NroOrdenTrabajo = NroOrdenTrabajo,
-                    //DependeDe = depende,
-                    //FechaSolicitud = FechaSolicitud,
-                    //FechaFinalizacion = FechaVencimiento,
-                    //EstadoDescripcion = EstadoDescripcion,
-                    Cliente = ClienteNombre,
-                    Sistema = SistemaNombre,
-                    Proyecto = ProyectoNombre,
-                    UsuarioResponsable = ResponsableNombre,
-                    UsuarioSolicitante = SolicitanteNombre,
-                    //SolicitadoPorNombre = SolicitadoPorNombre,
-                    Modulo = Modulo,
                     Asunto = Asunto,
-                    Descripcion = Descripcion,
-                    //PorcentajeAvance = PorcentajeAvance,
-                    //CantidadHorasConsumidas = CantidadHorasConsumidas,
-                    //NroOtImplementacion = NroOtImplementacion,
-                    //PremioPorAvance = PremioPorAvance,
-                    //AlcanceIndefinido = AlcanceIndefinido
+                    Descripcion = Descripcion
                 };
-
-                //Debug.WriteLine($"ClienteNombre recibido: {ClienteNombre}");
-                //Debug.WriteLine($"SistemaNombre recibido: {SistemaNombre}");
-                //Debug.WriteLine($"ProyectoNombre recibido: {ProyectoNombre}");
-
 
                 OrdenDeTrabajo.Actualizar(orden);
                 TempData["MensajeExito"] = "La orden se actualizó correctamente.";
