@@ -43,8 +43,8 @@ namespace Sistema_OT.Controllers
         }
         [HttpPost]
         
-         public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitudDesde, DateTime? fechaSolicitudHasta, DateTime? fechaVencimientoDesde, DateTime? fechaVencimientoHasta)
-         {
+         public IActionResult Vistas(int Cliente, int Sistema, int estadoTrabajo, string usuarioSolicitante, string Responsable, string asunto, string modulo, int Proyecto, DateTime? fechaSolicitudDesde, DateTime? fechaSolicitudHasta, DateTime? fechaVencimientoDesde, DateTime? fechaVencimientoHasta, string mod)
+        {
             ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
@@ -62,6 +62,7 @@ namespace Sistema_OT.Controllers
             ViewBag.FechaSolicitudHasta = fechaSolicitudHasta;
             ViewBag.FechaVencimientoDesde = fechaVencimientoDesde;
             ViewBag.FechaVencimientoHasta = fechaVencimientoHasta;
+            ViewBag.Mod = mod;
 
             Dictionary<string, object> parametros = new Dictionary<string, object>();
 
@@ -114,6 +115,10 @@ namespace Sistema_OT.Controllers
             if (fechaVencimientoHasta.HasValue)
             {
                 parametros["@FechaVencimientoHasta"] = fechaVencimientoHasta.Value;
+            }
+            if (!string.IsNullOrWhiteSpace(mod))
+            {
+                parametros["@ModificacionesBaseDatos"] = mod;
             }
 
             // Hacer la consulta si se ingresó al menos 1 parámetro
