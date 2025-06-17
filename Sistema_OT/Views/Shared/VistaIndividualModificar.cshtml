@@ -78,7 +78,7 @@
                                         <div class="col-md-1">
                                             <div class="form-group">
                                                 <label for="dependencia" class="text-nowrap">Depende</label>
-                                                <input type="text" class="form-control" style="font-size:12px;" id="dependencia" placeholder="Depende de.." name="DependeDe" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="Depende" placeholder="Depende de.." name="Depende" value="@ordentrabajo?.FirstOrDefault()?["DependeDe"]" />
 
                                             </div>
                                         </div>
@@ -87,21 +87,21 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="fechaSolicitud">Fecha de Solicitud</label>
-                                                <input type="date" class="form-control" style="font-size:12px;" id="fechaSolicitud" name="fechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
+                                    <input type="date" class="form-control" style="font-size:12px;" id="FechaSolicitud" name="FechaSolicitud" value="@ordentrabajo?.FirstOrDefault()?["FechaSolicitud"]" />
                                             </div>
                                         </div>
                                         <!-- Campo Fecha de Vencimiento -->
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="fechaVencimiento">Fecha de Vencimiento</label>
-                                                <input type="date" class="form-control" style="font-size:12px;" id="fechaVencimiento"  name="fechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
+                                    <input readonly type="date" class="form-control" style="font-size:12px;" id="FechaVencimiento" name="FechaVencimiento" value="@ordentrabajo?.FirstOrDefault()?["FechaVencimiento"]" />
                                             </div>
                                         </div>
                                         <!-- Campo Estado del Trabajo -->
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="estadoTrabajo">Estado del Trabajo</label>
-                                                <select class="form-select" style="font-size:12px;" id="estadoTrabajo" name="estadoTrabajo" >
+                                                  <select readonly class="form-select" style="font-size:12px;" id="EstadoDescripcion" name="EstadoDescripcion">
                                                     <option value="0">...</option>
                                                     @if (ordentrabajo != null)
                                                     {
@@ -117,7 +117,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="cliente">Cliente</label>
-                                                <select class="form-select" style="font-size:12px;" id="cliente" name="cliente" >
+                                    <select class="form-select" style="font-size:12px;" id="ClienteNombre" name="ClienteNombre">
 
 
                                                     <option value="-1">...</option>
@@ -147,7 +147,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="sistema">Sistema</label>
-                                                <select class="form-select" style="font-size:12px;" id="sistema" name="sistema" d>
+                                                <select class="form-select" style="font-size:12px;" id="SistemaNombre" name="SistemaNombre" d>
                                                     <!-- Opciones(se hace con la db) -->
 
                                                     <option value="-1">...</option>
@@ -178,7 +178,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="proyecto">Proyecto</label>
-                                                <select class="form-select" style="font-size:12px;" id="Proyecto" name="Proyecto" >
+                                    <select class="form-select" style="font-size:12px;" id="ProyectoNombre" name="ProyectoNombre">
 
                                                     @if (nombresProyectos != null)
 
@@ -222,7 +222,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="usuarioResp">Usuario Responsable</label>
-                                                <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable">
+                                    <select class="form-select" style="font-size:12px;" id="ResponsableNombre" name="ResponsableNombre">
                                                     <option value="">...</option>
 
                                                     @if (nombresUsuarios != null)
@@ -251,7 +251,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="usuarioSoli">Usuario Solicitante</label>
-                                                <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante" >
+                                    <select class="form-select" style="font-size:12px;" id="SolicitanteNombre" name="SolicitanteNombre">
                                                     <!-- Opciones(se hace con la db) -->
 
                                                     <option>...</option>
@@ -280,7 +280,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="moduloPantalla">Módulo/Pantalla</label>
-                                                <input type="text" class="form-control" style="font-size:12px;" id="moduloPantalla"  name="modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
+                                    <input type="text" class="form-control" style="font-size:12px;" id="Modulo" name="Modulo" placeholder="Ingrese Modulo/Pantalla" value="@ordentrabajo?.FirstOrDefault()?["Modulo"]" />
                                             </div>
                                         </div>
                                     </div>
@@ -300,7 +300,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="solicitadoPor">Solicitado Por</label>
-                                                <select class="form-select" style="font-size:12px;" id="Solicitante" >
+                                    <select class="form-select" style="font-size:12px;" id="SolicitadoPorNombre" name="SolicitadoPorNombre">
                                                     <!-- Opciones(se hace con la db) -->
                                                     <option>...</option>
                                                     @if (nombresUsuarios != null)
@@ -352,7 +352,7 @@
                                             <div class="col-md-4 d-flex align-items-center">
                                                 <!-- Primer checkbox -->
                                                 <div class="form-check me-3 ">
-                                                    <input type="checkbox" class="form-check-input" id="premioAvance"
+                                        <input type="checkbox" class="form-check-input" id="PremioPorAvance" name="PremioPorAvance"
                                                            placeholder="0"
                                                            value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]"
                                                            >
@@ -781,7 +781,11 @@
                                             <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                             <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button> *@
                                             <button type="submit" class="btn btn-primary">Grabar (Actualizar Orden)</button>
-                                             <button class="btn boton-cancelar">Cancelar</button> <!-- Estilo diferente para cancelar --> 
+                                            <button type="button" class="btn boton-cancelar"
+                                                    onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';">
+                                                Cancelar
+                                            </button>
+                                            <!-- Estilo diferente para cancelar -->
                                         </div>
                                     </div>
                                 </div>

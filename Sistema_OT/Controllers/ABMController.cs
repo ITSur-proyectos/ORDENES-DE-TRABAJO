@@ -7,6 +7,7 @@ using static Sistema_OT.Models.AvancesTrabajoModel;
 using Sistema_OT.ViewModels;
 using RtfPipe.Tokens;
 using System.Diagnostics;
+using System.Net;
 
 namespace Sistema_OT.Controllers
 {
@@ -177,37 +178,56 @@ namespace Sistema_OT.Controllers
 
         [HttpPost]
         public ActionResult ActualizarOrden(
-    int NroOrdenTrabajo,
-    string depende = null,
-    DateTime? FechaSolicitud = null,
-    DateTime? FechaVencimiento = null,
-    string EstadoDescripcion = null,
-    string ClienteNombre = null,
-    string SistemaNombre = null,
-    string ProyectoNombre = null,
-    string ResponsableNombre = null,
-    string SolicitanteNombre = null,
-    string SolicitadoPorNombre = null,
-    string Modulo = null,
-    string Asunto = null,
-    string Descripcion = null,
-    int? PorcentajeAvance = null,
-    int? CantidadHorasConsumidas = null,
-    int? NroOtImplementacion = null,
-    char PremioPorAvance = 'N',
-    char AlcanceIndefinido = 'N'
-)
+            int NroOrdenTrabajo,
+            string depende = null,
+            DateTime? FechaSolicitud = null,
+            DateTime? FechaVencimiento = null,
+            string EstadoDescripcion = null,
+            string ClienteNombre = null,
+            string SistemaNombre = null,
+            string ProyectoNombre = null,
+            string ResponsableNombre = null,
+            string SolicitanteNombre = null,
+            string SolicitadoPorNombre = null,
+            string Modulo = null,
+            string Asunto = null,
+            string Descripcion = null,
+            int? PorcentajeAvance = null,
+            int? CantidadHorasConsumidas = null,
+            int? NroOtImplementacion = null,
+            char PremioPorAvance = 'N',
+            char AlcanceIndefinido = 'N'
+        )
         {
             try
             {
                 var orden = new OrdenDeTrabajo
                 {
                     NroOrdenTrabajo = NroOrdenTrabajo,
+                    DependeDe = !string.IsNullOrEmpty(depende) ? int.Parse(depende) : 0,
+                    FechaSolicitud = FechaSolicitud ?? DateTime.MinValue,
+                    //FechaFinalizacion = FechaVencimiento ?? DateTime.MinValue,
+                    //Estado = ParseEstado(EstadoDescripcion),
+                    Cliente = ClienteNombre,
+                    Sistema = SistemaNombre,
+                    Proyecto = ProyectoNombre,
+                    UsuarioResponsable = ResponsableNombre,
+                    UsuarioSolicitante = SolicitanteNombre,
+                    UserIDResponsable = ResponsableNombre,
+                    UserIDSolicitante = SolicitanteNombre,
+                    Modulo = Modulo,
                     Asunto = Asunto,
-                    Descripcion = Descripcion
+                    Descripcion = Descripcion,
+                    PorcentajeAvance = PorcentajeAvance ?? 0,
+                    CantidadHorasConsumidas = CantidadHorasConsumidas ?? 0,
+                    // NroOtImplementacion aún no está en el modelo, si se agrega hacerlo aquí también
+                    // Checkbox en forma de char (N/S)
+                    // Convertimos char a bool internamente si hace falta en la capa de persistencia
                 };
 
+
                 OrdenDeTrabajo.Actualizar(orden);
+
                 TempData["MensajeExito"] = "La orden se actualizó correctamente.";
             }
             catch (Exception ex)
@@ -217,6 +237,7 @@ namespace Sistema_OT.Controllers
 
             return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
         }
+
 
 
 

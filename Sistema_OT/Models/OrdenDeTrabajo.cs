@@ -22,11 +22,11 @@ namespace Sistema_OT.Models
         public string Cliente { get; set; } //antes eran int
         public string Sistema { get; set; }
         public string Proyecto { get; set; }
-        public int DependeDe { get; set; }
+        public int? DependeDe { get; set; }
         public string Modulo { get; set; }
         public string Asunto { get; set; }
-        public DateTime FechaSolicitud { get; set; }
-        public DateTime FechaFinalizacion { get; set; }
+        public DateTime? FechaSolicitud { get; set; }
+        public DateTime? FechaFinalizacion { get; set; }
         public int CantidadHorasEstimadas { get; set; }
         public int CantidadHorasConsumidas { get; set; }
         //public int HorasInsumidas { get; set; }
@@ -139,6 +139,33 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@Asunto", !string.IsNullOrEmpty(orden.Asunto) ? (object)orden.Asunto : DBNull.Value);
                 cmd.Parameters.AddWithValue("@Descripcion", !string.IsNullOrEmpty(orden.Descripcion) ? (object)orden.Descripcion : DBNull.Value);
 
+
+                // Campos nuevos con los nombres que espera el SP
+                cmd.Parameters.AddWithValue("@DependeDe", orden.DependeDe.HasValue ? (object)orden.DependeDe.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@FechaSolicitud", orden.FechaSolicitud.HasValue ? (object)orden.FechaSolicitud.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@FechaVencimiento", orden.FechaFinalizacion.HasValue ? (object)orden.FechaFinalizacion.Value : DBNull.Value);
+
+                cmd.Parameters.AddWithValue("@EstadoDescripcion", DBNull.Value); // lo manejás en otra función
+
+                cmd.Parameters.AddWithValue("@ClienteNombre", !string.IsNullOrEmpty(orden.Cliente) ? (object)orden.Cliente : DBNull.Value);
+                cmd.Parameters.AddWithValue("@SistemaNombre", !string.IsNullOrEmpty(orden.Sistema) ? (object)orden.Sistema : DBNull.Value);
+                cmd.Parameters.AddWithValue("@ProyectoNombre", !string.IsNullOrEmpty(orden.Proyecto) ? (object)orden.Proyecto : DBNull.Value);
+
+                cmd.Parameters.AddWithValue("@ResponsableNombre", !string.IsNullOrEmpty(orden.UsuarioResponsable) ? (object)orden.UsuarioResponsable : DBNull.Value);
+                cmd.Parameters.AddWithValue("@SolicitanteNombre", !string.IsNullOrEmpty(orden.UsuarioSolicitante) ? (object)orden.UsuarioSolicitante : DBNull.Value);
+                cmd.Parameters.AddWithValue("@SolicitadoPorNombre", DBNull.Value); // si no usás este campo ahora
+
+                cmd.Parameters.AddWithValue("@Modulo", !string.IsNullOrEmpty(orden.Modulo) ? (object)orden.Modulo : DBNull.Value);
+
+                cmd.Parameters.AddWithValue("@PorcentajeAvance", orden.PorcentajeAvance);
+                cmd.Parameters.AddWithValue("@CantidadHorasConsumidas", orden.CantidadHorasConsumidas);
+                cmd.Parameters.AddWithValue("@NroOtImplementacion", DBNull.Value); // si no lo estás usando ahora
+
+                //cmd.Parameters.AddWithValue("@PremioPorAvance", orden.PremioPorAvance ? 'S' : 'N');
+                //cmd.Parameters.AddWithValue("@AlcanceIndefinido", orden.AlcanceIndefinido ? 'S' : 'N');
+
+
+                //
                 cmd.ExecuteNonQuery();
             }
         }
