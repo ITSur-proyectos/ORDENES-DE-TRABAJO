@@ -18,6 +18,8 @@
 
 
 <input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+<input type="hidden" id="nombresUsuarios" value='@Html.Raw(Json.Serialize(nombresUsuarios))' />
+
 
 
 <div class="container-fluid mt-3" style=" margin: 0 auto;">
@@ -201,29 +203,26 @@
                                         <div class="form-group">
                                             <label for="Responsable">Responsable</label>
                                             <select class="form-control" style="font-size:12px; height: 38px;" id="Responsable" name="Responsable">
-
                                                 @if (nombresUsuarios != null)
-
                                                 {
-                                                <option value="">...</option>
+                                                    <option value="">...</option>
                                                     foreach (var usuario in nombresUsuarios)
-
                                                     {
-                                                        var seleccionado = ViewBag.Responsable != null && ViewBag.Responsable.ToString() == usuario.Value;
+                                                        var seleccionado = ViewBag.Responsable != null && ViewBag.Responsable.ToString() == usuario.Key.ToString();
                                                         if (seleccionado)
                                                         {
-                                                            <option value="@usuario.Value" selected>@usuario.Value</option>
+                                                            <option value="@usuario.Key" selected>@usuario.Value</option>
                                                         }
                                                         else
                                                         {
-                                                            <option value="@usuario.Value">@usuario.Value</option>
+                                                            <option value="@usuario.Key">@usuario.Value</option>
                                                         }
                                                     }
-
                                                 }
                                             </select>
                                         </div>
                                     </div>
+
                                    
                                     <div class="col-md-2" style="font-size: 13px; ">
                                         <div class="form-group">

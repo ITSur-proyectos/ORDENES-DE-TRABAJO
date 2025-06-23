@@ -135,6 +135,8 @@ namespace Sistema_OT.Controllers
             // Cargar las secciones relacionadas con la OT
             ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
             ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+            ViewData["Estados"] = HistorialdeEstadoModel.ConseguirEstados();
+            ViewData["Transiciones"] = HistorialdeEstadoModel.Transiciones();
             ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
 
             // Cargar la orden de trabajo individual con todos los datos (igual que en Buscar)

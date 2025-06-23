@@ -9,8 +9,40 @@
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
     var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
     var nroOrden = ViewBag.NroOrdenTrabajo;
+
+    var estados = ViewData["Estados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var transiciones = ViewData["Transiciones"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var orden = ViewData["Orden"] as List<Dictionary<string, object>>;
+
+
+    int estadoActual = 0;
+
+    if (orden != null)
+    {
+        var estadoStr = orden.FirstOrDefault()?["Estado"]?.ToString()?.Trim();
+        bool esNumero = int.TryParse(estadoStr, out int temp);
+        if (esNumero)
+        {
+            estadoActual = temp;
+        }
+        else
+        {
+            estadoActual = estados.FirstOrDefault(e => e.Descripcion == estadoStr)?.Estado ?? 0;
+        }
+    }
+
+
+    // Obtener la descripción del estado actual para mostrar texto
+    var descripcionEstadoActual = estados.FirstOrDefault(e => e.Estado == estadoActual)?.Descripcion ?? "Desconocido";
+
+    // Obtener los estados siguientes permitidos
+    var estadosSiguientes = estados
+        .Where(e => transiciones.Any(t => t.EstadoOrigen == estadoActual && t.EstadoDestino == e.Estado))
+        .ToList();
+
 
 }
 
@@ -27,6 +59,10 @@
 
 <!-- Incluir tu archivo site.js -->
 <script src="~/js/site.js"></script>
+
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+<input type="hidden" id="nombresClientes" value='@Html.Raw(Json.Serialize(nombresClientes))' />
+
 
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container" -fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
@@ -98,19 +134,87 @@
                                             </div>
                                         </div>
                                         <!-- Campo Estado del Trabajo -->
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="estadoTrabajo">Estado del Trabajo</label>
-                                                  <select readonly class="form-select" style="font-size:12px;" id="EstadoDescripcion" name="EstadoDescripcion">
-                                                    <option value="0">...</option>
-                                                    @if (ordentrabajo != null)
-                                                    {
-                                                        <option selected>@ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString()?.Trim()</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- Estado actual (solo informativo, no editable) -->
+                            @* Campo oculto para obtener el valor del estado actual en JS *@
+                            <input type="hidden" id="estadoActualHidden" value="@estadoActual" />
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Estado Actual: <strong>@descripcionEstadoActual</strong></label>
+                                    <select class="form-select" id="nuevoEstado" name="EstadoDescripcion" style="font-size:12px;">
+                                        <option value="">Seleccione nuevo estado</option>
+                                        @foreach (var estado in estadosSiguientes)
+                                        {
+                                            <option value="@estado.Estado">@estado.Descripcion</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <script>
+                                const estados = {
+                                    1: "PENDIENTE",
+                                    2: "ENTREGADO",
+                                    3: "EN DESARROLLO",
+                                    4: "TERMINADO",
+                                    5: "EN PRODUCCION",
+                                    6: "ANULADA",
+                                    7: "FACTURADA",
+                                    8: "BONIFICADA",
+                                    9: "PRESUPUESTO ENVIADO AL CLIENTE",
+                                    10: "PRUEBA REALIZADA OK",
+                                    11: "PARA REVISAR PROBLEMAS EN LAS PRUEBAS",
+                                    12: "PRESUPUESTO APROBADO",
+                                    13: "PRESUPUESTO ASIGNADO",
+                                    14: "PRESUPUESTO NO APROBADO",
+                                    15: "FACTURADA (INCLUIDA ABONO)",
+                                    16: "EN PROCESO DE PRESUPUESTO",
+                                    17: "PRESUPUESTO FACTURADO",
+                                    18: "INCLUIDA EN VERSION"
+                                };
+
+                                const transiciones = {
+                                    1: [2, 3, 6, 16],
+                                    2: [3],
+                                    3: [4],
+                                    4: [5, 9, 10, 11],
+                                    5: [7, 8, 15],
+                                    9: [12, 14],
+                                    10: [5, 18],
+                                    11: [3],
+                                    12: [13],
+                                    13: [17],
+                                    14: [12],
+                                    16: [4, 6, 9],
+                                    18: [5]
+                                };
+
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nuevoEstadoSelect = document.getElementById("nuevoEstado");
+                                    const estadoActual = parseInt(document.getElementById("estadoActualHidden").value);
+
+                                    function cargarEstadosDisponibles(estadoOrigen) {
+                                        nuevoEstadoSelect.innerHTML = '<option value="">Seleccione</option>';
+
+                                        const posibles = transiciones[estadoOrigen] || [];
+
+                                        posibles.forEach(destino => {
+                                            const option = document.createElement("option");
+                                            option.value = destino;
+                                            option.text = estados[destino];
+                                            nuevoEstadoSelect.appendChild(option);
+                                        });
+                                    }
+
+                                    cargarEstadosDisponibles(estadoActual);
+                                });
+                            </script>
+
+
+                                        @*------------------------------------------- *@
+
+                                    </div> 
+
 
                                     <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
                                     <div style="font-size: 12px" class="row row-cols-3 g-3">
@@ -175,10 +279,85 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nombresSistemasInput = document.getElementById("nombresSistemas");
+                                    const nombresClientesInput = document.getElementById("nombresClientes");
+
+                                    let nombresSistemas = {};
+                                    let nombresClientes = {};
+
+                                    if (nombresSistemasInput?.value) {
+                                        try {
+                                            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresSistemas:", e);
+                                        }
+                                    }
+
+                                    if (nombresClientesInput?.value) {
+                                        try {
+                                            nombresClientes = JSON.parse(nombresClientesInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresClientes:", e);
+                                        }
+                                    }
+
+                                    const clienteSelect = document.getElementById("ClienteNombre");
+                                    const sistemaSelect = document.getElementById("SistemaNombre");
+
+                                    if (!clienteSelect || !sistemaSelect) {
+                                        console.warn("Faltan selects 'ClienteNombre' o 'SistemaNombre'");
+                                        return;
+                                    }
+
+                                    // Mapear nombreCliente -> idCliente para usar en sistemasPorCliente
+                                    const clienteNombreToId = {};
+                                    for (const [id, nombre] of Object.entries(nombresClientes)) {
+                                        clienteNombreToId[nombre] = id;
+                                    }
+
+                                    clienteSelect.addEventListener("change", function () {
+                                        const clienteNombre = this.value;
+                                        sistemaSelect.innerHTML = "";
+
+                                        // Opción por defecto
+                                        const defaultOption = document.createElement("option");
+                                        defaultOption.value = "-1";
+                                        defaultOption.text = "...";
+                                        sistemaSelect.appendChild(defaultOption);
+
+                                        const clienteId = clienteNombreToId[clienteNombre];
+
+                                        // Obtener sistemas para cliente o todos si no hay
+                                        const sistemaIds = clienteId && sistemasPorCliente[clienteId]
+                                            ? sistemasPorCliente[clienteId]
+                                            : Object.keys(nombresSistemas).map(Number);
+
+                                        sistemaIds.forEach(sid => {
+                                            const sidStr = sid.toString();
+                                            if (nombresSistemas[sidStr]) {
+                                                const option = document.createElement("option");
+                                                option.value = nombresSistemas[sidStr]; // valor y texto son el nombre del sistema
+                                                option.text = nombresSistemas[sidStr];
+                                                sistemaSelect.appendChild(option);
+                                            }
+                                        });
+                                    });
+
+                                    // Opcional: disparar el cambio para filtrar si ya hay cliente seleccionado
+                                    if (clienteSelect.value && clienteSelect.value !== "-1") {
+                                        clienteSelect.dispatchEvent(new Event("change"));
+                                    }
+                                });
+                            </script>
+
+
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="proyecto">Proyecto</label>
-                                    <select class="form-select" style="font-size:12px;" id="ProyectoNombre" name="ProyectoNombre">
+                                                   <select class="form-select" style="font-size:12px;" id="ProyectoNombre" name="ProyectoNombre">
 
                                                     @if (nombresProyectos != null)
 
@@ -435,7 +614,7 @@
                                                 </div>
                                             </div>
 
-            @*                                 <!-- Sección de Avances de Trabajo -->
+                                          <!-- Sección de Avances de Trabajo -->
                                             <div class="card">
                                                 <div class="card-header" id="headingAvances" style="padding: 3px;">
                                                     <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
@@ -711,7 +890,7 @@
 
                                                     <!-------------------------HISTORIAL ESTADOS----------------------------->
                                      
-                                                        <script>
+                                                       @*  <script>
                                                             let secuencia = @((historial != null && historial.Any()) ? historial.Count + 1 : 1);
 
                                                             const estados = [
@@ -760,7 +939,7 @@
                                                                 tbody.appendChild(tr);
                                                                 secuencia++;
                                                             }
-                                                        </script>
+                                                        </script> *@
                                         
 
                                                     <!-------------------------HISTORIAL ESTADOS----------------------------->
@@ -769,7 +948,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                 *@
+                              
 
                                 <!-- Botones de acciones -->
                                 <div class="row mt-2">
@@ -780,7 +959,11 @@
                                             <button class="btn boton" disabled>Enviar Orden</button>
                                             <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                             <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button> *@
-                                            <button type="submit" class="btn btn-primary">Grabar (Actualizar Orden)</button>
+                                            <button type="submit" class="btn btn-primary" id="btnGrabar">
+                                                Grabar (Actualizar Orden)
+                                                <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display:none;"></span>
+                                            </button>
+
                                             <button type="button" class="btn boton-cancelar"
                                                     onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';">
                                                 Cancelar
@@ -801,11 +984,15 @@
                         alert('Por favor ingrese un número de orden válido');
                       }
                     }
-
-                    
                  </script>
-                
-                
+                <script>
+                    document.getElementById("btnGrabar").addEventListener("click", function() {
+                      const btn = this;
+                      btn.disabled = true; // deshabilitar botón
+                      document.getElementById("btnSpinner").style.display = "inline-block"; // mostrar spinner
+                    });
+                </script>
+
 
             </div>
         </div>

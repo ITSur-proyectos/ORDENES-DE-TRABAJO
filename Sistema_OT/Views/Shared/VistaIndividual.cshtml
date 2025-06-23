@@ -18,6 +18,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/site.js"></script>
 
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+
+
 <script>
     // Establecer la fecha de hoy en formato yyyy-mm-dd
     window.onload = function () {
@@ -143,6 +146,52 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nombresSistemasInput = document.getElementById("nombresSistemas");
+
+                                    let nombresSistemas = {};
+                                    if (nombresSistemasInput?.value) {
+                                        try {
+                                            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresSistemas:", e);
+                                        }
+                                    }
+
+                                    const clienteSelect = document.getElementById("cliente");  // ID minúscula
+                                    const sistemaSelect = document.getElementById("sistema");
+
+                                    if (!clienteSelect || !sistemaSelect) {
+                                        console.warn("Faltan selects 'cliente' o 'sistema'");
+                                        return;
+                                    }
+
+                                    clienteSelect.addEventListener("change", function () {
+                                        const clienteId = this.value;
+                                        sistemaSelect.innerHTML = "";
+
+                                        const defaultOption = document.createElement("option");
+                                        defaultOption.value = "-1";
+                                        defaultOption.text = "...";
+                                        sistemaSelect.appendChild(defaultOption);
+
+                                        const sistemaIds = sistemasPorCliente[clienteId] || Object.keys(nombresSistemas).map(Number);
+
+                                        sistemaIds.forEach(sid => {
+                                            const sidStr = sid.toString();
+                                            if (nombresSistemas[sidStr]) {
+                                                const option = document.createElement("option");
+                                                option.value = sidStr;
+                                                option.text = nombresSistemas[sidStr];
+                                                sistemaSelect.appendChild(option);
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
