@@ -279,10 +279,13 @@
                                             </div>
                                         </div>
 
+                            <input type="hidden" id="sistemaSeleccionado" value="@ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString()?.Trim()" />
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function () {
                                     const nombresSistemasInput = document.getElementById("nombresSistemas");
                                     const nombresClientesInput = document.getElementById("nombresClientes");
+                                    const sistemaSeleccionado = document.getElementById("sistemaSeleccionado")?.value;
 
                                     let nombresSistemas = {};
                                     let nombresClientes = {};
@@ -311,7 +314,6 @@
                                         return;
                                     }
 
-                                    // Mapear nombreCliente -> idCliente para usar en sistemasPorCliente
                                     const clienteNombreToId = {};
                                     for (const [id, nombre] of Object.entries(nombresClientes)) {
                                         clienteNombreToId[nombre] = id;
@@ -321,7 +323,6 @@
                                         const clienteNombre = this.value;
                                         sistemaSelect.innerHTML = "";
 
-                                        // Opción por defecto
                                         const defaultOption = document.createElement("option");
                                         defaultOption.value = "-1";
                                         defaultOption.text = "...";
@@ -329,7 +330,6 @@
 
                                         const clienteId = clienteNombreToId[clienteNombre];
 
-                                        // Obtener sistemas para cliente o todos si no hay
                                         const sistemaIds = clienteId && sistemasPorCliente[clienteId]
                                             ? sistemasPorCliente[clienteId]
                                             : Object.keys(nombresSistemas).map(Number);
@@ -338,19 +338,23 @@
                                             const sidStr = sid.toString();
                                             if (nombresSistemas[sidStr]) {
                                                 const option = document.createElement("option");
-                                                option.value = nombresSistemas[sidStr]; // valor y texto son el nombre del sistema
+                                                option.value = nombresSistemas[sidStr];
                                                 option.text = nombresSistemas[sidStr];
+                                                if (option.value === sistemaSeleccionado) {
+                                                    option.selected = true;
+                                                }
                                                 sistemaSelect.appendChild(option);
                                             }
                                         });
                                     });
 
-                                    // Opcional: disparar el cambio para filtrar si ya hay cliente seleccionado
+                                    // Disparar cambio si ya hay cliente seleccionado
                                     if (clienteSelect.value && clienteSelect.value !== "-1") {
                                         clienteSelect.dispatchEvent(new Event("change"));
                                     }
                                 });
                             </script>
+
 
 
                                         <div class="col-md-5">
@@ -952,7 +956,12 @@
                                 <!-- Botones de acciones -->
                         <div class="row mt-2">
                             <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
+                                <!-- Agrupación de otros botones -->
                                 <div class="grupo-botones" style="font-size:12px;">
+                                    @* <button class="btn boton" disabled>Copiar Orden</button>
+                                            <button class="btn boton" disabled>Enviar Orden</button>
+                                            <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
+                                            <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button> *@
                                     <button type="submit" class="btn btn-primary" id="btnGrabar">
                                         Grabar (Actualizar Orden)
                                         <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display:none;"></span>
@@ -962,18 +971,22 @@
                                             onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';">
                                         Cancelar
                                     </button>
+                                    <!-- Estilo diferente para cancelar -->
                                 </div>
                             </div>
                         </div>
-
                 </form>
 
                 <script>
-                    document.getElementById("btnGrabar").addEventListener("click", function () {
-                        const btn = this;
-                        btn.disabled = true;
-                        document.getElementById("btnSpinner").style.display = "inline-block";
-                    });
+                    function modificarOrden() {
+                      const nroOrden = document.getElementById('orden').value;
+                      if (nroOrden) {
+                        // Redirige a la acción pasando el nro de orden
+                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
+                      } else {
+                        alert('Por favor ingrese un número de orden válido');
+                      }
+                    }
                 </script>
 
 
