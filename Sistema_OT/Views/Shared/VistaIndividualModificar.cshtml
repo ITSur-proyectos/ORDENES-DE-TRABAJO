@@ -136,7 +136,7 @@
                                         <!-- Campo Estado del Trabajo -->
                             <!-- Estado actual (solo informativo, no editable) -->
                             @* Campo oculto para obtener el valor del estado actual en JS *@
-                            <input type="hidden" id="estadoActualHidden" value="@estadoActual" />
+                            <input type="hidden" id="estadoActualHidden" name="EstadoActual" value="@estadoActual" />
 
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -738,36 +738,76 @@
                                                 <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
                                                     <div class="card-body">
                                                         <select class="form-select mb-3" id="tipoModificacion" name="tipoModificacion">
-                                                            <option value="">Seleccionar tipo de modificación...</option>
-                                                            <option value="formulario">Formulario</option>
+
+                                                    <option value="formulario" selected>Formulario</option>
                                                             <option value="baseDatos">Base de Datos</option>
                                                         </select>
                                                         <textarea class="form-control" id="modificacionDetalle" name="modificacionDetalle" style="height: 200px; " rows="3" placeholder="..."></textarea>
 
-                                                        <input type="hidden" id="formularioData" name="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
-                                                        <input type="hidden" id="baseDatosData" name="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" />
+                                                <input type="hidden" id="FormulariosModificados" name="FormulariosModificados" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
+                                                <input type="hidden" id="ModificacionesBaseDatos" name="ModificacionesBaseDatos" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" />
 
 
                                                         <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
-                                                        <script>
-                                                            document.addEventListener("DOMContentLoaded", function () {
-                                                                const tipoSelect = document.getElementById("tipoModificacion");
-                                                                const detalleTextArea = document.getElementById("modificacionDetalle");
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        const tipoSelect = document.getElementById("tipoModificacion");
+                                                        const detalleTextArea = document.getElementById("modificacionDetalle");
 
-                                                                const formularioTexto = document.getElementById("formularioData").value;
-                                                                const baseDatosTexto = document.getElementById("baseDatosData").value;
+                                                        const formularioInput = document.getElementById("FormulariosModificados");
+                                                        const baseDatosInput = document.getElementById("ModificacionesBaseDatos");
 
-                                                                tipoSelect.addEventListener("change", function () {
-                                                                    if (this.value === "formulario") {
-                                                                        detalleTextArea.value = formularioTexto;
-                                                                    } else if (this.value === "baseDatos") {
-                                                                        detalleTextArea.value = baseDatosTexto;
-                                                                    } else {
-                                                                        detalleTextArea.value = "";
-                                                                    }
-                                                                });
-                                                            });
-                                                        </script>
+                                                        // Inicializar valores actuales desde los input hidden
+                                                        let formularioTexto = formularioInput.value || "";
+                                                        let baseDatosTexto = baseDatosInput.value || "";
+
+                                                        // Forzar selección por defecto en "formulario" y mostrar su contenido
+                                                        tipoSelect.value = "formulario";
+                                                        detalleTextArea.value = formularioTexto;
+
+                                                        tipoSelect.addEventListener("change", function () {
+                                                            const valorActual = detalleTextArea.value;
+
+                                                            if (this.value === "formulario") {
+                                                                baseDatosTexto = valorActual;
+                                                                detalleTextArea.value = formularioTexto;
+                                                            } else if (this.value === "baseDatos") {
+                                                                formularioTexto = valorActual;
+                                                                detalleTextArea.value = baseDatosTexto;
+                                                            } else {
+                                                                detalleTextArea.value = "";
+                                                            }
+                                                        });
+
+                                                        detalleTextArea.addEventListener("input", function () {
+                                                            if (tipoSelect.value === "formulario") {
+                                                                formularioTexto = detalleTextArea.value;
+                                                            } else if (tipoSelect.value === "baseDatos") {
+                                                                baseDatosTexto = detalleTextArea.value;
+                                                            }
+                                                        });
+
+                                                        const form = detalleTextArea.closest("form");
+                                                        form.addEventListener("submit", function () {
+                                                            if (tipoSelect.value === "formulario") {
+                                                                formularioInput.value = detalleTextArea.value;
+                                                            } else if (tipoSelect.value === "baseDatos") {
+                                                                baseDatosInput.value = detalleTextArea.value;
+                                                            }
+
+                                                            if (!formularioInput.value && formularioTexto) {
+                                                                formularioInput.value = formularioTexto;
+                                                            }
+
+                                                            if (!baseDatosInput.value && baseDatosTexto) {
+                                                                baseDatosInput.value = baseDatosTexto;
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+
+
+
 
                                                     </div>
                                                 </div>

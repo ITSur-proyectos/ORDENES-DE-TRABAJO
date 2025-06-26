@@ -145,8 +145,6 @@ namespace Sistema_OT.Controllers
             // Cargar la orden de trabajo individual con todos los datos (igual que en Buscar)
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             
-    
-
 
             parametros["@NroOrdenTrabajo"] = orden;
 
@@ -192,6 +190,7 @@ namespace Sistema_OT.Controllers
             DateTime? FechaSolicitud = null,
             DateTime? FechaVencimiento = null,
             int? EstadoDescripcion = null,
+            int? EstadoActual = null,
             string ClienteNombre = null,
             string SistemaNombre = null,
             string ProyectoNombre = null,
@@ -205,19 +204,33 @@ namespace Sistema_OT.Controllers
             int? CantidadHorasConsumidas = null,
             int? NroOtImplementacion = null,
             char PremioPorAvance = 'N',
-            char AlcanceIndefinido = 'N'
+            char AlcanceIndefinido = 'N',
+            string ModificacionesBaseDatos = null,
+            string FormulariosModificados = null
         )
         {
             try
             {
                 var usuarioLogueado = HttpContext.Session.GetString("UserId");
+
+                int estadoFinal = 0;
+                if (!EstadoDescripcion.HasValue || EstadoDescripcion == 0)
+                {
+                    estadoFinal = EstadoActual ?? 0;  // si EstadoActual también es null, queda 0
+                }
+                else
+                {
+                    estadoFinal = EstadoDescripcion.Value;
+                }
+
+
                 var orden = new OrdenDeTrabajo
                 {
                     NroOrdenTrabajo = NroOrdenTrabajo,
                     DependeDe = !string.IsNullOrEmpty(depende) ? int.Parse(depende) : 0,
                     FechaSolicitud = FechaSolicitud ?? DateTime.MinValue,
                     //FechaFinalizacion = FechaVencimiento ?? DateTime.MinValue,
-                    Estado = EstadoDescripcion ?? 0,
+                    Estado = estadoFinal,
                     Cliente = ClienteNombre,
                     Sistema = SistemaNombre,
                     Proyecto = ProyectoNombre,
@@ -233,7 +246,9 @@ namespace Sistema_OT.Controllers
                     // NroOtImplementacion aún no está en el modelo, si se agrega hacerlo aquí también
                     // Checkbox en forma de char (N/S)
                     // Convertimos char a bool internamente si hace falta en la capa de persistencia
-                    UsuarioQueModifico = usuarioLogueado
+                    UsuarioQueModifico = usuarioLogueado,
+                    ModificacionesBaseDatos = ModificacionesBaseDatos,
+                    FormulariosModificados = FormulariosModificados
                 };
            
 

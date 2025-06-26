@@ -32,6 +32,7 @@ namespace Sistema_OT.Models
         public int CantidadHorasConsumidas { get; set; }
         //public int HorasInsumidas { get; set; }
         public int Estado { get; set; }
+        public int EstadoActual { get; set; }
         public int PorcentajeAvance { get; set; }
         public string UsuarioSolicitante { get; set; }
         public string UsuarioResponsable { get; set; }
@@ -165,6 +166,14 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@PorcentajeAvance", orden.PorcentajeAvance);
                 cmd.Parameters.AddWithValue("@CantidadHorasConsumidas", orden.CantidadHorasConsumidas);
                 cmd.Parameters.AddWithValue("@NroOtImplementacion", DBNull.Value); // si no lo estás usando ahora
+
+                //Puesta en produccion 
+
+                cmd.Parameters.AddWithValue("@FormulariosModificados", !string.IsNullOrEmpty(orden.FormulariosModificados) ? (object)orden.FormulariosModificados : DBNull.Value);
+                cmd.Parameters.AddWithValue("@ModificacionesBaseDatos", !string.IsNullOrEmpty(orden.ModificacionesBaseDatos) ? (object)orden.ModificacionesBaseDatos : DBNull.Value);
+
+
+
 
                 //cmd.Parameters.AddWithValue("@PremioPorAvance", orden.PremioPorAvance ? 'S' : 'N');
                 //cmd.Parameters.AddWithValue("@AlcanceIndefinido", orden.AlcanceIndefinido ? 'S' : 'N');
