@@ -64,30 +64,89 @@ namespace Sistema_OT.Models
             return listaAvances;
         }
 
-        //INSERT GUARDA LO NUEVO 
-        public static void Guardar(AvancesTrabajoModel avance)
+
+        public static void GuardarAvance(AvancesTrabajoModel avance)
         {
-            ConexionDB conexion = new ConexionDB();
-            conexion.AbrirConexion();
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
 
-            string query = @"
-        INSERT INTO Avances_Trabajo
-        (NroOrdenTrabajo, Descripcion, Fecha, HorasInsumidas, UserIDAlta, TipoAvance)
-        VALUES
-        (@NroOrdenTrabajo, @Descripcion, @Fecha, @HorasInsumidas, @UserIDAlta, @TipoAvance)";
+            // Obtener el próximo AvanceTrabajoId para esta OT
+            string getMaxQuery = @"
+        SELECT ISNULL(MAX(AvanceTrabajo), 0) + 1
+        FROM Avances_Trabajo
+        WHERE NroOrdenTrabajo = @NroOrdenTrabajo";
 
-            using (SqlCommand cmd = new SqlCommand(query, conexion.con))
+            int nuevoAvanceId = 1;
+
+            using (SqlCommand getMaxCmd = new SqlCommand(getMaxQuery, conexionDB.con))
+            {
+                getMaxCmd.Parameters.AddWithValue("@NroOrdenTrabajo", avance.NroOrdenTrabajo);
+                nuevoAvanceId = (int)getMaxCmd.ExecuteScalar();
+            }
+
+            string insertQuery = @"
+        INSERT INTO Avances_Trabajo (
+            NroOrdenTrabajo,
+            AvanceTrabajo,
+            Descripcion,
+            Fecha,
+            HorasInsumidas,
+            FechaAlta,
+            UserIDAlta,
+            TipoAvance
+        )
+        VALUES (
+            @NroOrdenTrabajo,
+            @AvanceTrabajo,
+            @Descripcion,
+            @Fecha,
+            @HorasInsumidas,
+            GETDATE(),
+            @UserIDAlta,
+            @TipoAvance
+        )";
+
+            using (SqlCommand cmd = new SqlCommand(insertQuery, conexionDB.con))
             {
                 cmd.Parameters.AddWithValue("@NroOrdenTrabajo", avance.NroOrdenTrabajo);
+                cmd.Parameters.AddWithValue("@AvanceTrabajo", nuevoAvanceId);
                 cmd.Parameters.AddWithValue("@Descripcion", avance.Descripcion ?? "");
                 cmd.Parameters.AddWithValue("@Fecha", avance.Fecha);
                 cmd.Parameters.AddWithValue("@HorasInsumidas", avance.HorasInsumidas);
-                cmd.Parameters.AddWithValue("@UserIDAlta", avance.UserIDAlta ?? "");
-                cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "");
+                cmd.Parameters.AddWithValue("@UserIDAlta", avance.UserIDAlta ?? ""); // ejemplo: 'ERUIZ'
+                cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "9");
 
                 cmd.ExecuteNonQuery();
             }
         }
+
+
+
+
+        //INSERT GUARDA LO NUEVO 
+        //public static void Guardar(AvancesTrabajoModel avance)
+        //{
+        //    ConexionDB conexion = new ConexionDB();
+        //    conexion.AbrirConexion();
+
+        //    string query = @"
+        //INSERT INTO Avances_Trabajo
+        //(NroOrdenTrabajo, Descripcion, Fecha, HorasInsumidas, UserIDAlta, TipoAvance)
+        //VALUES
+        //(@NroOrdenTrabajo, @Descripcion, @Fecha, @HorasInsumidas, @UserIDAlta, @TipoAvance)";
+
+        //    using (SqlCommand cmd = new SqlCommand(query, conexion.con))
+        //    {
+        //        cmd.Parameters.AddWithValue("@NroOrdenTrabajo", avance.NroOrdenTrabajo);
+        //        cmd.Parameters.AddWithValue("@Descripcion", avance.Descripcion ?? "");
+        //        cmd.Parameters.AddWithValue("@Fecha", avance.Fecha);
+        //        cmd.Parameters.AddWithValue("@HorasInsumidas", avance.HorasInsumidas);
+        //        cmd.Parameters.AddWithValue("@UserIDAlta", avance.UserIDAlta ?? "");
+        //        cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "");
+
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
 
 
 
