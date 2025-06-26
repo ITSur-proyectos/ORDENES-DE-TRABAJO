@@ -183,7 +183,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-//////////////////////////// vista individual agregar
+////////////////////////////
+
+
+
+
 
 
 //document.addEventListener("DOMContentLoaded", function () {

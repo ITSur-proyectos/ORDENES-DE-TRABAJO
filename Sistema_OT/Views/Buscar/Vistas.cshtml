@@ -17,9 +17,9 @@
 <script src="~/js/site.js"></script>
 
 
-<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
-<input type="hidden" id="nombresUsuarios" value='@Html.Raw(Json.Serialize(nombresUsuarios))' />
-
+@using System.Text.Json
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(JsonSerializer.Serialize(nombresSistemas))' />
+<input type="hidden" id="nombresProyectos" value='@Html.Raw(JsonSerializer.Serialize(nombresProyectos))' />
 
 
 <div class="container-fluid mt-3" style=" margin: 0 auto;">

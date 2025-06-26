@@ -50,6 +50,8 @@ namespace Sistema_OT.Controllers
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
 
+
+
             ViewBag.Cliente = Cliente;
             ViewBag.Sistema = Sistema;
             ViewBag.Proyecto = Proyecto;
@@ -195,6 +197,7 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             return View();
         }
+
 
         public static string ConvertirRtfATextoPlano(string rtf)
         {

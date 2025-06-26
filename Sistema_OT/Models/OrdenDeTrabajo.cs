@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Sistema_OT.Models
 {
@@ -41,6 +42,8 @@ namespace Sistema_OT.Models
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
+
+        public string UsuarioQueModifico { get; set; }
         public static List<Dictionary<string, object>> ObtenerLista(string consulta, Dictionary<string, object> parametrosSP)
         {
 
@@ -128,12 +131,14 @@ namespace Sistema_OT.Models
         {
             ConexionDB conexion = new ConexionDB();
             conexion.AbrirConexion();
+            //var usuarioLogueado = HttpContext.Session.GetString("UserId");
 
             using (SqlCommand cmd = new SqlCommand("sp_Actualizar_OrdenDeTrabajoConDescripciones", conexion.con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@NroOrdenTrabajo", orden.NroOrdenTrabajo);
+                cmd.Parameters.AddWithValue("@UsuarioQueModifico", orden.UsuarioQueModifico);
 
                 // Validar nulos para evitar errores
                 cmd.Parameters.AddWithValue("@Asunto", !string.IsNullOrEmpty(orden.Asunto) ? (object)orden.Asunto : DBNull.Value);
@@ -145,7 +150,7 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@FechaSolicitud", orden.FechaSolicitud.HasValue ? (object)orden.FechaSolicitud.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@FechaVencimiento", orden.FechaFinalizacion.HasValue ? (object)orden.FechaFinalizacion.Value : DBNull.Value);
 
-                cmd.Parameters.AddWithValue("@EstadoDescripcion", DBNull.Value); // lo manejás en otra función
+                cmd.Parameters.AddWithValue("@EstadoDescripcion", orden.Estado); // lo manejás en otra función
 
                 cmd.Parameters.AddWithValue("@ClienteNombre", !string.IsNullOrEmpty(orden.Cliente) ? (object)orden.Cliente : DBNull.Value);
                 cmd.Parameters.AddWithValue("@SistemaNombre", !string.IsNullOrEmpty(orden.Sistema) ? (object)orden.Sistema : DBNull.Value);

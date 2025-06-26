@@ -140,9 +140,14 @@ namespace Sistema_OT.Controllers
             ViewData["Estados"] = HistorialdeEstadoModel.ConseguirEstados();
             ViewData["Transiciones"] = HistorialdeEstadoModel.Transiciones();
             ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
+            ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("UserId");
 
             // Cargar la orden de trabajo individual con todos los datos (igual que en Buscar)
             Dictionary<string, object> parametros = new Dictionary<string, object>();
+            
+    
+
+
             parametros["@NroOrdenTrabajo"] = orden;
 
             if (parametros.Count > 0)
@@ -186,7 +191,7 @@ namespace Sistema_OT.Controllers
             string depende = null,
             DateTime? FechaSolicitud = null,
             DateTime? FechaVencimiento = null,
-            string EstadoDescripcion = null,
+            int? EstadoDescripcion = null,
             string ClienteNombre = null,
             string SistemaNombre = null,
             string ProyectoNombre = null,
@@ -205,13 +210,14 @@ namespace Sistema_OT.Controllers
         {
             try
             {
+                var usuarioLogueado = HttpContext.Session.GetString("UserId");
                 var orden = new OrdenDeTrabajo
                 {
                     NroOrdenTrabajo = NroOrdenTrabajo,
                     DependeDe = !string.IsNullOrEmpty(depende) ? int.Parse(depende) : 0,
                     FechaSolicitud = FechaSolicitud ?? DateTime.MinValue,
                     //FechaFinalizacion = FechaVencimiento ?? DateTime.MinValue,
-                    //Estado = ParseEstado(EstadoDescripcion),
+                    Estado = EstadoDescripcion ?? 0,
                     Cliente = ClienteNombre,
                     Sistema = SistemaNombre,
                     Proyecto = ProyectoNombre,
@@ -227,8 +233,9 @@ namespace Sistema_OT.Controllers
                     // NroOtImplementacion aún no está en el modelo, si se agrega hacerlo aquí también
                     // Checkbox en forma de char (N/S)
                     // Convertimos char a bool internamente si hace falta en la capa de persistencia
+                    UsuarioQueModifico = usuarioLogueado
                 };
-
+           
 
                 OrdenDeTrabajo.Actualizar(orden);
 
