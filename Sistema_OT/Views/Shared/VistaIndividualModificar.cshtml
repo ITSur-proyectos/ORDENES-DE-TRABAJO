@@ -443,7 +443,7 @@
                                                         foreach (var usuario in nombresUsuarios)
                                                         {
 
-                                                            bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDSolicitante"]?.ToString()?.Trim();
                                                             Console.WriteLine(isSelected);
                                                             if (isSelected)
                                                             {

@@ -6,6 +6,7 @@
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
+    var usuarioLogueado = ViewData["UsuarioLogueado"] as string;
 }
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -245,13 +246,15 @@
                                     <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
                                         <!-- Opciones(se hace con la db) -->
 
-                                        <option>...</option>
-
+                                        <@* option>...</option> *@
                                         @if (nombresUsuarios != null)
                                         {
                                             foreach (var usuario in nombresUsuarios)
                                             {
-                                                <option value="@usuario.Value">@usuario.Value</option>
+                                               <option value="@usuario.Value" @(usuario.Value == usuarioLogueado ? "selected" : "")>
+                                                      @usuario.Value
+                                               </option>
+
                                             }
                                         }
 
