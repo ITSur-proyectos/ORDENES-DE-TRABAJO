@@ -2,24 +2,105 @@
     ViewData["Title"] = "Gestión de Órdenes";
 
     var nombresUsuarios = ViewData["NombresUsuarios"] as Dictionary<int, string>;
-
     var nombresSistemas = ViewData["NombresSistemas"] as Dictionary<int, string>;
-
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
-
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
-
-    var SistemasPorCliente = ViewData["SistemasPorCliente"] as Dictionary<int, string>;
-
+    var sistemasPorCliente = ViewData["SistemasPorCliente"] as Dictionary<int, List<int>>;
+    var usuariosPorSistema = ViewData["UsuariosResponsablesPorSistema"] as Dictionary<int, List<int>>;
     var OrdenesBuscadas = ViewData["Ordenes"] as List<Dictionary<string, object>>;
 }
-<link href="~/css/VistaOrden.css" rel="stylesheet" />
-<script src="~/js/site.js"></script>
-
-
 @using System.Text.Json
-<input type="hidden" id="nombresSistemas" value='@Html.Raw(JsonSerializer.Serialize(nombresSistemas))' />
-<input type="hidden" id="nombresProyectos" value='@Html.Raw(JsonSerializer.Serialize(nombresProyectos))' />
+
+<link href="~/css/VistaOrden.css" rel="stylesheet" />
+
+@* <pre>@Html.Raw(JsonSerializer.Serialize(usuariosPorSistema))</pre>
+
+<!-- Select Cliente -->
+<select id="Cliente" class="form-control">
+    <option value="-1">...</option>
+    @foreach (var cliente in nombresClientes)
+    {
+        <option value="@cliente.Key">@cliente.Value</option>
+    }
+</select>
+
+<!-- Select Sistema -->
+<select id="Sistema" class="form-control">
+    <option value="-1">...</option>
+</select>
+
+<!-- Select Responsable -->
+<select id="Responsable" class="form-control">
+    <option value="-1">...</option>
+</select>
+
+<!-- JSON oculto para JS -->
+<input type="hidden" id="nombresSistemasJson" value='@Html.Raw(JsonSerializer.Serialize(nombresSistemas))' />
+<input type="hidden" id="nombresUsuariosJson" value='@Html.Raw(JsonSerializer.Serialize(nombresUsuarios))' />
+<input type="hidden" id="sistemasPorClienteJson" value='@Html.Raw(JsonSerializer.Serialize(sistemasPorCliente))' />
+<input type="hidden" id="usuariosPorSistemaJson" value='@Html.Raw(JsonSerializer.Serialize(usuariosPorSistema))' />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const clienteSelect = document.getElementById("Cliente");
+        const sistemaSelect = document.getElementById("Sistema");
+        const responsableSelect = document.getElementById("Responsable");
+
+        if (!clienteSelect || !sistemaSelect || !responsableSelect) {
+            console.warn("No se encontraron los select requeridos.");
+            return;
+        }
+
+        const nombresSistemasData = JSON.parse(document.getElementById("nombresSistemasJson").value);
+        const nombresUsuariosData = JSON.parse(document.getElementById("nombresUsuariosJson").value);
+        const sistemasPorClienteData = JSON.parse(document.getElementById("sistemasPorClienteJson").value);
+        const usuariosPorSistemaData = JSON.parse(document.getElementById("usuariosPorSistemaJson").value);
+
+        function actualizarSistemas(clienteId) {
+            sistemaSelect.innerHTML = '<option value="-1">...</option>';
+            const ids = sistemasPorClienteData[clienteId.toString()] || [];
+
+            ids.forEach(id => {
+                if (nombresSistemasData[id]) {
+                    const option = new Option(nombresSistemasData[id], id);
+                    sistemaSelect.appendChild(option);
+                }
+            });
+
+            responsableSelect.innerHTML = '<option value="-1">...</option>';
+        }
+
+        function actualizarResponsable(sistemaId) {
+            responsableSelect.innerHTML = '<option value="-1">...</option>';
+            const userIds = usuariosPorSistemaData[sistemaId.toString()];
+            if (userIds) {
+                userIds.forEach(userId => {
+                    if (nombresUsuariosData[userId]) {
+                        const option = new Option(nombresUsuariosData[userId], userId);
+                        responsableSelect.appendChild(option);
+                    }
+                });
+            }
+        }
+
+        clienteSelect.addEventListener("change", function () {
+            actualizarSistemas(this.value);
+        });
+
+        sistemaSelect.addEventListener("change", function () {
+            actualizarResponsable(this.value);
+        });
+
+        // Ejecutar si ya hay datos seleccionados al cargar
+        if (clienteSelect.value && clienteSelect.value !== "-1") {
+            actualizarSistemas(clienteSelect.value);
+        }
+        if (sistemaSelect.value && sistemaSelect.value !== "-1") {
+            actualizarResponsable(sistemaSelect.value);
+        }
+    });
+</script> *@
+
 
 
 <div class="container-fluid mt-3" style=" margin: 0 auto;">

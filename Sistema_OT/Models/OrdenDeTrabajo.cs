@@ -177,6 +177,85 @@ namespace Sistema_OT.Models
 
 
 
+        //sistema por cliente
+        public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
+        {
+            var resultado = new Dictionary<int, List<int>>();
+
+                    ConexionDB conexion = new ConexionDB();
+                    conexion.AbrirConexion();
+
+                    string query = @"
+                SELECT Cliente, Sistema 
+                FROM Sistemas_Clientes
+                ORDER BY Cliente, Sistema";
+
+            using (SqlCommand command = new SqlCommand(query, conexion.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int cliente = reader.GetInt32(0);
+                            int sistema = reader.GetInt32(1);
+
+                            if (!resultado.ContainsKey(cliente))
+                                resultado[cliente] = new List<int>();
+
+                            resultado[cliente].Add(sistema);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            return resultado;
+        }
+
+
+        //UsuarioResponsable Por Sistema
+        public static Dictionary<int, List<int>> ConseguirUsuarioResponsablePorSistema()
+        {
+            var resultado = new Dictionary<int, List<int>>();
+
+            ConexionDB conexion = new ConexionDB();
+            conexion.AbrirConexion();
+
+                    string query = @"
+                SELECT Sistema, Usuario 
+                FROM Sistemas_Usuarios_Responsables";
+
+            using (SqlCommand command = new SqlCommand(query, conexion.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int sistema = reader.GetInt32(0);
+                            int usuario = reader.GetInt32(1);
+
+                            if (!resultado.ContainsKey(sistema))
+                                resultado[sistema] = new List<int>();
+
+                            resultado[sistema].Add(usuario);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            return resultado;
+        }
 
 
 

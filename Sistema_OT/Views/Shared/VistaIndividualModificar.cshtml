@@ -142,7 +142,7 @@
                                 <div class="form-group">
                                     <label>Estado Actual: <strong>@descripcionEstadoActual</strong> Cambiar a:</label>
                                     <select class="form-select" id="nuevoEstado" name="EstadoDescripcion" style="font-size:12px;">
-                                        <option value="">Seleccione nuevo estado</option>
+                                       @*  <option value="">Seleccione nuevo estado</option> *@
                                         @foreach (var estado in estadosSiguientes)
                                         {
                                             <option value="@estado.Estado">@estado.Descripcion</option>

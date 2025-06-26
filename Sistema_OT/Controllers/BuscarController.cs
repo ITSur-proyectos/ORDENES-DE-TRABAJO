@@ -39,6 +39,10 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            // Mapeo cliente -> sistemas y sistema -> usuario responsable
+            ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente(); // Dictionary<int, List<int>>
+            ViewData["UsuariosResponsablesPorSistema"] = OrdenDeTrabajo.ConseguirUsuarioResponsablePorSistema(); // Dictionary<int, int>
+
             return View();
         }
         [HttpPost]
@@ -49,7 +53,6 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-
 
 
             ViewBag.Cliente = Cliente;
@@ -195,6 +198,11 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            // Mapeo cliente -> sistemas
+            ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente(); // Dictionary<int, List<int>>
+            // Mapeo sistema -> usuario responsable
+            ViewData["UsuariosResponsablesPorSistema"] = OrdenDeTrabajo.ConseguirUsuarioResponsablePorSistema(); // Dictionary<int, int>
+
             return View();
         }
 
