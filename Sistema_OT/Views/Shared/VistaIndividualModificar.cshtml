@@ -591,7 +591,7 @@
                                                     <div class="card-body">
                                                         <!-- Barra de herramientas de formato de texto -->
                                                         <div id="descripcion" class="tab-pane fade show active">
-                                                            <div class="toolbar">
+                                                            @* <div class="toolbar">
                                                                 <button class="toolbar-btn" disabled><i class="fas fa-undo"></i></button>
                                                                 <button class="toolbar-btn" disabled><i class="fas fa-redo"></i></button>
                                                                 <select class="toolbar-select"  disabled>
@@ -606,12 +606,12 @@
                                                                 <button class="toolbar-btn" disabled><i class="fas fa-align-center"></i></button>
                                                                 <button class="toolbar-btn" disabled><i class="fas fa-align-right"></i></button>
                                                                 <button class="toolbar-btn" disabled><i class="fas fa-list-ul"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ol"></i></button>
-                                                            </div>
-                                                        </div>
-                                            <textarea class="form-control descripcion-textarea" rows="5" style="height:170px;"
-                                                      id="Descripcion" name="Descripcion"
-                                                      placeholder="Escribe la descripción aquí...">@ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]</textarea>
+                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ol"></i></button> 
+                                                            </div>*@
+                                                         </div>
+                                                     <textarea class="form-control descripcion-textarea" rows="5" style="height:190px;"
+                                                        id="Descripcion" name="Descripcion"
+                                                        placeholder="Escribe la descripción aquí...">@ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]</textarea>
                                                         <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
                                                     </div>
                                                 </div>

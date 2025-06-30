@@ -502,29 +502,20 @@
                                                 </button>
                                             </h5>
                                         </div>
-
                                         <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
                                             <div class="card-body">
-                                                <!-- Toolbar Quill -->
-                                                <div id="toolbar">
-                                                    <button class="ql-bold"></button>
-                                                    <button class="ql-italic"></button>
-                                                    <button class="ql-underline"></button>
-                                                    <button class="ql-list" value="ordered"></button>
-                                                    <button class="ql-list" value="bullet"></button>
+
+                                                <!-- Campo de texto simple sin contenido -->
+                                                <div class="form-group">
+                                                    <label for="descripcion">Descripción</label>
+                                                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6"></textarea>
+                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
 
-                                                <!-- Editor Quill -->
-                                                <div id="editor" style="height: 180px;">
-                                                    @Html.Raw(ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]?.ToString() ?? "")
-                                                </div>
-
-                                                <!-- Input oculto para enviar el HTML al backend -->
-                                                <input type="hidden" name="descripcion" id="descripcion" />
-
-                                                <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
                                             </div>
                                         </div>
+
+
                                     </div>
 
 
