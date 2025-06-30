@@ -91,7 +91,7 @@
                 }
 
 
-                <form asp-action="ActualizarOrden" asp-controller="ABM" method="post">
+                <form asp-action="ActualizarOrden" asp-controller="ABM" method="post" enctype="multipart/form-data">
 
 
                       <div class="card-body">
@@ -404,7 +404,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="usuarioResp">Usuario Responsable</label>
-                                    <select class="form-select" style="font-size:12px;" id="ResponsableNombre" name="ResponsableNombre">
+                                                         <select class="form-select" style="font-size:12px;" id="ResponsableNombre" name="ResponsableNombre">
                                                     <option value="">...</option>
 
                                                     @if (nombresUsuarios != null)
@@ -413,7 +413,7 @@
                                                         {
 
                                                             bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
-                                                            Console.WriteLine(isSelected);
+                                                    
                                                             if (isSelected)
                                                             {
                                                                 <option value="@usuario.Value" selected="selected">@usuario.Value</option>
@@ -693,13 +693,18 @@
                                     <script type="text/template" id="avance-template">
                                         <tr data-index="{i}">
                                             <td><input type="text" name="Avances[{i}].Descripcion" class="form-control" required /></td>
-                                            <td>  <input type="number" name="Avances[{i}].TipoAvance" class="form-control" value="9"  readonly/></td>
+                                             <td>       <!-- Campo oculto que se enviará al servidor -->
+                                                    <input type="hidden" name="Avances[i].TipoAvance" value="9" />
+
+                                                    <!-- Texto visible que reemplaza al campo -->
+                                                    <input type="text"  class="form-control" value="No aplica" readonly />
+                                           </td>
                                             <td><input type="date" name="Avances[{i}].Fecha" class="form-control" required /></td>
                                             <td><input type="number" name="Avances[{i}].HorasInsumidas" class="form-control" step="0.01" required /></td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
                                                 <input type="hidden" name="Avances[{i}].UserIDAlta" value="@User.Identity.Name" />
-                                                <input type="hidden" name="Avances[{i}].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                                <input type="hidden" name="Avances[{i}].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")"  required/>
                                             </td>
                                         </tr>
                                     </script>
@@ -809,66 +814,71 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Sección de Archivo Adjunto -->
-                                            <div class="card">
-                                                <div class="card-header" id="headingArchivo" style="padding: 3px;">
-                                                    <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-                                                            <b> Archivo Adjunto </b>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                                    <div class="card-body" style="max-height: 280px; overflow-y: auto;">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <thead>
+                                    <!-- Sección de Archivo Adjunto -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingArchivo" style="padding: 3px;">
+                                            <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
+                                                    <b> Archivo Adjunto </b>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                            <div class="card-body" style="max-height: 280px; overflow-y: auto;">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Nombre</th>
+                                                                <th>Fecha de Alta</th>
+                                                                <th>Usuario Alta</th>
+                                                                <th>Visualizar Archivo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (adjuntos != null && adjuntos.Any())
+                                                            {
+                                                                foreach (var item in adjuntos)
+                                                                {
                                                                     <tr>
-                                                                        <th>Número</th>
-                                                                        <th>Nombre</th>
-                                                                        <th>Fecha de Alta</th>
-                                                                        <th>Usuario Alta</th>
+                                                                        <td>@item.CorrelativoAdjunto</td>
+                                                                        <td>@item.NombreArchivo</td>
+                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@item.UserID</td>
+                                                                        <td>
+                                                                            <a class="btn btn-outline-primary btn-sm"
+                                                                               href="@Url.Content("~/uploads/" + ViewBag.NroOrdenTrabajo + "/" + item.NombreArchivo)" target="_blank">
+                                                                                Ver
+                                                                            </a>
+                                                                        </td>
                                                                     </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @if (adjuntos != null && adjuntos.Any())
-                                                                    {
-                                                                        foreach (var item in adjuntos)
-                                                                        {
-                                                                            <tr>
-                                                                                <td>@item.CorrelativoAdjunto</td>
-                                                                                <td>@item.NombreArchivo</td>
-                                                                                <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                                <td>@item.UserID</td>
-                                                                            </tr>
 
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <tr>
-                                                                            <td colspan="4">No hay archivos adjuntos para esta orden.</td>
-                                                                        </tr>
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-
-                                                        <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                            <div>
-                                                                <label for="files">Selecciona archivos:</label>
-                                                                <input type="file" id="files" name="files" multiple />
-                                                            </div>
-                                                             <button class="btn boton btn-sm" type="submit">Subir Archivos</button> 
-                                                        </form>
-
-                                            
-
-                                                        <button class="btn btn-danger btn-sm">Quitar</button> 
-                                                        <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
-                                                    </div>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="4">No hay archivos adjuntos para esta orden.</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="file">Selecciona archivos:</label>
+                                                    <input type="file" id="file" name="file" />
+                                                    <small class="form-text text-muted">Podés subir varios archivos.</small>
+                                                </div>
+
+
+
+
+                                                <button class="btn btn-danger btn-sm">Quitar</button>
+                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
                                             </div>
+                                        </div>
+                                    </div>
 
                                             <!-- Sección de Historial de Estado -->
                                             <div class="card">
@@ -1013,17 +1023,7 @@
                         </div>
                 </form>
 
-                <script>
-                    function modificarOrden() {
-                      const nroOrden = document.getElementById('orden').value;
-                      if (nroOrden) {
-                        // Redirige a la acción pasando el nro de orden
-                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
-                      } else {
-                        alert('Por favor ingrese un número de orden válido');
-                      }
-                    }
-                </script>
+
 
 
 
@@ -1032,3 +1032,4 @@
     </div>
 </div>
 </div>
+

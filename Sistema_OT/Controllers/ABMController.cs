@@ -8,6 +8,9 @@ using Sistema_OT.ViewModels;
 using RtfPipe.Tokens;
 using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
+
+
 
 namespace Sistema_OT.Controllers
 {
@@ -23,15 +26,21 @@ namespace Sistema_OT.Controllers
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
             ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("UserId");
 
-            //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
-            //ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
+            var originales = OrdenDeTrabajo.ConseguirUsuarioResponsablePorSistema();             // Dictionary<int, List<string>>
 
-            //string usuarioLogueado = HttpContext.Session.GetString("UserId") ?? "";
+            if (originales != null)
+            {
+                // Convertimos claves a string para JSON
+                var clavesComoTexto = originales.ToDictionary(k => k.Key.ToString(), v => v.Value);
 
-            //var nombresUsuarios = OrdenDeTrabajo.ConseguirNombres("Usuario");
-            //ViewBag.NombresUsuarios = nombresUsuarios;
-            //ViewBag.UsuarioLogueado = usuarioLogueado;
+                // Serializamos para pasar a la vista
+                ViewData["UsuariosResponsablesPorSistema"] = JsonSerializer.Serialize(clavesComoTexto, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null
+                });
+            }
 
+            
             return View();
         }
 
@@ -44,6 +53,8 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            // Idealmente este diccionario tiene múltiples usuarios por sistema
+            
 
             if (accion == "Grabar")
             {
@@ -164,10 +175,10 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
- 
 
+        //   //public ActionResult ActualizarOrden(
         [HttpPost]
-        public ActionResult ActualizarOrden( 
+        public async Task<IActionResult> ActualizarOrden(
             int NroOrdenTrabajo,
             string depende = null,
             DateTime? FechaSolicitud = null,
@@ -190,7 +201,8 @@ namespace Sistema_OT.Controllers
             char AlcanceIndefinido = 'N',
             string ModificacionesBaseDatos = null,
             string FormulariosModificados = null,
-            List<AvancesTrabajoModel> Avances = null  // Lista de avances nuevos que llegan del form
+            List<AvancesTrabajoModel> Avances = null,  // Lista de avances nuevos que llegan del form
+            IFormFile file = null
         )
         {
             try
@@ -248,6 +260,11 @@ namespace Sistema_OT.Controllers
            
 
                 OrdenDeTrabajo.Actualizar(orden);
+                if (file != null && file.Length > 0)
+                {
+                    await ArchivoAdjuntoModel.GuardarArchivo(file, NroOrdenTrabajo, usuarioLogueado);
+                }
+
 
                 TempData["MensajeExito"] = "La orden se actualizó correctamente.";
             }
@@ -255,6 +272,7 @@ namespace Sistema_OT.Controllers
             {
                 TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
             }
+
 
             return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
         }
