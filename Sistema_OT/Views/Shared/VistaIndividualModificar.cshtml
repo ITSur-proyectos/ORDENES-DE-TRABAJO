@@ -1013,9 +1013,10 @@
                                         <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display:none;"></span>
                                     </button>
 
-                                    <button type="button" class="btn boton-cancelar"
-                                            onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';">
-                                        Cancelar
+                                    <button type="button" class="btn boton-cancelar" onclick="window.location.href='@Url.Action("VistaIndividualBusca", "Buscar")';">
+                                           @*  onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';"> *@
+                                           
+                                        Cancelar Edición 
                                     </button>
                                     <!-- Estilo diferente para cancelar -->
                                 </div>
