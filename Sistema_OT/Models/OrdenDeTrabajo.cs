@@ -101,7 +101,18 @@ namespace Sistema_OT.Models
             Dictionary<int, string> nombres = new Dictionary<int, string>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
-            string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s" + " ORDER BY Descripcion ASC"; // +s porque menos mal que las tablas estan en plural
+            //string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s" + " ORDER BY Descripcion ASC"; // +s porque menos mal que las tablas estan en plural
+            string consulta;
+            if (Tabla.Equals("Usuario", StringComparison.OrdinalIgnoreCase))
+            {
+                consulta = "SELECT Descripcion, Usuario FROM Usuarios WHERE DadoDeBaja != 'S' ORDER BY Descripcion ASC";
+            }
+            else
+            {
+                consulta = $"SELECT Descripcion, {Tabla} FROM {Tabla}s ORDER BY Descripcion ASC";
+            }
+
+
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
@@ -234,10 +245,16 @@ namespace Sistema_OT.Models
 
             ConexionDB conexion = new ConexionDB();
             conexion.AbrirConexion();
+            string query = @"
+                        SELECT Sistema, Usuario 
+                        FROM Sistemas_Usuarios_Responsables";
+            //string query = @"
+            //                    SELECT SUR.Sistema, SUR.Usuario 
+            //                    FROM Sistemas_Usuarios_Responsables SUR
+            //                    INNER JOIN Usuarios U ON U.Usuario = SUR.Usuario
+            //                    WHERE U.DadoDeBaja != 'S'";
 
-                    string query = @"
-                SELECT Sistema, Usuario 
-                FROM Sistemas_Usuarios_Responsables";
+
 
             using (SqlCommand command = new SqlCommand(query, conexion.con))
             {
