@@ -5,10 +5,13 @@ using System.Diagnostics.Contracts;
 using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Text;
+using RtfPipe;
 using Microsoft.AspNetCore.Http;
+
 
 namespace Sistema_OT.Models
 {
+   // public class OrdenDeTrabajo
     public class OrdenDeTrabajo
     {
 
@@ -77,9 +80,9 @@ namespace Sistema_OT.Models
                                 orden[columnName] = value;
                             }
                                 OrdenDeTrabajo ordenTrabajo = new OrdenDeTrabajo();
-                                orden["DescripcionPlano"] = LimpiarRTF(orden.ContainsKey("Descripcion") ? orden["Descripcion"].ToString() : string.Empty);
-                                orden["FormulariosModificadosPlano"] = LimpiarRTF(orden.ContainsKey("FormulariosModificados") ? orden["FormulariosModificados"].ToString() : string.Empty);
-                                orden["ModificacionesBaseDatosPlano"] = LimpiarRTF(orden.ContainsKey("ModificacionesBaseDatos") ? orden["ModificacionesBaseDatos"].ToString() : string.Empty);
+                                orden["DescripcionPlano"] = ConvertirRTFaHTML(orden.ContainsKey("Descripcion") ? orden["Descripcion"].ToString() : string.Empty);
+                                orden["FormulariosModificadosPlano"] = ConvertirRTFaHTML(orden.ContainsKey("FormulariosModificados") ? orden["FormulariosModificados"].ToString() : string.Empty);
+                                orden["ModificacionesBaseDatosPlano"] = ConvertirRTFaHTML(orden.ContainsKey("ModificacionesBaseDatos") ? orden["ModificacionesBaseDatos"].ToString() : string.Empty);
 
 
                                 OrdenesTrabajo.Add(orden);
@@ -286,13 +289,13 @@ namespace Sistema_OT.Models
 
 
 
-
+        //Cambie las refetencias del Limpiar RTF
 
         public string DescripcionPlano
         {
             get
             {
-                return LimpiarRTF(Descripcion);
+                return ConvertirRTFaHTML(Descripcion);
             }
         }
 
@@ -300,7 +303,7 @@ namespace Sistema_OT.Models
         {
             get
             {
-                return LimpiarRTF(FormulariosModificados);
+                return ConvertirRTFaHTML(FormulariosModificados);
             }
         }
 
@@ -308,7 +311,7 @@ namespace Sistema_OT.Models
         {
             get
             {
-                return LimpiarRTF(ModificacionesBaseDatos);
+                return ConvertirRTFaHTML(ModificacionesBaseDatos);
             }
         }
 
@@ -401,6 +404,168 @@ namespace Sistema_OT.Models
         //        return rtf;
         //    }
         //}
+
+        public static string ConvertirRTFaHTML(string rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return string.Empty;
+
+            try
+            {
+                var html = RtfPipe.Rtf.ToHtml(rtf);
+
+                // Opcional: extraer solo el contenido entre <body>...</body>
+                var bodyMatch = Regex.Match(html, @"<body.*?>(.*?)<\/body>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                return bodyMatch.Success ? bodyMatch.Groups[1].Value : html;
+            }
+            catch
+            {
+                return rtf;
+            }
+        }
+
+
+
+        //public static string ConvertirRTFaHTML(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return string.Empty;
+
+        //    try
+        //    {
+        //        // Eliminamos cabecera RTF mínima y conservamos el texto plano
+        //        int start = rtf.IndexOf("\\fs");
+        //        if (start > -1)
+        //        {
+        //            // Muy rudimentario: elimina instrucciones RTF
+        //            string textoPlano = Regex.Replace(rtf.Substring(start), @"\\[a-z]+\d*", string.Empty);
+        //            textoPlano = Regex.Replace(textoPlano, @"[{\\}]", string.Empty);
+        //            return textoPlano.Replace("\n", "<br />").Replace("\r", "");
+        //        }
+
+        //        return rtf; // Si no tiene marcas RTF, devolvés lo mismo
+        //    }
+        //    catch
+        //    {
+        //        return rtf;
+        //    }
+        //}
+
+
+        //private static string ConvertirRTFaHTML(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return "";
+
+        //    try
+        //    {
+        //        using (System.Windows.Forms.RichTextBox rtb = new System.Windows.Forms.RichTextBox())
+        //        {
+        //            rtb.Rtf = rtf;
+        //            return rtb.Text.Replace("\n", "<br>");
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return WebUtility.HtmlEncode(rtf); // Devuelve sin procesar pero escapado por seguridad
+        //    }
+        //}
+
+
+
+        //leer el RTF
+        //public static string ConvertirRTFaHTML(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return string.Empty;
+
+        //    try
+        //    {
+        //        string texto = rtf;
+
+        //        // 1. Decodifica caracteres hexadecimales RTF (\'xx)
+        //        texto = Regex.Replace(texto, @"\\'([0-9a-fA-F]{2})", match =>
+        //        {
+        //            var hex = match.Groups[1].Value;
+        //            byte b = Convert.ToByte(hex, 16);
+        //            return Encoding.GetEncoding(1252).GetString(new byte[] { b });
+        //        });
+
+        //        // 2. Decodifica unicode RTF \u1234?
+        //        texto = Regex.Replace(texto, @"\\u(-?\d+)\?", match =>
+        //        {
+        //            int code = int.Parse(match.Groups[1].Value);
+        //            return char.ConvertFromUtf32(code);
+        //        });
+
+        //        // 3. Procesar etiquetas
+        //        bool negrita = false, cursiva = false, subrayado = false;
+        //        var sb = new StringBuilder();
+        //        var regexTokens = new Regex(@"(\\[a-z]+\d* ?|[{}]|[^\\{}]+)");
+
+        //        foreach (Match token in regexTokens.Matches(texto))
+        //        {
+        //            string value = token.Value;
+
+        //            switch (value)
+        //            {
+        //                case "\\b": sb.Append("<strong>"); negrita = true; break;
+        //                case "\\b0": if (negrita) sb.Append("</strong>"); negrita = false; break;
+        //                case "\\i": sb.Append("<em>"); cursiva = true; break;
+        //                case "\\i0": if (cursiva) sb.Append("</em>"); cursiva = false; break;
+        //                case "\\ul": sb.Append("<u>"); subrayado = true; break;
+        //                case "\\ul0": if (subrayado) sb.Append("</u>"); subrayado = false; break;
+        //                case "\\par": sb.Append("<br>"); break;
+        //                case "{":
+        //                case "}":
+        //                    break; // ignorar bloques
+        //                default:
+        //                    sb.Append(WebUtility.HtmlEncode(value));
+        //                    break;
+        //            }
+        //        }
+
+        //        // Cierra etiquetas abiertas
+        //        if (negrita) sb.Append("</strong>");
+        //        if (cursiva) sb.Append("</em>");
+        //        if (subrayado) sb.Append("</u>");
+
+        //        string resultado = sb.ToString();
+
+        //        // 4. Filtro de líneas basura
+        //        var lineasFiltradas = resultado
+        //            .Split(new[] { "<br>" }, StringSplitOptions.None)
+        //            .Select(l => l.Trim())
+        //            .Where(l =>
+        //            {
+        //                if (string.IsNullOrWhiteSpace(l)) return false;
+        //                if (Regex.IsMatch(l, @"^(Arial;?|Symbol;?|TX_RTF32\s*\d+(\.\d+)*|d\d{2}-\d{2}-\d{4}:?)$", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^(Times New Roman;?|Courier New;?|Calibri;?|Courier;?|Tahoma;?|Verdana;?|Normal;?|heading \d;?|\*Default Paragraph Font;?|...)", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^;+$")) return false;
+        //                if (l.Length > 100 && l.Count(c => c == ';') > 10) return false;
+        //                if (Regex.IsMatch(l, @"^d[\s\*]*$", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^d+$", RegexOptions.IgnoreCase) && l.Length > 10) return false;
+
+        //                return true;
+        //            });
+
+        //        resultado = string.Join("<br>", lineasFiltradas);
+
+        //        // 5. Normaliza saltos y espacios
+        //        resultado = Regex.Replace(resultado, @"(<br>\s*){3,}", "<br><br>");
+        //        resultado = Regex.Replace(resultado, @"[ \t]{2,}", " ");
+
+        //        return resultado.Trim();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return WebUtility.HtmlEncode(rtf ?? "").Trim();
+        //    }
+        //}
+
+
+
+
 
 
         public static string LimpiarRTF(string rtf)
