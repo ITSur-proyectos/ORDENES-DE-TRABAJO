@@ -278,10 +278,20 @@
                                         <option value="">...</option>
                                         @foreach (var usuario in nombresUsuarios)
                                         {
-                                            <option value="@usuario.Key" selected="@(usuario.Key.ToString() == responsableSeleccionado ? "selected" : "")">
-                                                @usuario.Value
-                                            </option>
+                                            var nombre = usuario.Value?.Trim();
+
+                                            // Saltar si el texto empieza con "(" y termina con ")"
+                                            // Esto evita mostrar los que son solo "(ID 9)" por ejemplo
+                                            if (!string.IsNullOrEmpty(nombre) &&
+                                            !(nombre.StartsWith("(") && nombre.EndsWith(")")))
+                                            {
+                                                <option value="@usuario.Key"
+                                                        selected="@(usuario.Key.ToString() == responsableSeleccionado ? "selected" : "")">
+                                                    @usuario.Value
+                                                </option>
+                                            }
                                         }
+                                      
                                     </select>
                                 </div>
                             </div>
@@ -307,18 +317,24 @@
                                         }
 
                                         const listaIds = usuariosPorSistema[sistemaId] || [];
+                                listaIds.forEach(id => {
+                                    const nombre = nombresUsuarios[id] || `(ID ${id})`;
 
-                                        listaIds.forEach(id => {
-                                            const opt = document.createElement("option");
-                                            opt.value = id;
-                                            opt.text = nombresUsuarios[id] || `(ID ${id})`;
+                                    // Evitar que se agreguen los que contienen "(ID"
+                                    if (nombre.includes("(ID")) {
+                                        return;
+                                    }
 
-                                            if (responsableSeleccionado === id.toString()) {
-                                                opt.selected = true;
-                                            }
+                                    const opt = document.createElement("option");
+                                    opt.value = id;
+                                    opt.text = nombre;
 
-                                            usuarioRespSelect.appendChild(opt);
-                                        });
+                                    if (responsableSeleccionado === id.toString()) {
+                                        opt.selected = true;
+                                    }
+
+                                    usuarioRespSelect.appendChild(opt);
+                                });
                                     }
 
                                     // Llenar al cargar la página, para sistema seleccionado (si hay)
@@ -492,32 +508,105 @@
                                     <!-- Acordeón de Secciones -->
                                     <div id="accordion" class="mt-1">
 
-                                        <!-- Sección de Descripción -->
                                     <!-- Sección Descripción -->
                                     <div class="card">
                                         <div class="card-header" id="headingDescripcion">
                                             <h5 class="mb-0">
                                                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
-                                                    Descripción
+                                                    <b>Descripción</b>
                                                 </button>
                                             </h5>
                                         </div>
                                         <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
                                             <div class="card-body">
 
-                                                <!-- Campo de texto simple sin contenido -->
-                                                <div class="form-group">
-                                                    <label for="descripcion">Descripción</label>
-                                                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6"></textarea>
-                                                    <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
+                                                <!-- Barra de herramientas -->
+                                                <div class="toolbar mb-2">
+                                                    <button type="button" class="toolbar-btn" data-command="undo"><i class="fas fa-undo"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="redo"><i class="fas fa-redo"></i></button>
+                                                    <select class="toolbar-select" data-command="fontName">
+                                                        <option value="Arial" selected>Arial</option>
+                                                        <option value="Calibri">Calibri</option>
+                                                        <option value="Cambria">Cambria</option>
+                                                        <option value="Courier New">Courier New</option>
+                                                        <option value="Georgia">Georgia</option>
+                                                        <option value="Tahoma">Tahoma</option>
+                                                        <option value="Times New Roman">Times New Roman</option>
+                                                        <option value="sans-serif">Sans Serif</option>
+                                                        <option value="serif">Serif</option>
+                                                        <option value="monospace">Monospace</option>
+                                                    </select>
+                                                    <select class="toolbar-select" data-command="fontSize" id="fontSizeSelect" title="Tamaño de fuente">
+                                                        <option value="1">8</option>
+                                                        <option value="2" selected>12</option> <!-- Valor 2 ~ 12px -->
+                                                        <option value="3">14</option>
+                                                        <option value="4">18</option>
+                                                        <option value="5">24</option>
+                                                        <option value="6">32</option>
+                                                        <option value="7">48</option>
+                                                    </select>
+                                                    <button type="button" class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fas fa-align-left"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fas fa-align-center"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyRight"><i class="fas fa-align-right"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
                                                 </div>
+
+                                                <!-- Área editable visual -->
+                                                <div id="descripcionEditable" contenteditable="true"
+                                                     style="height: 190px; border:1px solid #ced4da; padding:8px; border-radius:.25rem; overflow-y:auto; background-color:white;">
+                                                    <!-- vacío para agregar nuevo texto -->
+                                                </div>
+
+                                                <!-- Campo oculto que se enviará -->
+                                                <textarea id="Descripcion" name="Descripcion" hidden></textarea>
+
+                                                <small class="form-text text-muted">
+                                                    Incluye una descripción general del trabajo o la tarea.
+                                                </small>
 
                                             </div>
                                         </div>
-
-
                                     </div>
 
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const editor = document.getElementById("descripcionEditable");
+                                            const hiddenTextarea = document.getElementById("Descripcion");
+
+                                            // Botones
+                                            document.querySelectorAll(".toolbar-btn").forEach(btn => {
+                                                btn.addEventListener("click", () => {
+                                                    const command = btn.getAttribute("data-command");
+                                                    document.execCommand(command, false, null);
+                                                    syncContent();
+                                                });
+                                            });
+
+                                            // Selects
+                                            document.querySelectorAll(".toolbar-select").forEach(select => {
+                                                select.addEventListener("change", () => {
+                                                    const command = select.getAttribute("data-command");
+                                                    const value = select.value;
+                                                    document.execCommand(command, false, value);
+                                                    syncContent();
+                                                });
+                                            });
+
+                                            // Sincronizar al escribir
+                                            editor.addEventListener("input", syncContent);
+
+                                            function syncContent() {
+                                                hiddenTextarea.value = editor.innerHTML;
+                                            }
+
+                                            // Inicializar contenido oculto
+                                            syncContent();
+                                        });
+                                    </script>
 
 
                                         <!-- Sección de Avances de Trabajo -->

@@ -461,44 +461,15 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-@*                                               <textarea class="form-control descripcion-textarea" rows="3" style="height:90px; " readonly placeholder="Escribe la descripción aquí...">
-
-                                                 
-                                                        @if (ordentrabajo != null && ordentrabajo.Any())
-                                                        {
-                                                            @foreach (var item in ordentrabajo)
+                                                            @if (ordentrabajo != null && ordentrabajo.Any())
                                                             {
-
-                                                                @item["DescripcionPlano"]
+                                                                foreach (var item in ordentrabajo)
+                                                                {
+                                                                    @Html.Raw(OrdenDeTrabajo.ConvertirRTFaHTML(item["DescripcionPlano"].ToString()))
+                                                                }
                                                             }
-                                                        }
-                                                     
-                                                      
-
-                                                    </textarea> *@
-                                            <div class="form-control descripcion-html" style="height:180px; overflow-y:auto; white-space:pre-wrap;">
-                                                @if (ordentrabajo != null && ordentrabajo.Any())
-                                                {
-                                                    foreach (var item in ordentrabajo)
-                                                    {
-                                                        @Html.Raw(OrdenDeTrabajo.ConvertirRTFaHTML(item["DescripcionPlano"].ToString()))
-                                                    }
-                                                }
-                                            </div>
-
-
-                                            <small class="form-text text-muted">Incluye una descripción general del trabajo o la tarea.</small>
-                                            <style>
-                                                .descripcion-html {
-                                                    background-color: #f8f9fa;
-                                                    border: 1px solid #ced4da;
-                                                    border-radius: .25rem;
-                                                    padding: .375rem .75rem;
-                                                    font-family: inherit;
-                                                    font-size: 1rem;
-                                                }
-
-                                            </style>
+                                                  
+                                                    <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
                                         </div>

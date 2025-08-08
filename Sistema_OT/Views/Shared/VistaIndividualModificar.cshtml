@@ -577,45 +577,93 @@
                                         <!-- Acordeón de Secciones -->
                                         <div id="accordion" class="mt-1">
 
-                                            <!-- Sección de Descripción -->
+                                           <!-- Sección de Descripción -->
                                             <div class="card">
                                                 <div class="card-header py-1" id="headingDescripcion" style="padding: 1px;">
                                                     <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white; ">
-                                                            <b>  Descripción </b>
+                                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                                data-target="#collapseDescripcion" aria-expanded="true"
+                                                                aria-controls="collapseDescripcion" style="color:white;">
+                                                            <b>Descripción</b>
                                                         </button>
                                                     </h5>
                                                 </div>
 
-                                                <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                                <div id="collapseDescripcion" class="collapse show"
+                                                     aria-labelledby="headingDescripcion" data-parent="#accordion">
                                                     <div class="card-body">
-                                                        <!-- Barra de herramientas de formato de texto -->
-                                                        <div id="descripcion" class="tab-pane fade show active">
-                                                           <div class="toolbar">
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-undo"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-redo"></i></button>
-                                                                <select class="toolbar-select"  disabled>
-                                                                    <option value="sans-serif">Sans Serif</option>
-                                                                    <option value="serif">Serif</option>
-                                                                    <option value="monospace">Monospace</option>
-                                                                </select>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-bold"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-italic"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-underline"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-left"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-center"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-right"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ul"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ol"></i></button> 
-                                                            </div>
-                                                         </div>
-                                                     <textarea class="form-control descripcion-textarea" rows="5" style="height:190px;"
-                                                        id="Descripcion" name="Descripcion"
-                                                        placeholder="Escribe la descripción aquí...">@ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]</textarea>
-                                                        <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
+
+                                                        <!-- Barra de herramientas -->
+                                                        <div class="toolbar mb-2">
+                                                            <button type="button" class="toolbar-btn" data-command="undo"><i class="fas fa-undo"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="redo"><i class="fas fa-redo"></i></button>
+                                                            <select class="toolbar-select" data-command="fontName">
+                                                                <option value="sans-serif">Sans Serif</option>
+                                                                <option value="serif">Serif</option>
+                                                                <option value="monospace">Monospace</option>
+                                                            </select>
+                                                            <button type="button" class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fas fa-align-left"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fas fa-align-center"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyRight"><i class="fas fa-align-right"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+                                                        </div>
+
+                                                        <!-- Área editable visual -->
+                                                        <div id="descripcionEditable" contenteditable="true"
+                                                             style="height: 190px; border:1px solid #ced4da; padding:8px; border-radius:.25rem; overflow-y:auto; background-color:white;">
+                                                           
+                                                           @Html.Raw(ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]?.ToString())
+                                                        </div> 
+
+                                                        <!-- Campo oculto que se enviará -->
+                                                        <textarea id="Descripcion" name="Descripcion" hidden></textarea>
+
+                                                        <small class="form-text text-muted">
+                                                            Incluye una descripción general del trabajo o la tarea.
+                                                        </small>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const editor = document.getElementById("descripcionEditable");
+                                                const hiddenTextarea = document.getElementById("Descripcion");
+
+                                                // Botones de la barra
+                                                document.querySelectorAll(".toolbar-btn").forEach(btn => {
+                                                    btn.addEventListener("click", () => {
+                                                        const command = btn.getAttribute("data-command");
+                                                        document.execCommand(command, false, null);
+                                                        syncContent();
+                                                    });
+                                                });
+
+                                                // Select de fuentes
+                                                document.querySelectorAll(".toolbar-select").forEach(select => {
+                                                    select.addEventListener("change", () => {
+                                                        const command = select.getAttribute("data-command");
+                                                        document.execCommand(command, false, select.value);
+                                                        syncContent();
+                                                    });
+                                                });
+
+                                                // Sincroniza contenido al escribir
+                                                editor.addEventListener("input", syncContent);
+
+                                                function syncContent() {
+                                                    hiddenTextarea.value = editor.innerHTML;
+                                                }
+
+                                                // Inicializar el campo oculto
+                                                syncContent();
+                                            });
+                                            </script>
+
 
                                           <!-- Sección de Avances de Trabajo -->
                                             <div class="card">

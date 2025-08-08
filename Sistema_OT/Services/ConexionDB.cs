@@ -8,8 +8,8 @@ namespace Sistema_OT.Services
 
         public ConexionDB()
         {
-            //con = new SqlConnection("Data Source=Db_ITSur_CSharp.mssql.somee.com;Initial Catalog=Db_ITSur_CSharp;User ID=EugeniaITSur;Password=421295845");
-            con = new SqlConnection("Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5");
+            con = new SqlConnection("Data Source=Db_ITSur_CSharp.mssql.somee.com;Initial Catalog=Db_ITSur_CSharp;User ID=EugeniaITSur;Password=421295845");
+            //con = new SqlConnection("Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5");
 
         }
 
