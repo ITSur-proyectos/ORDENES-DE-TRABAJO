@@ -1,12 +1,10 @@
 ﻿using Sistema_OT.Services;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Reflection.PortableExecutable;
+
 using System.Text.RegularExpressions;
 using System.Text;
-using RtfPipe;
-using Microsoft.AspNetCore.Http;
+
 
 
 namespace Sistema_OT.Models
@@ -452,24 +450,6 @@ namespace Sistema_OT.Models
         //}
 
 
-        //private static string ConvertirRTFaHTML(string rtf)
-        //{
-        //    if (string.IsNullOrWhiteSpace(rtf))
-        //        return "";
-
-        //    try
-        //    {
-        //        using (System.Windows.Forms.RichTextBox rtb = new System.Windows.Forms.RichTextBox())
-        //        {
-        //            rtb.Rtf = rtf;
-        //            return rtb.Text.Replace("\n", "<br>");
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return WebUtility.HtmlEncode(rtf); // Devuelve sin procesar pero escapado por seguridad
-        //    }
-        //}
 
 
 
