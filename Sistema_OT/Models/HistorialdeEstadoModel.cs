@@ -9,6 +9,9 @@ namespace Sistema_OT.Models
         public string Descripcion { get; set; }
         public DateTime FechaAlta { get; set; }
         public string UserID { get; set; }
+        public int Estado { get; set; }
+        public int EstadoOrigen { get; set; }
+        public int EstadoDestino { get; set; }
 
         public static List<HistorialdeEstadoModel> ConseguirHistorial(int nroOrden)
         {
@@ -56,6 +59,75 @@ namespace Sistema_OT.Models
 
             return historial;
         }
+
+
+        public static List<HistorialdeEstadoModel> ConseguirEstados()
+        {
+            List<HistorialdeEstadoModel> estados = new List<HistorialdeEstadoModel>();
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
+
+            string consulta = "SELECT Estado, Descripcion FROM Estados_Trabajo";
+
+            using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            estados.Add(new HistorialdeEstadoModel
+                            {
+                                Estado = reader.GetInt32(reader.GetOrdinal("Estado")),
+                                Descripcion = reader.GetString(reader.GetOrdinal("Descripcion"))
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener los estados: " + ex.Message);
+                }
+            }
+
+            return estados;
+        }
+
+
+        public static List<HistorialdeEstadoModel> Transiciones()
+        {
+            List<HistorialdeEstadoModel> transiciones = new List<HistorialdeEstadoModel>();
+            ConexionDB conexionDB = new ConexionDB();
+            conexionDB.AbrirConexion();
+
+            string consulta = "SELECT EstadoOrigen, EstadoDestino FROM Estados_Siguientes";
+
+            using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            transiciones.Add(new HistorialdeEstadoModel
+                            {
+                                EstadoOrigen = reader.GetInt32(reader.GetOrdinal("EstadoOrigen")),
+                                EstadoDestino = reader.GetInt32(reader.GetOrdinal("EstadoDestino"))
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener transiciones: " + ex.Message);
+                }
+            }
+
+            return transiciones;
+        }
+
 
     }
 }

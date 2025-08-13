@@ -8,6 +8,9 @@ using Sistema_OT.ViewModels;
 using RtfPipe.Tokens;
 using System.Diagnostics;
 using System.Net;
+using System.Text.Json;
+
+
 
 namespace Sistema_OT.Controllers
 {
@@ -21,15 +24,23 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-            //ViewData["NombresSistemas_Cliente"] = OrdenDeTrabajo.ConseguirNombres("Sistemas_Cliente"); //EUGE1
-            //ViewData["SistemasPorCliente"] = OrdenDeTrabajo.ConseguirSistemasPorCliente();
+            ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("UserId");
 
-            //string usuarioLogueado = HttpContext.Session.GetString("UserId") ?? "";
+            var originales = OrdenDeTrabajo.ConseguirUsuarioResponsablePorSistema();             // Dictionary<int, List<string>>
 
-            //var nombresUsuarios = OrdenDeTrabajo.ConseguirNombres("Usuario");
-            //ViewBag.NombresUsuarios = nombresUsuarios;
-            //ViewBag.UsuarioLogueado = usuarioLogueado;
+            if (originales != null)
+            {
+                // Convertimos claves a string para JSON
+                var clavesComoTexto = originales.ToDictionary(k => k.Key.ToString(), v => v.Value);
 
+                // Serializamos para pasar a la vista
+                ViewData["UsuariosResponsablesPorSistema"] = JsonSerializer.Serialize(clavesComoTexto, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null
+                });
+            }
+
+            
             return View();
         }
 
@@ -42,6 +53,8 @@ namespace Sistema_OT.Controllers
             ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
             ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
             ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
+            // Idealmente este diccionario tiene múltiples usuarios por sistema
+            
 
             if (accion == "Grabar")
             {
@@ -135,10 +148,15 @@ namespace Sistema_OT.Controllers
             // Cargar las secciones relacionadas con la OT
             ViewData["Avances_Trabajo"] = AvancesTrabajoModel.ConseguirAvances(orden);
             ViewData["HistorialEstados"] = HistorialdeEstadoModel.ConseguirHistorial(orden);
+            ViewData["Estados"] = HistorialdeEstadoModel.ConseguirEstados();
+            ViewData["Transiciones"] = HistorialdeEstadoModel.Transiciones();
             ViewData["Adjuntos"] = ArchivoAdjuntoModel.ConseguirAdjuntos(orden);
+            ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("UserId");
 
             // Cargar la orden de trabajo individual con todos los datos (igual que en Buscar)
             Dictionary<string, object> parametros = new Dictionary<string, object>();
+            
+
             parametros["@NroOrdenTrabajo"] = orden;
 
             if (parametros.Count > 0)
@@ -157,32 +175,16 @@ namespace Sistema_OT.Controllers
             return View();
         }
 
-        // Accion para actualizar orden 
-        //[HttpPost]
-        //public ActionResult ActualizarOrden(OrdenDeTrabajo orden)
-        //{
 
-        //    try
-        //    {
-        //        OrdenDeTrabajo.Actualizar(orden);
-        //        TempData["MensajeExito"] = "La orden se actualizó correctamente.";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
-        //    }
-
-        //    // Redirige a VistaIndividualModificar recargando todos los datos
-        //    return RedirectToAction("VistaIndividualModificar", new { orden = orden.NroOrdenTrabajo });
-        //}
-
+        //   //public ActionResult ActualizarOrden(
         [HttpPost]
-        public ActionResult ActualizarOrden(
+        public async Task<IActionResult> ActualizarOrden(
             int NroOrdenTrabajo,
             string depende = null,
             DateTime? FechaSolicitud = null,
             DateTime? FechaVencimiento = null,
-            string EstadoDescripcion = null,
+            int? EstadoDescripcion = null,
+            int? EstadoActual = null,
             string ClienteNombre = null,
             string SistemaNombre = null,
             string ProyectoNombre = null,
@@ -196,18 +198,46 @@ namespace Sistema_OT.Controllers
             int? CantidadHorasConsumidas = null,
             int? NroOtImplementacion = null,
             char PremioPorAvance = 'N',
-            char AlcanceIndefinido = 'N'
+            char AlcanceIndefinido = 'N',
+            string ModificacionesBaseDatos = null,
+            string FormulariosModificados = null,
+            List<AvancesTrabajoModel> Avances = null,  // Lista de avances nuevos que llegan del form
+            IFormFile file = null
         )
         {
             try
             {
+                var usuarioLogueado = HttpContext.Session.GetString("UserId");
+
+                int estadoFinal = 0;
+                if (!EstadoDescripcion.HasValue || EstadoDescripcion == 0)
+                {
+                    estadoFinal = EstadoActual ?? 0;  // si EstadoActual también es null, queda 0
+                }
+                else
+                {
+                    estadoFinal = EstadoDescripcion.Value;
+                }
+                //para avances
+                if (Avances != null && Avances.Any())
+                {
+                    foreach (var avance in Avances)
+                    {
+                        avance.NroOrdenTrabajo = NroOrdenTrabajo; // asigno el nro de orden a cada avance
+                        avance.UserIDAlta = usuarioLogueado;       // asignar usuario si no llega desde el form
+                                                                   // Guarda o procesa cada avance
+                        AvancesTrabajoModel.GuardarAvance(avance);
+                    }
+                }
+
+                //orden 
                 var orden = new OrdenDeTrabajo
                 {
                     NroOrdenTrabajo = NroOrdenTrabajo,
                     DependeDe = !string.IsNullOrEmpty(depende) ? int.Parse(depende) : 0,
                     FechaSolicitud = FechaSolicitud ?? DateTime.MinValue,
                     //FechaFinalizacion = FechaVencimiento ?? DateTime.MinValue,
-                    //Estado = ParseEstado(EstadoDescripcion),
+                    Estado = estadoFinal,
                     Cliente = ClienteNombre,
                     Sistema = SistemaNombre,
                     Proyecto = ProyectoNombre,
@@ -223,10 +253,18 @@ namespace Sistema_OT.Controllers
                     // NroOtImplementacion aún no está en el modelo, si se agrega hacerlo aquí también
                     // Checkbox en forma de char (N/S)
                     // Convertimos char a bool internamente si hace falta en la capa de persistencia
+                    UsuarioQueModifico = usuarioLogueado,
+                    ModificacionesBaseDatos = ModificacionesBaseDatos,
+                    FormulariosModificados = FormulariosModificados
                 };
-
+           
 
                 OrdenDeTrabajo.Actualizar(orden);
+                if (file != null && file.Length > 0)
+                {
+                    await ArchivoAdjuntoModel.GuardarArchivo(file, NroOrdenTrabajo, usuarioLogueado);
+                }
+
 
                 TempData["MensajeExito"] = "La orden se actualizó correctamente.";
             }
@@ -235,95 +273,9 @@ namespace Sistema_OT.Controllers
                 TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
             }
 
+
             return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
         }
-
-
-
-
-        //[HttpPost] --- anteultima 
-        //public ActionResult ActualizarOrden(int NroOrdenTrabajo, string depende = null, DateTime? FechaSolicitud = null, DateTime? FechaVencimiento = null, string EstadoDescripcion = null, string ClienteNombre = null, string SistemaNombre = null, string ProyectoNombre = null, string ResponsableNombre = null, string SolicitanteNombre = null, string SolicitadoPorNombre = null, string Modulo = null, string Asunto = null, string Descripcion = null, int? PorcentajeAvance = null, int? CantidadHorasConsumidas = null, int? NroOtImplementacion = null, char PremioPorAvance = 'N', char AlcanceIndefinido = 'N')
-        //{
-        //    ViewData["NombresUsuarios"] = OrdenDeTrabajo.ConseguirNombres("Usuario");
-        //    ViewData["NombresSistemas"] = OrdenDeTrabajo.ConseguirNombres("Sistema");
-        //    ViewData["NombresClientes"] = OrdenDeTrabajo.ConseguirNombres("Cliente");
-        //    ViewData["NombresProyectos"] = OrdenDeTrabajo.ConseguirNombres("Proyecto");
-
-        //    try
-        //    {
-        //        var orden = new OrdenDeTrabajo();
-        //        orden.NroOrdenTrabajo = NroOrdenTrabajo;
-
-        //        //if (!string.IsNullOrEmpty(depende)) orden.DependeDe = depende;
-        //        //if (FechaSolicitud.HasValue) orden.FechaSolicitud = FechaSolicitud.Value;
-        //        //if (FechaVencimiento.HasValue) orden.FechaFinalizacion = FechaVencimiento.Value;
-
-        //        if (!string.IsNullOrEmpty(ClienteNombre))
-        //        {
-        //            var clientes = (Dictionary<int, string>)ViewData["NombresClientes"];
-        //            var clienteId = clientes.FirstOrDefault(c => c.Value == ClienteNombre).Key;
-        //            if (clienteId != 0) orden.Cliente = clienteId;
-        //        }
-
-        //        if (!string.IsNullOrEmpty(SistemaNombre))
-        //        {
-        //            var sistemas = (Dictionary<int, string>)ViewData["NombresSistemas"];
-        //            var sistemaId = sistemas.FirstOrDefault(s => s.Value == SistemaNombre).Key;
-        //            if (sistemaId != 0) orden.Sistema = sistemaId;
-        //        }
-
-        //        if (!string.IsNullOrEmpty(ProyectoNombre))
-        //        {
-        //            var proyectos = (Dictionary<int, string>)ViewData["NombresProyectos"];
-        //            var proyectoId = proyectos.FirstOrDefault(p => p.Value == ProyectoNombre).Key;
-        //            if (proyectoId != 0) orden.Proyecto = proyectoId;
-        //        }
-
-        //        if (!string.IsNullOrEmpty(ResponsableNombre))
-        //        {
-        //            var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
-        //            var respId = usuarios.FirstOrDefault(u => u.Value == ResponsableNombre).Key;
-        //            if (respId != 0) orden.UserIDResponsable = respId.ToString();
-        //        }
-
-        //        if (!string.IsNullOrEmpty(SolicitanteNombre))
-        //        {
-        //            var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
-        //            var solId = usuarios.FirstOrDefault(u => u.Value == SolicitanteNombre).Key;
-        //            if (solId != 0) orden.UserIDSolicitante = solId.ToString();
-        //        }
-
-        //        //if (!string.IsNullOrEmpty(SolicitadoPorNombre))
-        //        //{
-        //        //    var usuarios = (Dictionary<int, string>)ViewData["NombresUsuarios"];
-        //        //    var solPorId = usuarios.FirstOrDefault(u => u.Value == SolicitadoPorNombre).Key;
-        //        //    if (solPorId != 0) orden.UsuarioSolicitadoPor = solPorId;
-        //        //}
-
-        //        if (!string.IsNullOrEmpty(Modulo)) orden.Modulo = Modulo;
-        //        if (!string.IsNullOrEmpty(Asunto)) orden.Asunto = Asunto;
-        //        if (!string.IsNullOrEmpty(Descripcion)) orden.Descripcion = Descripcion;
-        //        //if (PorcentajeAvance.HasValue) orden.PorcentajeAvance = PorcentajeAvance.Value;
-        //        //if (CantidadHorasConsumidas.HasValue) orden.CantidadHorasConsumidas = CantidadHorasConsumidas.Value;
-        //        //if (NroOtImplementacion.HasValue) orden.NroOtImplementacion = NroOtImplementacion.Value;
-
-        //        //orden.PremioPorAvance = PremioPorAvance;
-        //        //orden.AlcanceIndefinido = AlcanceIndefinido;
-
-        //        OrdenDeTrabajo.Actualizar(orden);
-
-        //        TempData["MensajeExito"] = "La orden se actualizó correctamente.";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["MensajeError"] = "Ocurrió un error: " + ex.Message;
-        //    }
-
-        //    return RedirectToAction("VistaIndividualModificar", new { orden = NroOrdenTrabajo });
-        //    //return RedirectToAction("VistaIndividualBuscar", "Buscar", new { orden = NroOrdenTrabajo });
-
-        //}
-
 
 
 
@@ -334,15 +286,15 @@ namespace Sistema_OT.Controllers
             // Guardar orden principal
             //OrdenDeTrabajo.Guardar(model.Orden); // ← corregido: modelo es OrdenDeTrabajo
 
-            foreach (var avance in model.Avances)
-            {
-                avance.NroOrdenTrabajo = (int)model.Orden.NroOrdenTrabajo;
+            //foreach (var avance in model.Avances)
+            //{
+            //    avance.NroOrdenTrabajo = (int)model.Orden.NroOrdenTrabajo;
 
-                avance.UserIDAlta ??= User.Identity.Name;
-                avance.Fecha = avance.Fecha == default ? DateTime.Now : avance.Fecha;
+            //    avance.UserIDAlta ??= User.Identity.Name;
+            //    avance.Fecha = avance.Fecha == default ? DateTime.Now : avance.Fecha;
 
-                AvancesTrabajoModel.Guardar(avance); // ← método dentro del modelo
-            }
+            //    //AvancesTrabajoModel.Guardar(avance); // ← método dentro del modelo
+            //}
 
             return RedirectToAction("Index");
         }

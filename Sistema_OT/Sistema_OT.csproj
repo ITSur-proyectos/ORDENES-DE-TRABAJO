@@ -16,6 +16,7 @@
   <ItemGroup>
     <Content Remove="Views\Account\Login.cshtml" />
     <Content Remove="Views\Buscar\Fechasolicitud_venc.cshtml" />
+    <Content Remove="web.config" />
     <Content Remove="wwwroot\css\StyleSheet.css" />
   </ItemGroup>
 
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <None Include="Views\Account\Login.cshtml" />
+    <None Include="web.config" />
   </ItemGroup>
 
 </Project>

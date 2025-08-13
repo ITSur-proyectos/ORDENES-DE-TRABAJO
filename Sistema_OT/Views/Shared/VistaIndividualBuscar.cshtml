@@ -9,9 +9,11 @@
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
     var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
+    @using Sistema_OT.Models
 }
 
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 @* <a href="\\saturno\restorebaco\discog\usuarios\eruiz\desarrollo\sist-ot\sistema_ot\views\shared\vistaindividual.cshtml">\\saturno\restorebaco\discog\usuarios\eruiz\desarrollo\sist-ot\sistema_ot\views\shared\vistaindividual.cshtml</a> *@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -52,15 +54,18 @@
                             </div>
 
                             <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
-                            <!-- Botón de búsqueda que ocupa todo el ancho disponible -->
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="busuqeda">Buscar OT</label>
-                                    <button type="submit" class="btn boton-busqueda btn-sm w-100">
-                                        Buscar
+                                    <button type="submit" class="btn boton-busqueda btn-sm w-100" id="btnBuscarOT">
+                                        <span id="buscarTexto">Buscar</span>
+                                        <span id="buscarSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                     </button>
                                 </div>
                             </div>
+
+
+
 
                             <!-- Campo de Dependencia -->
                             <div class="col-md-1">
@@ -248,7 +253,7 @@
                                             foreach (var usuario in nombresUsuarios)
                                             {
 
-                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDSolicitante"]?.ToString()?.Trim();
                                                 Console.WriteLine(isSelected);
                                                 if (isSelected)
                                                 {
@@ -378,33 +383,33 @@
                                     <input type="number" class="form-control" style="font-size:12px;" id="NroOtImp" placeholder="0" value="@ordentrabajo?.FirstOrDefault()?["NroOtImplementacion"]" readonly />
                                 </div>
                             </div>
-<div class="row mt-5">
-    <div class="col-md-4 d-flex align-items-center">
-        <!-- Primer checkbox -->
-        <div class="form-check me-3 ">
-            <input type="checkbox" class="form-check-input" id="premioAvance" 
-                placeholder="0" 
-                value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]" 
-                disabled>
-            <label class="form-check-label text-nowrap" for="premioAvance">
-                Premio por Avance
-            </label>
-        </div>
+                            <div class="row mt-5">
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <!-- Primer checkbox -->
+                                    <div class="form-check me-3 ">
+                                        <input type="checkbox" class="form-check-input" id="premioAvance" 
+                                            placeholder="0" 
+                                            value="@ordentrabajo?.FirstOrDefault()?["PremioPorAvance"]" 
+                                            disabled>
+                                        <label class="form-check-label text-nowrap" for="premioAvance">
+                                            Premio por Avance
+                                        </label>
+                                    </div>
 
-        <!-- Segundo checkbox -->
-        <div class="form-check me-3 ">
-            <input type="checkbox" class="form-check-input" id="alcanceIndefinido" 
-                value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]" 
-                disabled>
-            <label class="form-check-label text-nowrap" for="alcanceIndefinido">
-                Alcance Indefinido
-            </label>
-        </div>
+                                    <!-- Segundo checkbox -->
+                                    <div class="form-check me-3 ">
+                                        <input type="checkbox" class="form-check-input" id="alcanceIndefinido" 
+                                            value="@ordentrabajo?.FirstOrDefault()?["AlcanceIndefinido"]" 
+                                            disabled>
+                                        <label class="form-check-label text-nowrap" for="alcanceIndefinido">
+                                            Alcance Indefinido
+                                        </label>
+                                    </div>
 
 
-        </div>
-    </div>
-</div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </div>
@@ -456,21 +461,14 @@
                                                             <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
                                                         </div>
                                                     </div>
-                                                <textarea class="form-control descripcion-textarea" rows="3" style="height:180px; " readonly placeholder="Escribe la descripción aquí...">
-
-                                                 
-                                                        @if (ordentrabajo != null && ordentrabajo.Any())
-                                                        {
-                                                            @foreach (var item in ordentrabajo)
+                                                            @if (ordentrabajo != null && ordentrabajo.Any())
                                                             {
-
-                                                                @item["DescripcionPlano"]
+                                                                foreach (var item in ordentrabajo)
+                                                                {
+                                                                    @Html.Raw(OrdenDeTrabajo.ConvertirRTFaHTML(item["DescripcionPlano"].ToString()))
+                                                                }
                                                             }
-                                                        }
-                                                     
-                                                      
-
-                                                    </textarea>
+                                                  
                                                     <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
                                                 </div>
                                             </div>
@@ -724,6 +722,25 @@
                       }
                     }
                 </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const form = document.querySelector("form");
+                        const btnBuscar = document.getElementById("btnBuscarOT");
+                        const texto = document.getElementById("buscarTexto");
+                        const spinner = document.getElementById("buscarSpinner");
+
+                        if (form && btnBuscar && texto && spinner) {
+                            form.addEventListener("submit", function () {
+                                texto.classList.add("d-none");
+                                spinner.classList.remove("d-none");
+                                btnBuscar.disabled = true;
+                            });
+                        }
+                    });
+                </script>
+
+
+
 
                 </div>
             </div>

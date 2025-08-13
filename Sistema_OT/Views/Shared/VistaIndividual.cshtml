@@ -6,17 +6,52 @@
     var nombresClientes = ViewData["NombresClientes"] as Dictionary<int, string>;
     var nombresProyectos = ViewData["NombresProyectos"] as Dictionary<int, string>;
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
+    var usuarioLogueado = ViewData["UsuarioLogueado"] as string;
+    var usuariosResponsablesPorSistemaJson = ViewData["UsuariosResponsablesPorSistema"] as string;
+
+ 
 }
+@using System.Text.Json
+
+@{
+
+    var jsonUsuariosPorSistema = ViewData["UsuariosResponsablesPorSistema"] as string ?? "{}";
+
+    // Pasamos nombresUsuarios serializado con claves string para JS
+    var dictNombresUsuarios = nombresUsuarios.ToDictionary(k => k.Key.ToString(), v => v.Value);
+    var jsonNombresUsuarios = JsonSerializer.Serialize(dictNombresUsuarios, new JsonSerializerOptions { PropertyNamingPolicy = null });
+
+    var responsableSeleccionado = ViewData["ResponsableSeleccionado"] as string ?? "";
+}
+
+<!-- Inputs ocultos con JSON para leer en JS -->
+<input type="hidden" id="usuariosPorSistemaJson" value='@Html.Raw(jsonUsuariosPorSistema)' />
+<input type="hidden" id="nombresUsuariosJson" value='@Html.Raw(jsonNombresUsuarios)' />
+<input type="hidden" id="responsableSeleccionado" value='@responsableSeleccionado' />
+
 <!-- jQuery y Bootstrap JS (con Popper) y bootstrap -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="~/css/VistaIndividual.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/site.js"></script>
+<!-- CSS de Quill -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<!-- jQuery y Bootstrap (los tenés, está bien) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JS de Quill -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+
 
 <script>
     // Establecer la fecha de hoy en formato yyyy-mm-dd
@@ -32,6 +67,23 @@
         document.getElementById("fechaInput").value = today;
     };
 </script>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+                                            <script>
+                                                var quill = new Quill('#editor', {
+                                                    theme: 'snow',
+                                                    modules: {
+                                                        toolbar: '#toolbar'
+                                                    }
+                                                });
+
+                                                // Antes de enviar el formulario, pasás el HTML al input oculto
+                                                document.querySelector('form').addEventListener('submit', function () {
+                                                    document.querySelector('#descripcion').value = quill.root.innerHTML;
+                                                });
+                                            </script>
+
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container-fluid mt-3" style="width: 100% ; max-width: 1600px; margin: 0 auto;">
     <div class="row">
@@ -143,6 +195,52 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nombresSistemasInput = document.getElementById("nombresSistemas");
+
+                                    let nombresSistemas = {};
+                                    if (nombresSistemasInput?.value) {
+                                        try {
+                                            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresSistemas:", e);
+                                        }
+                                    }
+
+                                    const clienteSelect = document.getElementById("cliente");  // ID minúscula
+                                    const sistemaSelect = document.getElementById("sistema");
+
+                                    if (!clienteSelect || !sistemaSelect) {
+                                        console.warn("Faltan selects 'cliente' o 'sistema'");
+                                        return;
+                                    }
+
+                                    clienteSelect.addEventListener("change", function () {
+                                        const clienteId = this.value;
+                                        sistemaSelect.innerHTML = "";
+
+                                        const defaultOption = document.createElement("option");
+                                        defaultOption.value = "-1";
+                                        defaultOption.text = "...";
+                                        sistemaSelect.appendChild(defaultOption);
+
+                                        const sistemaIds = sistemasPorCliente[clienteId] || Object.keys(nombresSistemas).map(Number);
+
+                                        sistemaIds.forEach(sid => {
+                                            const sidStr = sid.toString();
+                                            if (nombresSistemas[sidStr]) {
+                                                const option = document.createElement("option");
+                                                option.value = sidStr;
+                                                option.text = nombresSistemas[sidStr];
+                                                sistemaSelect.appendChild(option);
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="proyecto">Proyecto</label>
@@ -169,40 +267,102 @@
                             <button type="button" class="btn boton">🔍</button>  *@
                         </div>
 
+                      
+
                         <!-- Tercera fila con Usuario Responsable, Usuario Solicitante y Módulo/Pantalla -->
                         <div style="font-size: 12px" class="row row-cols-3 g-3">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="usuarioResp">Usuario Responsable</label>
-                                    <select class="form-select" style="font-size:12px;" id="Responsable" name="Responsable">
-                                        <!-- Opciones(se hace con la db) -->
-
+                                    <select id="Responsable" name="Responsable" class="form-select" style="font-size:12px;">
                                         <option value="">...</option>
-
-                                        @if (nombresUsuarios != null)
+                                        @foreach (var usuario in nombresUsuarios)
                                         {
-                                            foreach (var usuario in nombresUsuarios)
+                                            var nombre = usuario.Value?.Trim();
+
+                                            // Saltar si el texto empieza con "(" y termina con ")"
+                                            // Esto evita mostrar los que son solo "(ID 9)" por ejemplo
+                                            if (!string.IsNullOrEmpty(nombre) &&
+                                            !(nombre.StartsWith("(") && nombre.EndsWith(")")))
                                             {
-                                                <option value="@usuario.Value">@usuario.Value</option>
+                                                <option value="@usuario.Key"
+                                                        selected="@(usuario.Key.ToString() == responsableSeleccionado ? "selected" : "")">
+                                                    @usuario.Value
+                                                </option>
                                             }
                                         }
-
+                                      
                                     </select>
                                 </div>
                             </div>
+
+
+                            <script>
+
+                                                            document.addEventListener("DOMContentLoaded", () => {
+                                    const sistemaSelect = document.getElementById("sistema");
+                                    const usuarioRespSelect = document.getElementById("Responsable");
+
+                                    const usuariosPorSistema = JSON.parse(document.getElementById("usuariosPorSistemaJson").value);
+                                    const nombresUsuarios = JSON.parse(document.getElementById("nombresUsuariosJson").value);
+                                    const responsableSeleccionado = document.getElementById("responsableSeleccionado").value;
+
+                                    function llenarUsuarios() {
+                                        const sistemaId = sistemaSelect.value;
+
+                                        usuarioRespSelect.innerHTML = "<option value=''>...</option>";
+
+                                        if (!sistemaId || sistemaId === "-1") {
+                                            return; // no sistema seleccionado, no lista
+                                        }
+
+                                        const listaIds = usuariosPorSistema[sistemaId] || [];
+                                listaIds.forEach(id => {
+                                    const nombre = nombresUsuarios[id] || `(ID ${id})`;
+
+                                    // Evitar que se agreguen los que contienen "(ID"
+                                    if (nombre.includes("(ID")) {
+                                        return;
+                                    }
+
+                                    const opt = document.createElement("option");
+                                    opt.value = id;
+                                    opt.text = nombre;
+
+                                    if (responsableSeleccionado === id.toString()) {
+                                        opt.selected = true;
+                                    }
+
+                                    usuarioRespSelect.appendChild(opt);
+                                });
+                                    }
+
+                                    // Llenar al cargar la página, para sistema seleccionado (si hay)
+                                    llenarUsuarios();
+
+                                    // Actualizar al cambiar sistema
+                                    sistemaSelect.addEventListener("change", () => {
+                                        llenarUsuarios();
+                                    });
+                                });
+                            </script>
+
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="usuarioSoli">Usuario Solicitante</label>
                                     <select class="form-select" style="font-size:12px;" id="usuarioSolicitante" name="usuarioSolicitante">
                                         <!-- Opciones(se hace con la db) -->
 
-                                        <option>...</option>
-
+                                        <@* option>...</option> *@
                                         @if (nombresUsuarios != null)
                                         {
                                             foreach (var usuario in nombresUsuarios)
                                             {
-                                                <option value="@usuario.Value">@usuario.Value</option>
+                                               <option value="@usuario.Value" @(usuario.Value == usuarioLogueado ? "selected" : "")>
+                                                      @usuario.Value
+                                               </option>
+
                                             }
                                         }
 
@@ -348,42 +508,106 @@
                                     <!-- Acordeón de Secciones -->
                                     <div id="accordion" class="mt-1">
 
-                                        <!-- Sección de Descripción -->
-                                        <div class="card">
-                                            <div class="card-header" id="headingDescripcion">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
-                                                        Descripción
-                                                    </button>
-                                                </h5>
-                                            </div>
+                                    <!-- Sección Descripción -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingDescripcion">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white;">
+                                                    <b>Descripción</b>
+                                                </button>
+                                            </h5>
+                                        </div>
                                         <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
                                             <div class="card-body">
-                                                    <!-- Barra de herramientas de formato de texto -->
-                                                    <div id="descripcion" class="tab-pane fade show active">
-                                                        <div class="toolbar">
-                                                            <button class="toolbar-btn"><i class="fas fa-undo"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-redo"></i></button>
-                                                            <select class="toolbar-select">
-                                                                <option value="sans-serif">Sans Serif</option>
-                                                                <option value="serif">Serif</option>
-                                                                <option value="monospace">Monospace</option>
-                                                            </select>
-                                                            <button class="toolbar-btn"><i class="fas fa-bold"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-italic"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-underline"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-left"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-center"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-align-right"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-list-ul"></i></button>
-                                                            <button class="toolbar-btn"><i class="fas fa-list-ol"></i></button>
-                                                        </div>
-                                                    </div>
-                                                <textarea name="descripcion" class="form-control" rows="3" placeholder="Escribe la descripción aquí..." style="height: 180px;" value="@ordentrabajo?.FirstOrDefault()?["Descripcion"]"></textarea>
-                                                    <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
+
+                                                <!-- Barra de herramientas -->
+                                                <div class="toolbar mb-2">
+                                                    <button type="button" class="toolbar-btn" data-command="undo"><i class="fas fa-undo"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="redo"><i class="fas fa-redo"></i></button>
+                                                    <select class="toolbar-select" data-command="fontName">
+                                                        <option value="Arial" selected>Arial</option>
+                                                        <option value="Calibri">Calibri</option>
+                                                        <option value="Cambria">Cambria</option>
+                                                        <option value="Courier New">Courier New</option>
+                                                        <option value="Georgia">Georgia</option>
+                                                        <option value="Tahoma">Tahoma</option>
+                                                        <option value="Times New Roman">Times New Roman</option>
+                                                        <option value="sans-serif">Sans Serif</option>
+                                                        <option value="serif">Serif</option>
+                                                        <option value="monospace">Monospace</option>
+                                                    </select>
+                                                    <select class="toolbar-select" data-command="fontSize" id="fontSizeSelect" title="Tamaño de fuente">
+                                                        <option value="1">8</option>
+                                                        <option value="2" selected>12</option> <!-- Valor 2 ~ 12px -->
+                                                        <option value="3">14</option>
+                                                        <option value="4">18</option>
+                                                        <option value="5">24</option>
+                                                        <option value="6">32</option>
+                                                        <option value="7">48</option>
+                                                    </select>
+                                                    <button type="button" class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fas fa-align-left"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fas fa-align-center"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="justifyRight"><i class="fas fa-align-right"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                                                    <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
                                                 </div>
+
+                                                <!-- Área editable visual -->
+                                                <div id="descripcionEditable" contenteditable="true"
+                                                     style="height: 190px; border:1px solid #ced4da; padding:8px; border-radius:.25rem; overflow-y:auto; background-color:white;">
+                                                    <!-- vacío para agregar nuevo texto -->
+                                                </div>
+
+                                                <!-- Campo oculto que se enviará -->
+                                                <textarea id="Descripcion" name="Descripcion" hidden></textarea>
+
+                                                <small class="form-text text-muted">
+                                                    Incluye una descripción general del trabajo o la tarea.
+                                                </small>
+
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const editor = document.getElementById("descripcionEditable");
+                                            const hiddenTextarea = document.getElementById("Descripcion");
+
+                                            // Botones
+                                            document.querySelectorAll(".toolbar-btn").forEach(btn => {
+                                                btn.addEventListener("click", () => {
+                                                    const command = btn.getAttribute("data-command");
+                                                    document.execCommand(command, false, null);
+                                                    syncContent();
+                                                });
+                                            });
+
+                                            // Selects
+                                            document.querySelectorAll(".toolbar-select").forEach(select => {
+                                                select.addEventListener("change", () => {
+                                                    const command = select.getAttribute("data-command");
+                                                    const value = select.value;
+                                                    document.execCommand(command, false, value);
+                                                    syncContent();
+                                                });
+                                            });
+
+                                            // Sincronizar al escribir
+                                            editor.addEventListener("input", syncContent);
+
+                                            function syncContent() {
+                                                hiddenTextarea.value = editor.innerHTML;
+                                            }
+
+                                            // Inicializar contenido oculto
+                                            syncContent();
+                                        });
+                                    </script>
+
 
                                         <!-- Sección de Avances de Trabajo -->
                                     <div class="card d-none">
@@ -575,4 +799,22 @@
             </div>
         </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializar Quill con toolbar
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: '#toolbar'
+            }
+        });
+
+        // Al enviar el formulario, pasar el HTML al input oculto
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('descripcion').value = quill.root.innerHTML;
+        });
+    });
+</script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
 </div>

@@ -50,9 +50,6 @@ function escapeHTML(text) {
 }
 
 
-
-
-
 //filtrado de sistema x cliente:
 const sistemasPorCliente = {
     "0": [0, 2, 23, 26, 27, 35, 45, 51, 56, 57, 59, 64, 66, 67, 69, 70, 73, 72, 77],
@@ -126,148 +123,122 @@ const sistemasPorCliente = {
     "72": [104]
 }
 
+
+const usuariosPorSistema = {
+    "91": [1, 44, 49],
+    "95": [11, 12, 28, 40, 44, 45, 49],
+    "96": [1, 11, 12, 28, 40, 44, 45, 46, 49],
+};
+
 //select SC.Cliente, SC.Sistema from Sistemas S
-//inner join Sistemas_Clientes SC on SC.Sistema = S.Sistema 
-//inner join Clientes C on SC.Cliente = C.Cliente 
+//inner join Sistemas_Clientes SC on SC.Sistema = S.Sistema
+//inner join Clientes C on SC.Cliente = C.Cliente
 //order by C.Cliente asc
 
-// ... sistemasPorCliente definido aquí ...
-
 document.addEventListener("DOMContentLoaded", function () {
-    const nombresSistemasInput = document.getElementById("nombresSistemas");
+    // Adaptamos los select a los nuevos ids:
+    const clienteSelect = document.getElementById("ClienteNombre");
+    const sistemaSelect = document.getElementById("SistemaNombre");
+    const responsableSelect = document.getElementById("Responsable"); // si usás responsable
 
-    let nombresSistemas = {};
-
-    if (nombresSistemasInput && nombresSistemasInput.value) {
-        try {
-            nombresSistemas = JSON.parse(nombresSistemasInput.value);
-        } catch (e) {
-            console.error("Error al parsear nombresSistemas:", e);
-        }
-    } else {
-        console.warn("Input 'nombresSistemas' no encontrado o vacío");
-    }
-
-    const clienteSelect = document.getElementById("Cliente");
-    const sistemaSelect = document.getElementById("Sistema");
-
-    if (!clienteSelect || !sistemaSelect || typeof nombresSistemas === "undefined") {
-        console.error("Faltan elementos o datos para el filtrado.");
+    if (!clienteSelect || !sistemaSelect) {
+        console.error("No se encontraron los select requeridos.");
         return;
     }
 
-    clienteSelect.addEventListener("change", function () {
-        const clienteId = this.value;
+    // Funciones que ya tenés definidas en site.js:
+    function actualizarSistemas(clienteId) {
         sistemaSelect.innerHTML = "";
-
         const defaultOption = document.createElement("option");
         defaultOption.value = "-1";
         defaultOption.text = "...";
         sistemaSelect.appendChild(defaultOption);
 
-        let sistemaIds = [];
-
-        if (sistemasPorCliente.hasOwnProperty(clienteId)) {
-            sistemaIds = sistemasPorCliente[clienteId];
-        } else {
-            sistemaIds = Object.keys(nombresSistemas).map(Number);
-        }
+        let sistemaIds = sistemasPorCliente[clienteId] || Object.keys(nombresSistemas).map(Number);
 
         sistemaIds.forEach(sid => {
-            if (nombresSistemas[sid]) {
+            const sidStr = sid.toString();
+            if (nombresSistemas[sidStr]) {
                 const option = document.createElement("option");
-                option.value = sid;
-                option.text = nombresSistemas[sid];
+                option.value = nombresSistemas[sidStr]; // O el valor que uses
+                option.text = nombresSistemas[sidStr];
                 sistemaSelect.appendChild(option);
             }
         });
+    }
+
+    clienteSelect.addEventListener("change", function () {
+        // Para usar tu mapping de cliente nombre -> id:
+        const clienteNombre = this.value;
+        const clienteId = clienteNombreToId[clienteNombre]; // asegurate de tener clienteNombreToId definido
+
+        actualizarSistemas(clienteId);
     });
+
+    // Si ya hay un cliente seleccionado al cargar:
+    if (clienteSelect.value && clienteSelect.value !== "-1") {
+        const clienteId = clienteNombreToId[clienteSelect.value];
+        actualizarSistemas(clienteId);
+    }
 });
 
 
+////////////////////////////
 
-//---------------------------------FormulariosModificados Y ModificacionesBaseDatos
+
+
+
+
 
 //document.addEventListener("DOMContentLoaded", function () {
-//    const tipoSelect = document.getElementById("tipoModificacion");
-//    const detalleTextArea = document.getElementById("modificacionDetalle");
+//    const nombresSistemasInput = document.getElementById("nombresSistemas");
 
-//    const formularioTexto = document.getElementById("formularioData")?.value || "";
-//    const baseDatosTexto = document.getElementById("baseDatosData")?.value || "";
+//    let nombresSistemas = {};
 
-//    if (tipoSelect && detalleTextArea) {
-//        tipoSelect.addEventListener("change", function () {
-//            if (this.value === "formulario") {
-//                detalleTextArea.value = formularioTexto;
-//            } else if (this.value === "baseDatos") {
-//                detalleTextArea.value = baseDatosTexto;
-//            } else {
-//                detalleTextArea.value = "";
+//    if (nombresSistemasInput?.value) {
+//        try {
+//            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+//        } catch (e) {
+//            console.error("Error al parsear nombresSistemas:", e);
+//        }
+//    }
+
+//    const clienteSelect2 = document.getElementById("cliente"); // minúscula
+//    const sistemaSelect2 = document.getElementById("sistema");
+
+//    if (!clienteSelect2 || !sistemaSelect2) {
+//        console.warn("No se encontraron los select 'cliente' o 'sistema' para el segundo formulario.");
+//        return;
+//    }
+
+//    clienteSelect2.addEventListener("change", function () {
+//        const clienteId = this.value;
+//        sistemaSelect2.innerHTML = "";
+
+//        const defaultOption = document.createElement("option");
+//        defaultOption.value = "-1";
+//        defaultOption.text = "...";
+//        sistemaSelect2.appendChild(defaultOption);
+
+//        const sistemaIds = sistemasPorCliente[clienteId] || Object.keys(nombresSistemas).map(Number);
+
+//        sistemaIds.forEach(sid => {
+//            const sidStr = sid.toString();
+//            if (nombresSistemas[sidStr]) {
+//                const option = document.createElement("option");
+//                option.value = sidStr;
+//                option.text = nombresSistemas[sidStr];
+//                sistemaSelect2.appendChild(option);
 //            }
 //        });
-//    }
+//    });
 //});
 
 
 
-//Aquí está tu código base, con la tabla para mostrar los avances de trabajo.
-//Los botones como "Agregar", "Modificar", "Grabar" y "Cancelar" están listos para ser manejados por JavaScript:
 
 
 
-//$(document).ready(function () {
-//    // Función para cargar los avances dinámicamente
-//    function cargarAvances() {
-//        $.ajax({
-//            url: '/Avances/ObtenerAvances',  // Asegúrate de que la URL esté correcta
-//            type: 'GET',
-//            success: function (data) {
-//                // Limpiar la tabla antes de cargar los nuevos datos
-//                $('#tablaAvances tbody').empty();
-
-//                // Iterar sobre los datos obtenidos y agregar las filas
-//                data.forEach(function (avance) {
-//                    var fila = '<tr>' +
-//                        '<td>' + avance.AvanceTrabajoId + '</td>' +
-//                        '<td>' + avance.Descripcion + '</td>' +
-//                        '<td>' + avance.Fecha + '</td>' +
-//                        '<td>' + avance.HorasInsumidas + '</td>' +
-//                        '<td>' + avance.UserIDAlta + '</td>' +
-//                        '</tr>';
-//                    $('#tablaAvances tbody').append(fila);
-//                });
-//            },
-//            error: function (error) {
-//                console.log('Error al cargar los avances:', error);
-//            }
-//        });
-//    }
-
-//    // Llamar a la función para cargar los avances cuando la página se carga
-//    cargarAvances();
-
-//    // Si es necesario actualizar la tabla al hacer clic en "Agregar" u otros botones:
-//    $('#btnAgregar').click(function () {
-//        // Lógica para agregar un nuevo avance (puede abrir un modal o formulario)
-//        // Después de agregar, volver a cargar la tabla:
-//        cargarAvances();
-//    });
-
-//    $('#btnModificar').click(function () {
-//        // Lógica para modificar
-//        cargarAvances();  // Recargar la tabla si es necesario
-//    });
-
-//    $('#btnGrabar').click(function () {
-//        // Lógica para grabar los cambios
-//        cargarAvances();  // Recargar la tabla si es necesario
-//    });
-
-//    $('#btnCancelar').click(function () {
-//        // Lógica para cancelar
-//        cargarAvances();  // Recargar la tabla si es necesario
-//    });
-//});
 
 
 

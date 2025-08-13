@@ -9,8 +9,40 @@
     var ordentrabajo = ViewData["Orden"] as List<Dictionary<string, object>>;
     var avancesTrabajo = ViewData["Avances_Trabajo"] as List<Sistema_OT.Models.AvancesTrabajoModel>;
     var historial= ViewData["HistorialEstados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+
     var adjuntos = ViewData["Adjuntos"] as List<Sistema_OT.Models.ArchivoAdjuntoModel>;
     var nroOrden = ViewBag.NroOrdenTrabajo;
+
+    var estados = ViewData["Estados"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var transiciones = ViewData["Transiciones"] as List<Sistema_OT.Models.HistorialdeEstadoModel>;
+    var orden = ViewData["Orden"] as List<Dictionary<string, object>>;
+
+
+    int estadoActual = 0;
+
+    if (orden != null)
+    {
+        var estadoStr = orden.FirstOrDefault()?["Estado"]?.ToString()?.Trim();
+        bool esNumero = int.TryParse(estadoStr, out int temp);
+        if (esNumero)
+        {
+            estadoActual = temp;
+        }
+        else
+        {
+            estadoActual = estados.FirstOrDefault(e => e.Descripcion == estadoStr)?.Estado ?? 0;
+        }
+    }
+
+
+    // Obtener la descripción del estado actual para mostrar texto
+    var descripcionEstadoActual = estados.FirstOrDefault(e => e.Estado == estadoActual)?.Descripcion ?? "Desconocido";
+
+    // Obtener los estados siguientes permitidos
+    var estadosSiguientes = estados
+        .Where(e => transiciones.Any(t => t.EstadoOrigen == estadoActual && t.EstadoDestino == e.Estado))
+        .ToList();
+
 
 }
 
@@ -27,6 +59,10 @@
 
 <!-- Incluir tu archivo site.js -->
 <script src="~/js/site.js"></script>
+
+<input type="hidden" id="nombresSistemas" value='@Html.Raw(Json.Serialize(nombresSistemas))' />
+<input type="hidden" id="nombresClientes" value='@Html.Raw(Json.Serialize(nombresClientes))' />
+
 
 <!-- Contenedor principal para el formulario Individual-->
 <div class="container" -fluid mt-3" style="width: 100% ; max-width: 2600px; margin: 0 auto;">
@@ -55,7 +91,7 @@
                 }
 
 
-                <form asp-action="ActualizarOrden" asp-controller="ABM" method="post">
+                <form asp-action="ActualizarOrden" asp-controller="ABM" method="post" enctype="multipart/form-data">
 
 
                       <div class="card-body">
@@ -98,19 +134,86 @@
                                             </div>
                                         </div>
                                         <!-- Campo Estado del Trabajo -->
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="estadoTrabajo">Estado del Trabajo</label>
-                                                  <select readonly class="form-select" style="font-size:12px;" id="EstadoDescripcion" name="EstadoDescripcion">
-                                                    <option value="0">...</option>
-                                                    @if (ordentrabajo != null)
-                                                    {
-                                                        <option selected>@ordentrabajo?.FirstOrDefault()?["Estado"]?.ToString()?.Trim()</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <!-- Estado actual (solo informativo, no editable) -->
+                            @* Campo oculto para obtener el valor del estado actual en JS *@
+                            <input type="hidden" id="estadoActualHidden" name="EstadoActual" value="@estadoActual" />
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Estado Actual: <strong>@descripcionEstadoActual</strong> Cambiar a:</label>
+                                    <select class="form-select" id="nuevoEstado" name="EstadoDescripcion" style="font-size:12px;">
+                                       @*  <option value="">Seleccione nuevo estado</option> *@
+                                        @foreach (var estado in estadosSiguientes)
+                                        {
+                                            <option value="@estado.Estado">@estado.Descripcion</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <script>
+                                const estados = {
+                                    1: "PENDIENTE",
+                                    2: "ENTREGADO",
+                                    3: "EN DESARROLLO",
+                                    4: "TERMINADO",
+                                    5: "EN PRODUCCION",
+                                    6: "ANULADA",
+                                    7: "FACTURADA",
+                                    8: "BONIFICADA",
+                                    9: "PRESUPUESTO ENVIADO AL CLIENTE",
+                                    10: "PRUEBA REALIZADA OK",
+                                    11: "PARA REVISAR PROBLEMAS EN LAS PRUEBAS",
+                                    12: "PRESUPUESTO APROBADO",
+                                    13: "PRESUPUESTO ASIGNADO",
+                                    14: "PRESUPUESTO NO APROBADO",
+                                    15: "FACTURADA (INCLUIDA ABONO)",
+                                    16: "EN PROCESO DE PRESUPUESTO",
+                                    17: "PRESUPUESTO FACTURADO",
+                                    18: "INCLUIDA EN VERSION"
+                                };
+
+                                const transiciones = {
+                                    1: [2, 3, 6, 16],
+                                    2: [3],
+                                    3: [4],
+                                    4: [5, 9, 10, 11],
+                                    5: [7, 8, 15],
+                                    9: [12, 14],
+                                    10: [5, 18],
+                                    11: [3],
+                                    12: [13],
+                                    13: [17],
+                                    14: [12],
+                                    16: [4, 6, 9],
+                                    18: [5]
+                                };
+
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nuevoEstadoSelect = document.getElementById("nuevoEstado");
+                                    const estadoActual = parseInt(document.getElementById("estadoActualHidden").value);
+
+                                    function cargarEstadosDisponibles(estadoOrigen) {
+                                        nuevoEstadoSelect.innerHTML = '<option value="">Seleccione</option>';
+
+                                        const posibles = transiciones[estadoOrigen] || [];
+
+                                        posibles.forEach(destino => {
+                                            const option = document.createElement("option");
+                                            option.value = destino;
+                                            option.text = estados[destino];
+                                            nuevoEstadoSelect.appendChild(option);
+                                        });
+                                    }
+
+                                    cargarEstadosDisponibles(estadoActual);
+                                });
+                            </script>
+
+
+                                    
+                                    </div> 
+
 
                                     <!-- Segunda fila con campos: Cliente, Sistema, Proyecto y botón de búsqueda -->
                                     <div style="font-size: 12px" class="row row-cols-3 g-3">
@@ -175,10 +278,89 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                            <input type="hidden" id="sistemaSeleccionado" value="@ordentrabajo?.FirstOrDefault()?["Sistema"]?.ToString()?.Trim()" />
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const nombresSistemasInput = document.getElementById("nombresSistemas");
+                                    const nombresClientesInput = document.getElementById("nombresClientes");
+                                    const sistemaSeleccionado = document.getElementById("sistemaSeleccionado")?.value;
+
+                                    let nombresSistemas = {};
+                                    let nombresClientes = {};
+
+                                    if (nombresSistemasInput?.value) {
+                                        try {
+                                            nombresSistemas = JSON.parse(nombresSistemasInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresSistemas:", e);
+                                        }
+                                    }
+
+                                    if (nombresClientesInput?.value) {
+                                        try {
+                                            nombresClientes = JSON.parse(nombresClientesInput.value);
+                                        } catch (e) {
+                                            console.error("Error al parsear nombresClientes:", e);
+                                        }
+                                    }
+
+                                    const clienteSelect = document.getElementById("ClienteNombre");
+                                    const sistemaSelect = document.getElementById("SistemaNombre");
+
+                                    if (!clienteSelect || !sistemaSelect) {
+                                        console.warn("Faltan selects 'ClienteNombre' o 'SistemaNombre'");
+                                        return;
+                                    }
+
+                                    const clienteNombreToId = {};
+                                    for (const [id, nombre] of Object.entries(nombresClientes)) {
+                                        clienteNombreToId[nombre] = id;
+                                    }
+
+                                    clienteSelect.addEventListener("change", function () {
+                                        const clienteNombre = this.value;
+                                        sistemaSelect.innerHTML = "";
+
+                                        const defaultOption = document.createElement("option");
+                                        defaultOption.value = "-1";
+                                        defaultOption.text = "...";
+                                        sistemaSelect.appendChild(defaultOption);
+
+                                        const clienteId = clienteNombreToId[clienteNombre];
+
+                                        const sistemaIds = clienteId && sistemasPorCliente[clienteId]
+                                            ? sistemasPorCliente[clienteId]
+                                            : Object.keys(nombresSistemas).map(Number);
+
+                                        sistemaIds.forEach(sid => {
+                                            const sidStr = sid.toString();
+                                            if (nombresSistemas[sidStr]) {
+                                                const option = document.createElement("option");
+                                                option.value = nombresSistemas[sidStr];
+                                                option.text = nombresSistemas[sidStr];
+                                                if (option.value === sistemaSeleccionado) {
+                                                    option.selected = true;
+                                                }
+                                                sistemaSelect.appendChild(option);
+                                            }
+                                        });
+                                    });
+
+                                    // Disparar cambio si ya hay cliente seleccionado
+                                    if (clienteSelect.value && clienteSelect.value !== "-1") {
+                                        clienteSelect.dispatchEvent(new Event("change"));
+                                    }
+                                });
+                            </script>
+
+
+
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="proyecto">Proyecto</label>
-                                    <select class="form-select" style="font-size:12px;" id="ProyectoNombre" name="ProyectoNombre">
+                                                   <select class="form-select" style="font-size:12px;" id="ProyectoNombre" name="ProyectoNombre">
 
                                                     @if (nombresProyectos != null)
 
@@ -222,7 +404,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="usuarioResp">Usuario Responsable</label>
-                                    <select class="form-select" style="font-size:12px;" id="ResponsableNombre" name="ResponsableNombre">
+                                                         <select class="form-select" style="font-size:12px;" id="ResponsableNombre" name="ResponsableNombre">
                                                     <option value="">...</option>
 
                                                     @if (nombresUsuarios != null)
@@ -231,7 +413,7 @@
                                                         {
 
                                                             bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
-                                                            Console.WriteLine(isSelected);
+                                                    
                                                             if (isSelected)
                                                             {
                                                                 <option value="@usuario.Value" selected="selected">@usuario.Value</option>
@@ -261,7 +443,7 @@
                                                         foreach (var usuario in nombresUsuarios)
                                                         {
 
-                                                            bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDResponsable"]?.ToString()?.Trim();
+                                                bool isSelected = usuario.Value == ordentrabajo?.FirstOrDefault()?["UserIDSolicitante"]?.ToString()?.Trim();
                                                             Console.WriteLine(isSelected);
                                                             if (isSelected)
                                                             {
@@ -395,47 +577,95 @@
                                         <!-- Acordeón de Secciones -->
                                         <div id="accordion" class="mt-1">
 
-                                            <!-- Sección de Descripción -->
+                                           <!-- Sección de Descripción -->
                                             <div class="card">
                                                 <div class="card-header py-1" id="headingDescripcion" style="padding: 1px;">
                                                     <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white; ">
-                                                            <b>  Descripción </b>
+                                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                                data-target="#collapseDescripcion" aria-expanded="true"
+                                                                aria-controls="collapseDescripcion" style="color:white;">
+                                                            <b>Descripción</b>
                                                         </button>
                                                     </h5>
                                                 </div>
 
-                                                <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                                <div id="collapseDescripcion" class="collapse show"
+                                                     aria-labelledby="headingDescripcion" data-parent="#accordion">
                                                     <div class="card-body">
-                                                        <!-- Barra de herramientas de formato de texto -->
-                                                        <div id="descripcion" class="tab-pane fade show active">
-                                                            <div class="toolbar">
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-undo"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-redo"></i></button>
-                                                                <select class="toolbar-select"  disabled>
-                                                                    <option value="sans-serif">Sans Serif</option>
-                                                                    <option value="serif">Serif</option>
-                                                                    <option value="monospace">Monospace</option>
-                                                                </select>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-bold"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-italic"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-underline"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-left"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-center"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-align-right"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ul"></i></button>
-                                                                <button class="toolbar-btn" disabled><i class="fas fa-list-ol"></i></button>
-                                                            </div>
+
+                                                        <!-- Barra de herramientas -->
+                                                        <div class="toolbar mb-2">
+                                                            <button type="button" class="toolbar-btn" data-command="undo"><i class="fas fa-undo"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="redo"><i class="fas fa-redo"></i></button>
+                                                            <select class="toolbar-select" data-command="fontName">
+                                                                <option value="sans-serif">Sans Serif</option>
+                                                                <option value="serif">Serif</option>
+                                                                <option value="monospace">Monospace</option>
+                                                            </select>
+                                                            <button type="button" class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyLeft"><i class="fas fa-align-left"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyCenter"><i class="fas fa-align-center"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="justifyRight"><i class="fas fa-align-right"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                                                            <button type="button" class="toolbar-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
                                                         </div>
-                                            <textarea class="form-control descripcion-textarea" rows="5" style="height:170px;"
-                                                      id="Descripcion" name="Descripcion"
-                                                      placeholder="Escribe la descripción aquí...">@ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]</textarea>
-                                                        <small class="form-text text-muted"> Incluye una descripción general del trabajo o la tarea.</small>
+
+                                                        <!-- Área editable visual -->
+                                                        <div id="descripcionEditable" contenteditable="true"
+                                                             style="height: 190px; border:1px solid #ced4da; padding:8px; border-radius:.25rem; overflow-y:auto; background-color:white;">
+                                                           
+                                                           @Html.Raw(ordentrabajo?.FirstOrDefault()?["DescripcionPlano"]?.ToString())
+                                                        </div> 
+
+                                                        <!-- Campo oculto que se enviará -->
+                                                        <textarea id="Descripcion" name="Descripcion" hidden></textarea>
+
+                                                        <small class="form-text text-muted">
+                                                            Incluye una descripción general del trabajo o la tarea.
+                                                        </small>
                                                     </div>
                                                 </div>
                                             </div>
 
-            @*                                 <!-- Sección de Avances de Trabajo -->
+                                            <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const editor = document.getElementById("descripcionEditable");
+                                                const hiddenTextarea = document.getElementById("Descripcion");
+
+                                                // Botones de la barra
+                                                document.querySelectorAll(".toolbar-btn").forEach(btn => {
+                                                    btn.addEventListener("click", () => {
+                                                        const command = btn.getAttribute("data-command");
+                                                        document.execCommand(command, false, null);
+                                                        syncContent();
+                                                    });
+                                                });
+
+                                                // Select de fuentes
+                                                document.querySelectorAll(".toolbar-select").forEach(select => {
+                                                    select.addEventListener("change", () => {
+                                                        const command = select.getAttribute("data-command");
+                                                        document.execCommand(command, false, select.value);
+                                                        syncContent();
+                                                    });
+                                                });
+
+                                                // Sincroniza contenido al escribir
+                                                editor.addEventListener("input", syncContent);
+
+                                                function syncContent() {
+                                                    hiddenTextarea.value = editor.innerHTML;
+                                                }
+
+                                                // Inicializar el campo oculto
+                                                syncContent();
+                                            });
+                                            </script>
+
+
+                                          <!-- Sección de Avances de Trabajo -->
                                             <div class="card">
                                                 <div class="card-header" id="headingAvances" style="padding: 3px;">
                                                     <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
@@ -447,101 +677,102 @@
                                                     </h5>
                                                 </div>
 
-                                                <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
-                                                    <div class="card-body">
-                                                        <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc;">
-                                                            <table id="tablaAvances" class="table table-bordered table-sm table-striped">
-                                                                <thead style="background-color: #f9f9f9;">
-                                                                    <tr>
-                                                                        <th>Descripción</th>
-                                                                        <th>Tipo Avance</th>
-                                                                        <th>Fecha</th>
-                                                                        <th>Horas (hs)</th>
-                                                                        <th>Acción</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @if (avancesTrabajo != null && avancesTrabajo.Any())
-                                                                    {
-                                                                        int i = 0;
-                                                                        foreach (var avance in avancesTrabajo)
-                                                                        {
-                                                                            <tr data-index="@i">
-                                                                                <td>
-                                                                                    <input type="text" name="Avances[@i].Descripcion" class="form-control" value="@avance.Descripcion" required />
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" name="Avances[@i].TipoAvance" class="form-control" value="@avance.TipoAvance" />
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="date" name="Avances[@i].Fecha" class="form-control" value="@avance.Fecha.ToString("yyyy-MM-dd")" required />
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="number" name="Avances[@i].HorasInsumidas" class="form-control" step="0.01" value="@avance.HorasInsumidas" required />
-                                                                                </td>
-                                                                                <td>
-                                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
-                                                                                    <input type="hidden" name="Avances[@i].UserIDAlta" value="@User.Identity.Name" />
-                                                                                    <input type="hidden" name="Avances[@i].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                                                                </td>
-                                                                            </tr>
-                                                                            i++;
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <tr><td colspan="5">No hay avances registrados.</td></tr>
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                    <div id="collapseAvances" class="collapse" aria-labelledby="headingAvances" data-parent="#accordion">
+                                        <div class="card-body">
 
-                                                        <button class="btn btn-primary btn-sm" type="button" onclick="agregarAvance()">Agregar</button>
-                                                    </div>
-                                                </div>
-
-                                  
-                                                <!-- Template oculto -->
-                                                <!-- Template para agregar filas -->
-                                                <script type="text/template" id="avance-template">
-                                                    <tr data-index="{i}">
-                                                        <td>
-                                                            <input type="text" name="Avances[{i}].Descripcion" class="form-control" required />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" name="Avances[{i}].TipoAvance" class="form-control" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="date" name="Avances[{i}].Fecha" class="form-control" required />
-                                                        </td>
-                                                        <td>
-                                                            <input type="number" name="Avances[{i}].HorasInsumidas" class="form-control" step="0.01" required />
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
-                                                            <input type="hidden" name="Avances[{i}].UserIDAlta" value="@User.Identity.Name" />
-                                                            <input type="hidden" name="Avances[{i}].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                                        </td>
+                                            <h5>Avances Registrados (Solo Lectura)</h5>
+                                            <table class="table table-bordered table-sm table-striped mb-3">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Descripción</th>
+                                                        <th>Tipo Avance</th>
+                                                        <th>Fecha</th>
+                                                        <th>Usuario Alta</th>
+                                                        <th>Horas Insumidas</th>
                                                     </tr>
-                                                </script>
-
-                                                <script>
-                                                    let avanceIndex = @avancesTrabajo?.Count() ?? 0;
-
-                                                    function agregarAvance() {
-                                                        const template = document.getElementById('avance-template').innerHTML;
-                                                        const nuevo = template.replaceAll('{i}', avanceIndex);
-                                                        document.querySelector('#tablaAvances tbody').insertAdjacentHTML('beforeend', nuevo);
-                                                        avanceIndex++;
+                                                </thead>
+                                                <tbody>
+                                                    @if (avancesTrabajo != null && avancesTrabajo.Any())
+                                                    {
+                                                        foreach (var avance in avancesTrabajo)
+                                                        {
+                                                            <tr>
+                                                                <td>@avance.AvanceTrabajoId</td>
+                                                                <td>@avance.Descripcion</td>
+                                                                <td>@(string.IsNullOrEmpty(avance.TipoAvance) ? "Desarrollo" : avance.TipoAvance)</td>
+                                                                <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
+                                                                <td>@avance.UserIDAlta</td>
+                                                                <td>@avance.HorasInsumidas</td>
+                                                            </tr>
+                                                        }
                                                     }
-
-                                                    function eliminarAvance(btn) {
-                                                        const fila = btn.closest('tr');
-                                                        fila.remove();
+                                                    else
+                                                    {
+                                                        <tr><td colspan="6">No hay avances registrados.</td></tr>
                                                     }
+                                                </tbody>
+                                            </table>
 
-                                      
-                                                </script>
+                                            <h5>Agregar Nuevos Avances</h5>
+                                            <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+                                                <table id="tablaAvances" class="table table-bordered table-sm table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Descripción</th>
+                                                            <th>Tipo Avance</th>
+                                                            <th>Fecha</th>
+                                                            <th>Horas (hs)</th>
+                                                            <th>Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- VACÍO, solo se agregan filas nuevas con JS -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <button class="btn btn-primary btn-sm" type="button" onclick="agregarAvance()">Agregar Avance</button>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Template oculto para agregar nuevas filas -->
+                                    <script type="text/template" id="avance-template">
+                                        <tr data-index="{i}">
+                                            <td><input type="text" name="Avances[{i}].Descripcion" class="form-control" required /></td>
+                                             <td>       <!-- Campo oculto que se enviará al servidor -->
+                                                    <input type="hidden" name="Avances[i].TipoAvance" value="9" />
+
+                                                    <!-- Texto visible que reemplaza al campo -->
+                                                    <input type="text"  class="form-control" value="No aplica" readonly />
+                                           </td>
+                                            <td><input type="date" name="Avances[{i}].Fecha" class="form-control" required /></td>
+                                            <td><input type="number" name="Avances[{i}].HorasInsumidas" class="form-control" step="0.01" required /></td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
+                                                <input type="hidden" name="Avances[{i}].UserIDAlta" value="@User.Identity.Name" />
+                                                <input type="hidden" name="Avances[{i}].FechaAlta" value="@DateTime.Now.ToString("yyyy-MM-dd")"  required/>
+                                            </td>
+                                        </tr>
+                                    </script>
+
+                                    <script>
+                                        let avanceIndex = 0;
+
+                                        function agregarAvance() {
+                                            const template = document.getElementById('avance-template').innerHTML;
+                                            const nuevo = template.replaceAll('{i}', avanceIndex);
+                                            document.querySelector('#tablaAvances tbody').insertAdjacentHTML('beforeend', nuevo);
+                                            avanceIndex++;
+                                        }
+
+                                        function eliminarAvance(btn) {
+                                            const fila = btn.closest('tr');
+                                            fila.remove();
+                                        }
+                                    </script>
+
 
                                 
                                             <!-- Sección de Puesta en Producción -->
@@ -556,101 +787,146 @@
                                                 <div id="collapseProduccion" class="collapse" aria-labelledby="headingProduccion" data-parent="#accordion">
                                                     <div class="card-body">
                                                         <select class="form-select mb-3" id="tipoModificacion" name="tipoModificacion">
-                                                            <option value="">Seleccionar tipo de modificación...</option>
-                                                            <option value="formulario">Formulario</option>
+
+                                                    <option value="formulario" selected>Formulario</option>
                                                             <option value="baseDatos">Base de Datos</option>
                                                         </select>
                                                         <textarea class="form-control" id="modificacionDetalle" name="modificacionDetalle" style="height: 200px; " rows="3" placeholder="..."></textarea>
 
-                                                        <input type="hidden" id="formularioData" name="formularioData" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
-                                                        <input type="hidden" id="baseDatosData" name="baseDatosData" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" />
+                                                <input type="hidden" id="FormulariosModificados" name="FormulariosModificados" value="@ordentrabajo?.FirstOrDefault()?["FormulariosModificadosPlano"]" />
+                                                <input type="hidden" id="ModificacionesBaseDatos" name="ModificacionesBaseDatos" value="@ordentrabajo?.FirstOrDefault()?["ModificacionesBaseDatosPlano"]" />
 
 
                                                         <small class="form-text text-muted">Selecciona el tipo de modificación que se hará en producción.</small>
-                                                        <script>
-                                                            document.addEventListener("DOMContentLoaded", function () {
-                                                                const tipoSelect = document.getElementById("tipoModificacion");
-                                                                const detalleTextArea = document.getElementById("modificacionDetalle");
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        const tipoSelect = document.getElementById("tipoModificacion");
+                                                        const detalleTextArea = document.getElementById("modificacionDetalle");
 
-                                                                const formularioTexto = document.getElementById("formularioData").value;
-                                                                const baseDatosTexto = document.getElementById("baseDatosData").value;
+                                                        const formularioInput = document.getElementById("FormulariosModificados");
+                                                        const baseDatosInput = document.getElementById("ModificacionesBaseDatos");
 
-                                                                tipoSelect.addEventListener("change", function () {
-                                                                    if (this.value === "formulario") {
-                                                                        detalleTextArea.value = formularioTexto;
-                                                                    } else if (this.value === "baseDatos") {
-                                                                        detalleTextArea.value = baseDatosTexto;
-                                                                    } else {
-                                                                        detalleTextArea.value = "";
-                                                                    }
-                                                                });
-                                                            });
-                                                        </script>
+                                                        // Inicializar valores actuales desde los input hidden
+                                                        let formularioTexto = formularioInput.value || "";
+                                                        let baseDatosTexto = baseDatosInput.value || "";
+
+                                                        // Forzar selección por defecto en "formulario" y mostrar su contenido
+                                                        tipoSelect.value = "formulario";
+                                                        detalleTextArea.value = formularioTexto;
+
+                                                        tipoSelect.addEventListener("change", function () {
+                                                            const valorActual = detalleTextArea.value;
+
+                                                            if (this.value === "formulario") {
+                                                                baseDatosTexto = valorActual;
+                                                                detalleTextArea.value = formularioTexto;
+                                                            } else if (this.value === "baseDatos") {
+                                                                formularioTexto = valorActual;
+                                                                detalleTextArea.value = baseDatosTexto;
+                                                            } else {
+                                                                detalleTextArea.value = "";
+                                                            }
+                                                        });
+
+                                                        detalleTextArea.addEventListener("input", function () {
+                                                            if (tipoSelect.value === "formulario") {
+                                                                formularioTexto = detalleTextArea.value;
+                                                            } else if (tipoSelect.value === "baseDatos") {
+                                                                baseDatosTexto = detalleTextArea.value;
+                                                            }
+                                                        });
+
+                                                        const form = detalleTextArea.closest("form");
+                                                        form.addEventListener("submit", function () {
+                                                            if (tipoSelect.value === "formulario") {
+                                                                formularioInput.value = detalleTextArea.value;
+                                                            } else if (tipoSelect.value === "baseDatos") {
+                                                                baseDatosInput.value = detalleTextArea.value;
+                                                            }
+
+                                                            if (!formularioInput.value && formularioTexto) {
+                                                                formularioInput.value = formularioTexto;
+                                                            }
+
+                                                            if (!baseDatosInput.value && baseDatosTexto) {
+                                                                baseDatosInput.value = baseDatosTexto;
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+
+
+
 
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <!-- Sección de Archivo Adjunto -->
-                                            <div class="card">
-                                                <div class="card-header" id="headingArchivo" style="padding: 3px;">
-                                                    <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
-                                                            <b> Archivo Adjunto </b>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
-                                                    <div class="card-body" style="max-height: 280px; overflow-y: auto;">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <thead>
+                                    <!-- Sección de Archivo Adjunto -->
+                                    <div class="card">
+                                        <div class="card-header" id="headingArchivo" style="padding: 3px;">
+                                            <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo" style="color:white;">
+                                                    <b> Archivo Adjunto </b>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseArchivo" class="collapse" aria-labelledby="headingArchivo" data-parent="#accordion">
+                                            <div class="card-body" style="max-height: 280px; overflow-y: auto;">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Nombre</th>
+                                                                <th>Fecha de Alta</th>
+                                                                <th>Usuario Alta</th>
+                                                                <th>Visualizar Archivo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (adjuntos != null && adjuntos.Any())
+                                                            {
+                                                                foreach (var item in adjuntos)
+                                                                {
                                                                     <tr>
-                                                                        <th>Número</th>
-                                                                        <th>Nombre</th>
-                                                                        <th>Fecha de Alta</th>
-                                                                        <th>Usuario Alta</th>
+                                                                        <td>@item.CorrelativoAdjunto</td>
+                                                                        <td>@item.NombreArchivo</td>
+                                                                        <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
+                                                                        <td>@item.UserID</td>
+                                                                        <td>
+                                                                            <a class="btn btn-outline-primary btn-sm"
+                                                                               href="@Url.Content("~/uploads/" + ViewBag.NroOrdenTrabajo + "/" + item.NombreArchivo)" target="_blank">
+                                                                                Ver
+                                                                            </a>
+                                                                        </td>
                                                                     </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @if (adjuntos != null && adjuntos.Any())
-                                                                    {
-                                                                        foreach (var item in adjuntos)
-                                                                        {
-                                                                            <tr>
-                                                                                <td>@item.CorrelativoAdjunto</td>
-                                                                                <td>@item.NombreArchivo</td>
-                                                                                <td>@item.FechaAlta.ToString("dd/MM/yyyy")</td>
-                                                                                <td>@item.UserID</td>
-                                                                            </tr>
 
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <tr>
-                                                                            <td colspan="4">No hay archivos adjuntos para esta orden.</td>
-                                                                        </tr>
-                                                                    }
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-
-                                                        <form asp-controller="Files" asp-action="UploadFiles" enctype="multipart/form-data" method="post">
-                                                            <div>
-                                                                <label for="files">Selecciona archivos:</label>
-                                                                <input type="file" id="files" name="files" multiple />
-                                                            </div>
-                                                             <button class="btn boton btn-sm" type="submit">Subir Archivos</button> 
-                                                        </form>
-
-                                            
-
-                                                        <button class="btn btn-danger btn-sm">Quitar</button> 
-                                                        <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
-                                                    </div>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="4">No hay archivos adjuntos para esta orden.</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="file">Selecciona archivos:</label>
+                                                    <input type="file" id="file" name="file" />
+                                                    <small class="form-text text-muted">Podés subir varios archivos.</small>
+                                                </div>
+
+
+
+
+                                                <button class="btn btn-danger btn-sm">Quitar</button>
+                                                <small class="form-text text-muted">Carga o elimina un archivo relacionado.</small>
                                             </div>
+                                        </div>
+                                    </div>
 
                                             <!-- Sección de Historial de Estado -->
                                             <div class="card">
@@ -672,7 +948,7 @@
                                                                             <th>Fecha</th>
                                                                             <th>Hora</th>
                                                                             <th>Usuario</th>
-                                                                            <th>Acciones</th>
+                                                                          
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="cuerpoHistorial">
@@ -687,7 +963,7 @@
                                                                                     <td>@estado.FechaAlta.ToString("dd/MM/yyyy")</td>
                                                                                     <td>@estado.FechaAlta.ToString("HH:mm")</td>
                                                                                     <td>@estado.UserID</td>
-                                                                                    <td></td>
+                                                                                  
                                                                                 </tr>
                                                                                 secuencia++;
                                                                             }
@@ -704,14 +980,14 @@
                                                         </div>
                                                         <div class="card-body">
                                                             <div id="estadosNuevos"></div>
-                                                            <button type="button" class="btn btn-sm btn-primary" onclick="agregarEstado()">Agregar Estado</button>
+                                                            @* <button type="button" class="btn btn-sm btn-primary" onclick="agregarEstado()">Agregar Estado</button>  *@
                                                             <small class="form-text text-muted">Mantén un registro de los estados por los que ha pasado esta tarea.</small>
                                                         </div>
                                                     </div>
 
                                                     <!-------------------------HISTORIAL ESTADOS----------------------------->
                                      
-                                                        <script>
+                                                       @*  <script>
                                                             let secuencia = @((historial != null && historial.Any()) ? historial.Count + 1 : 1);
 
                                                             const estados = [
@@ -760,7 +1036,7 @@
                                                                 tbody.appendChild(tr);
                                                                 secuencia++;
                                                             }
-                                                        </script>
+                                                        </script> *@
                                         
 
                                                     <!-------------------------HISTORIAL ESTADOS----------------------------->
@@ -769,46 +1045,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                 *@
+                              
 
                                 <!-- Botones de acciones -->
-                                <div class="row mt-2">
-                                    <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
-                                        <!-- Agrupación de otros botones -->
-                                        <div class="grupo-botones" style="font-size:12px;">
-                                            @* <button class="btn boton" disabled>Copiar Orden</button>
+                        <div class="row mt-2">
+                            <div class="col-md-12 d-flex justify-content-between align-items-center" style="font-size:12px;">
+                                <!-- Agrupación de otros botones -->
+                                <div class="grupo-botones" style="font-size:12px;">
+                                    @* <button class="btn boton" disabled>Copiar Orden</button>
                                             <button class="btn boton" disabled>Enviar Orden</button>
                                             <a class="btn boton" asp-area="" asp-controller="ABM" asp-action="VistaIndividual">Agregar</a>
                                             <button type="button" class="btn boton" onclick="modificarOrden()">Modificar</button> *@
-                                            <button type="submit" class="btn btn-primary">Grabar (Actualizar Orden)</button>
-                                            <button type="button" class="btn boton-cancelar"
-                                                    onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';">
-                                                Cancelar
-                                            </button>
-                                            <!-- Estilo diferente para cancelar -->
-                                        </div>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="btnGrabar">
+                                        Grabar (Actualizar Orden)
+                                        <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display:none;"></span>
+                                    </button>
+
+                                    <button type="button" class="btn boton-cancelar" onclick="window.location.href='@Url.Action("VistaIndividualBusca", "Buscar")';">
+                                           @*  onclick="window.location.href='@Url.Action("VistaIndividualModificar", new { orden = @nroOrden })';"> *@
+                                           
+                                        Cancelar Edición 
+                                    </button>
+                                    <!-- Estilo diferente para cancelar -->
                                 </div>
+                            </div>
+                        </div>
                 </form>
 
-                <script>
-                    function modificarOrden() {
-                      const nroOrden = document.getElementById('orden').value;
-                      if (nroOrden) {
-                        // Redirige a la acción pasando el nro de orden
-                        window.location.href = '@Url.Action("VistaIndividualModificar", "ABM")?orden=' + nroOrden;
-                      } else {
-                        alert('Por favor ingrese un número de orden válido');
-                      }
-                    }
 
-                    
-                 </script>
-                
-                
+
+
 
             </div>
         </div>
     </div>
 </div>
 </div>
+

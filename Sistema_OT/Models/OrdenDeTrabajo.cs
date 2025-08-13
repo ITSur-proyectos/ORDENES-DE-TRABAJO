@@ -1,13 +1,15 @@
 ﻿using Sistema_OT.Services;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Reflection.PortableExecutable;
+
 using System.Text.RegularExpressions;
 using System.Text;
 
+
+
 namespace Sistema_OT.Models
 {
+   // public class OrdenDeTrabajo
     public class OrdenDeTrabajo
     {
 
@@ -31,6 +33,7 @@ namespace Sistema_OT.Models
         public int CantidadHorasConsumidas { get; set; }
         //public int HorasInsumidas { get; set; }
         public int Estado { get; set; }
+        public int EstadoActual { get; set; }
         public int PorcentajeAvance { get; set; }
         public string UsuarioSolicitante { get; set; }
         public string UsuarioResponsable { get; set; }
@@ -41,6 +44,8 @@ namespace Sistema_OT.Models
         public string ModificacionesBaseDatos { get; set; }
         public string UserIDSolicitante { get; set; }
         public string UserIDResponsable { get; set; }
+
+        public string UsuarioQueModifico { get; set; }
         public static List<Dictionary<string, object>> ObtenerLista(string consulta, Dictionary<string, object> parametrosSP)
         {
 
@@ -73,9 +78,9 @@ namespace Sistema_OT.Models
                                 orden[columnName] = value;
                             }
                                 OrdenDeTrabajo ordenTrabajo = new OrdenDeTrabajo();
-                                orden["DescripcionPlano"] = LimpiarRTF(orden.ContainsKey("Descripcion") ? orden["Descripcion"].ToString() : string.Empty);
-                                orden["FormulariosModificadosPlano"] = LimpiarRTF(orden.ContainsKey("FormulariosModificados") ? orden["FormulariosModificados"].ToString() : string.Empty);
-                                orden["ModificacionesBaseDatosPlano"] = LimpiarRTF(orden.ContainsKey("ModificacionesBaseDatos") ? orden["ModificacionesBaseDatos"].ToString() : string.Empty);
+                                orden["DescripcionPlano"] = ConvertirRTFaHTML(orden.ContainsKey("Descripcion") ? orden["Descripcion"].ToString() : string.Empty);
+                                orden["FormulariosModificadosPlano"] = ConvertirRTFaHTML(orden.ContainsKey("FormulariosModificados") ? orden["FormulariosModificados"].ToString() : string.Empty);
+                                orden["ModificacionesBaseDatosPlano"] = ConvertirRTFaHTML(orden.ContainsKey("ModificacionesBaseDatos") ? orden["ModificacionesBaseDatos"].ToString() : string.Empty);
 
 
                                 OrdenesTrabajo.Add(orden);
@@ -97,7 +102,18 @@ namespace Sistema_OT.Models
             Dictionary<int, string> nombres = new Dictionary<int, string>();
             ConexionDB conexionDB = new ConexionDB();
             conexionDB.AbrirConexion();
-            string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s" + " ORDER BY Descripcion ASC"; // +s porque menos mal que las tablas estan en plural
+            //string consulta = "Select Descripcion, " + Tabla + " From " + Tabla + "s" + " ORDER BY Descripcion ASC"; // +s porque menos mal que las tablas estan en plural
+            string consulta;
+            if (Tabla.Equals("Usuario", StringComparison.OrdinalIgnoreCase))
+            {
+                consulta = "SELECT Descripcion, Usuario FROM Usuarios WHERE DadoDeBaja != 'S' ORDER BY Descripcion ASC";
+            }
+            else
+            {
+                consulta = $"SELECT Descripcion, {Tabla} FROM {Tabla}s ORDER BY Descripcion ASC";
+            }
+
+
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
 
             {
@@ -128,12 +144,14 @@ namespace Sistema_OT.Models
         {
             ConexionDB conexion = new ConexionDB();
             conexion.AbrirConexion();
+            //var usuarioLogueado = HttpContext.Session.GetString("UserId");
 
             using (SqlCommand cmd = new SqlCommand("sp_Actualizar_OrdenDeTrabajoConDescripciones", conexion.con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@NroOrdenTrabajo", orden.NroOrdenTrabajo);
+                cmd.Parameters.AddWithValue("@UsuarioQueModifico", orden.UsuarioQueModifico);
 
                 // Validar nulos para evitar errores
                 cmd.Parameters.AddWithValue("@Asunto", !string.IsNullOrEmpty(orden.Asunto) ? (object)orden.Asunto : DBNull.Value);
@@ -145,7 +163,7 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@FechaSolicitud", orden.FechaSolicitud.HasValue ? (object)orden.FechaSolicitud.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@FechaVencimiento", orden.FechaFinalizacion.HasValue ? (object)orden.FechaFinalizacion.Value : DBNull.Value);
 
-                cmd.Parameters.AddWithValue("@EstadoDescripcion", DBNull.Value); // lo manejás en otra función
+                cmd.Parameters.AddWithValue("@EstadoDescripcion", orden.Estado); // lo manejás en otra función
 
                 cmd.Parameters.AddWithValue("@ClienteNombre", !string.IsNullOrEmpty(orden.Cliente) ? (object)orden.Cliente : DBNull.Value);
                 cmd.Parameters.AddWithValue("@SistemaNombre", !string.IsNullOrEmpty(orden.Sistema) ? (object)orden.Sistema : DBNull.Value);
@@ -161,6 +179,14 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@CantidadHorasConsumidas", orden.CantidadHorasConsumidas);
                 cmd.Parameters.AddWithValue("@NroOtImplementacion", DBNull.Value); // si no lo estás usando ahora
 
+                //Puesta en produccion 
+
+                cmd.Parameters.AddWithValue("@FormulariosModificados", !string.IsNullOrEmpty(orden.FormulariosModificados) ? (object)orden.FormulariosModificados : DBNull.Value);
+                cmd.Parameters.AddWithValue("@ModificacionesBaseDatos", !string.IsNullOrEmpty(orden.ModificacionesBaseDatos) ? (object)orden.ModificacionesBaseDatos : DBNull.Value);
+
+
+
+
                 //cmd.Parameters.AddWithValue("@PremioPorAvance", orden.PremioPorAvance ? 'S' : 'N');
                 //cmd.Parameters.AddWithValue("@AlcanceIndefinido", orden.AlcanceIndefinido ? 'S' : 'N');
 
@@ -172,17 +198,102 @@ namespace Sistema_OT.Models
 
 
 
+        //sistema por cliente
+        public static Dictionary<int, List<int>> ConseguirSistemasPorCliente()
+        {
+            var resultado = new Dictionary<int, List<int>>();
+
+                    ConexionDB conexion = new ConexionDB();
+                    conexion.AbrirConexion();
+
+                    string query = @"
+                SELECT Cliente, Sistema 
+                FROM Sistemas_Clientes
+                ORDER BY Cliente, Sistema";
+
+            using (SqlCommand command = new SqlCommand(query, conexion.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int cliente = reader.GetInt32(0);
+                            int sistema = reader.GetInt32(1);
+
+                            if (!resultado.ContainsKey(cliente))
+                                resultado[cliente] = new List<int>();
+
+                            resultado[cliente].Add(sistema);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            return resultado;
+        }
+
+
+        //UsuarioResponsable Por Sistema
+        public static Dictionary<int, List<int>> ConseguirUsuarioResponsablePorSistema()
+        {
+            var resultado = new Dictionary<int, List<int>>();
+
+            ConexionDB conexion = new ConexionDB();
+            conexion.AbrirConexion();
+            string query = @"
+                        SELECT Sistema, Usuario 
+                        FROM Sistemas_Usuarios_Responsables";
+            //string query = @"
+            //                    SELECT SUR.Sistema, SUR.Usuario 
+            //                    FROM Sistemas_Usuarios_Responsables SUR
+            //                    INNER JOIN Usuarios U ON U.Usuario = SUR.Usuario
+            //                    WHERE U.DadoDeBaja != 'S'";
+
+
+
+            using (SqlCommand command = new SqlCommand(query, conexion.con))
+            {
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int sistema = reader.GetInt32(0);
+                            int usuario = reader.GetInt32(1);
+
+                            if (!resultado.ContainsKey(sistema))
+                                resultado[sistema] = new List<int>();
+
+                            resultado[sistema].Add(usuario);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            return resultado;
+        }
 
 
 
 
-
+        //Cambie las refetencias del Limpiar RTF
 
         public string DescripcionPlano
         {
             get
             {
-                return LimpiarRTF(Descripcion);
+                return ConvertirRTFaHTML(Descripcion);
             }
         }
 
@@ -190,7 +301,7 @@ namespace Sistema_OT.Models
         {
             get
             {
-                return LimpiarRTF(FormulariosModificados);
+                return ConvertirRTFaHTML(FormulariosModificados);
             }
         }
 
@@ -198,7 +309,7 @@ namespace Sistema_OT.Models
         {
             get
             {
-                return LimpiarRTF(ModificacionesBaseDatos);
+                return ConvertirRTFaHTML(ModificacionesBaseDatos);
             }
         }
 
@@ -291,6 +402,150 @@ namespace Sistema_OT.Models
         //        return rtf;
         //    }
         //}
+
+        public static string ConvertirRTFaHTML(string rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return string.Empty;
+
+            try
+            {
+                var html = RtfPipe.Rtf.ToHtml(rtf);
+
+                // Opcional: extraer solo el contenido entre <body>...</body>
+                var bodyMatch = Regex.Match(html, @"<body.*?>(.*?)<\/body>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                return bodyMatch.Success ? bodyMatch.Groups[1].Value : html;
+            }
+            catch
+            {
+                return rtf;
+            }
+        }
+
+
+
+        //public static string ConvertirRTFaHTML(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return string.Empty;
+
+        //    try
+        //    {
+        //        // Eliminamos cabecera RTF mínima y conservamos el texto plano
+        //        int start = rtf.IndexOf("\\fs");
+        //        if (start > -1)
+        //        {
+        //            // Muy rudimentario: elimina instrucciones RTF
+        //            string textoPlano = Regex.Replace(rtf.Substring(start), @"\\[a-z]+\d*", string.Empty);
+        //            textoPlano = Regex.Replace(textoPlano, @"[{\\}]", string.Empty);
+        //            return textoPlano.Replace("\n", "<br />").Replace("\r", "");
+        //        }
+
+        //        return rtf; // Si no tiene marcas RTF, devolvés lo mismo
+        //    }
+        //    catch
+        //    {
+        //        return rtf;
+        //    }
+        //}
+
+
+
+
+
+        //leer el RTF
+        //public static string ConvertirRTFaHTML(string rtf)
+        //{
+        //    if (string.IsNullOrWhiteSpace(rtf))
+        //        return string.Empty;
+
+        //    try
+        //    {
+        //        string texto = rtf;
+
+        //        // 1. Decodifica caracteres hexadecimales RTF (\'xx)
+        //        texto = Regex.Replace(texto, @"\\'([0-9a-fA-F]{2})", match =>
+        //        {
+        //            var hex = match.Groups[1].Value;
+        //            byte b = Convert.ToByte(hex, 16);
+        //            return Encoding.GetEncoding(1252).GetString(new byte[] { b });
+        //        });
+
+        //        // 2. Decodifica unicode RTF \u1234?
+        //        texto = Regex.Replace(texto, @"\\u(-?\d+)\?", match =>
+        //        {
+        //            int code = int.Parse(match.Groups[1].Value);
+        //            return char.ConvertFromUtf32(code);
+        //        });
+
+        //        // 3. Procesar etiquetas
+        //        bool negrita = false, cursiva = false, subrayado = false;
+        //        var sb = new StringBuilder();
+        //        var regexTokens = new Regex(@"(\\[a-z]+\d* ?|[{}]|[^\\{}]+)");
+
+        //        foreach (Match token in regexTokens.Matches(texto))
+        //        {
+        //            string value = token.Value;
+
+        //            switch (value)
+        //            {
+        //                case "\\b": sb.Append("<strong>"); negrita = true; break;
+        //                case "\\b0": if (negrita) sb.Append("</strong>"); negrita = false; break;
+        //                case "\\i": sb.Append("<em>"); cursiva = true; break;
+        //                case "\\i0": if (cursiva) sb.Append("</em>"); cursiva = false; break;
+        //                case "\\ul": sb.Append("<u>"); subrayado = true; break;
+        //                case "\\ul0": if (subrayado) sb.Append("</u>"); subrayado = false; break;
+        //                case "\\par": sb.Append("<br>"); break;
+        //                case "{":
+        //                case "}":
+        //                    break; // ignorar bloques
+        //                default:
+        //                    sb.Append(WebUtility.HtmlEncode(value));
+        //                    break;
+        //            }
+        //        }
+
+        //        // Cierra etiquetas abiertas
+        //        if (negrita) sb.Append("</strong>");
+        //        if (cursiva) sb.Append("</em>");
+        //        if (subrayado) sb.Append("</u>");
+
+        //        string resultado = sb.ToString();
+
+        //        // 4. Filtro de líneas basura
+        //        var lineasFiltradas = resultado
+        //            .Split(new[] { "<br>" }, StringSplitOptions.None)
+        //            .Select(l => l.Trim())
+        //            .Where(l =>
+        //            {
+        //                if (string.IsNullOrWhiteSpace(l)) return false;
+        //                if (Regex.IsMatch(l, @"^(Arial;?|Symbol;?|TX_RTF32\s*\d+(\.\d+)*|d\d{2}-\d{2}-\d{4}:?)$", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^(Times New Roman;?|Courier New;?|Calibri;?|Courier;?|Tahoma;?|Verdana;?|Normal;?|heading \d;?|\*Default Paragraph Font;?|...)", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^;+$")) return false;
+        //                if (l.Length > 100 && l.Count(c => c == ';') > 10) return false;
+        //                if (Regex.IsMatch(l, @"^d[\s\*]*$", RegexOptions.IgnoreCase)) return false;
+        //                if (Regex.IsMatch(l, @"^d+$", RegexOptions.IgnoreCase) && l.Length > 10) return false;
+
+        //                return true;
+        //            });
+
+        //        resultado = string.Join("<br>", lineasFiltradas);
+
+        //        // 5. Normaliza saltos y espacios
+        //        resultado = Regex.Replace(resultado, @"(<br>\s*){3,}", "<br><br>");
+        //        resultado = Regex.Replace(resultado, @"[ \t]{2,}", " ");
+
+        //        return resultado.Trim();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return WebUtility.HtmlEncode(rtf ?? "").Trim();
+        //    }
+        //}
+
+
+
+
 
 
         public static string LimpiarRTF(string rtf)
