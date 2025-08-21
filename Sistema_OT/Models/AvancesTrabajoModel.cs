@@ -15,6 +15,7 @@ namespace Sistema_OT.Models
         public decimal HorasInsumidas { get; set; }
         public string UserIDAlta { get; set; }
         public string TipoAvance { get; set; }
+        public string descripcionTipoAvance { get; set; }
 
 
 
@@ -27,8 +28,9 @@ namespace Sistema_OT.Models
             conexionDB.AbrirConexion();
 
             string consulta = @"
-            SELECT *
-            FROM Avances_Trabajo
+             SELECT A.*, TA.Descripcion AS descripcionTipoAvance
+            FROM Avances_Trabajo A 
+			inner join Tipos_Avances TA ON TA.TipoAvance = A.TipoAvance
             WHERE NroOrdenTrabajo = @NroOrdenTrabajo";
 
             using (SqlCommand command = new SqlCommand(consulta, conexionDB.con))
@@ -46,6 +48,7 @@ namespace Sistema_OT.Models
                                 AvanceTrabajoId = reader.GetInt32(reader.GetOrdinal("AvanceTrabajo")),
                                 Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? string.Empty : reader.GetString(reader.GetOrdinal("Descripcion")),
                                 Fecha = reader.GetDateTime(reader.GetOrdinal("Fecha")),
+                                descripcionTipoAvance = reader.IsDBNull(reader.GetOrdinal("descripcionTipoAvance")) ? string.Empty : reader.GetString(reader.GetOrdinal("descripcionTipoAvance")),
                                 HorasInsumidas = reader.GetDecimal(reader.GetOrdinal("HorasInsumidas")),
                                 UserIDAlta = reader.IsDBNull(reader.GetOrdinal("UserIDAlta")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserIDAlta"))
                             };
@@ -114,8 +117,10 @@ namespace Sistema_OT.Models
                 cmd.Parameters.AddWithValue("@Fecha", avance.Fecha);
                 cmd.Parameters.AddWithValue("@HorasInsumidas", avance.HorasInsumidas);
                 cmd.Parameters.AddWithValue("@UserIDAlta", avance.UserIDAlta ?? ""); // ejemplo: 'ERUIZ'
-                cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "9");
+                ////cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance ?? "9");
+                //cmd.Parameters.AddWithValue("@TipoAvance", string.IsNullOrEmpty(avance.TipoAvance) ? "9" : avance.TipoAvance);
 
+                cmd.Parameters.AddWithValue("@TipoAvance", avance.TipoAvance);
                 cmd.ExecuteNonQuery();
             }
         }

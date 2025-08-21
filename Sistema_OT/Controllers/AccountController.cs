@@ -7,7 +7,7 @@ using System.Text;
 
 public class AccountController : Controller
 {
-   //private readonly string _connectionString = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";// Asegúrate de tener la cadena de conexión correcta
+    // private readonly string _connectionString = "Data Source=192.168.110.5;Initial Catalog=Db_ITSur_CSharp;User ID=sa;Password=felisa5";// Asegúrate de tener la cadena de conexión correcta
     private readonly string _connectionString = "Data Source=Db_ITSur_CSharp.mssql.somee.com;Initial Catalog=Db_ITSur_CSharp;User ID=EugeniaITSur;Password=421295845";// Asegúrate de tener la cadena de conexión correcta
 
 

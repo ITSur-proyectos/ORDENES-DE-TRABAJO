@@ -579,24 +579,19 @@
 
                                            <!-- Sección de Descripción -->
                                             <div class="card">
-                                                <div class="card-header py-1" id="headingDescripcion" style="padding: 1px;">
-                                                    <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
-                                                        <button class="btn btn-link" type="button" data-toggle="collapse"
-                                                                data-target="#collapseDescripcion" aria-expanded="true"
-                                                                aria-controls="collapseDescripcion" style="color:white;">
-                                                            <b>Descripción</b>
-                                                        </button>
-                                                    </h5>
-                                                </div>
-
-                                                <div id="collapseDescripcion" class="collapse show"
-                                                     aria-labelledby="headingDescripcion" data-parent="#accordion">
+                                                    <div class="card-header py-1" id="headingDescripcion" style="padding: 3px;">
+                                                        <h5 class="mb-0" style="margin: 0; font-size: 1rem;">
+                                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" aria-controls="collapseDescripcion" style="color:white; ">
+                                                                <b>  Descripción </b>
+                                                            </button>
+                                                        </h5>
+                                                    </div>
+                                                     <div id="collapseDescripcion" class="collapse show" aria-labelledby="headingDescripcion" data-parent="#accordion">
                                                     <div class="card-body">
 
                                                         <!-- Barra de herramientas -->
                                                         <div class="toolbar mb-2">
-                                                            <button type="button" class="toolbar-btn" data-command="undo"><i class="fas fa-undo"></i></button>
-                                                            <button type="button" class="toolbar-btn" data-command="redo"><i class="fas fa-redo"></i></button>
+                                             
                                                             <select class="toolbar-select" data-command="fontName">
                                                                 <option value="sans-serif">Sans Serif</option>
                                                                 <option value="serif">Serif</option>
@@ -663,7 +658,7 @@
                                                 syncContent();
                                             });
                                             </script>
-
+                                    
 
                                           <!-- Sección de Avances de Trabajo -->
                                             <div class="card">
@@ -700,7 +695,7 @@
                                                             <tr>
                                                                 <td>@avance.AvanceTrabajoId</td>
                                                                 <td>@avance.Descripcion</td>
-                                                                <td>@(string.IsNullOrEmpty(avance.TipoAvance) ? "Desarrollo" : avance.TipoAvance)</td>
+                                                               <td>@avance.descripcionTipoAvance </td>
                                                                 <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
                                                                 <td>@avance.UserIDAlta</td>
                                                                 <td>@avance.HorasInsumidas</td>
@@ -741,13 +736,23 @@
                                     <script type="text/template" id="avance-template">
                                         <tr data-index="{i}">
                                             <td><input type="text" name="Avances[{i}].Descripcion" class="form-control" required /></td>
-                                             <td>       <!-- Campo oculto que se enviará al servidor -->
-                                                    <input type="hidden" name="Avances[i].TipoAvance" value="9" />
-
-                                                    <!-- Texto visible que reemplaza al campo -->
-                                                    <input type="text"  class="form-control" value="No aplica" readonly />
-                                           </td>
-                                            <td><input type="date" name="Avances[{i}].Fecha" class="form-control" required /></td>
+                                            <td>
+                                                <!-- Select con los tipos de avance -->
+                                                <select name="Avances[{i}].TipoAvance" class="form-control" required>
+                                                    <option value="1">Presupuesto</option>
+                                                    <option value="2">Desarrollo</option>
+                                                    <option value="3">Configuración Entorno de desarrollo/Pruebas</option>
+                                                    <option value="4">Pruebas</option>
+                                                    <option value="5">Documentación</option>
+                                                    <option value="6">Implementación</option>
+                                                    <option value="7">Capacitación</option>
+                                                    <option value="8">Iteración con terceros, homologación</option>
+                                                    <option value="9" selected>No Aplica</option>
+                                                    <option value="10">Análisis</option>
+                                                    <option value="11">Asistir</option>
+                                                </select>
+                                            </td>
+                                             <td> <input type="date" name="Avances[{i}].Fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")"  required />  </td>
                                             <td><input type="number" name="Avances[{i}].HorasInsumidas" class="form-control" step="0.01" required /></td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminarAvance(this)">🗑️</button>
